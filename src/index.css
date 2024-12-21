@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+html {
+  scroll-behavior: smooth;
+}
+
+.spinner-mini {
+  margin: 0;
+  width: 20px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px solid white;
+  border-right-color: transparent;
+  animation: rotate 1s infinite linear;
+}
+
+.spinner {
+  margin: 3.2rem auto 1.6rem;
+  width: 60px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 8px solid #08533c;
+  border-right-color: #619787;
+  animation: rotate 1s infinite linear;
+}
+
+.btn-grad {
+  color: #313121;
+  transition: 0.5s;
+  background-size: 200% auto;
+  border-radius: 10px;
+  border: 1px solid #313121;
+}
+
+.btn-grad:hover {
+  background-color: #14140d;
+  color: white;
+}
+
+.image {
+  background-image: url("../../public/top-view-spa-frame-with-sliced-cucumber-lg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+@media (max-width: 676px) {
+  .image {
+    background-image: url("../../public/top-view-spa-frame-with-sliced-cucumber-sm.jpg");
+  }
+}
