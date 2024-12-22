@@ -31,19 +31,7 @@ function NavBar() {
           </span>
         </Link>
         <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-          {session?.user?.image ? (
-            <Link
-              to="/account"
-              className="max-md:hidden flex items-center text-white gap-2 px-3 py-2"
-            >
-              <img
-                src={session.user.image}
-                alt={session.user.name}
-                className="rounded-full w-10 h-10"
-              />
-              Your Profile
-            </Link>
-          ) : (
+          <>
             <Link
               to="/account"
               className="max-md:hidden flex items-center justify-center text-white gap-2 px-3"
@@ -51,7 +39,20 @@ function NavBar() {
               <FaUserAlt className="w-5 h-5" />
               Guest Area
             </Link>
-          )}
+            <Link
+              to="/login"
+              className="flex  items-center gap-2 px-3 py-2 text-white"
+            >
+              Login
+            </Link>
+            <Link
+              to="/signup"
+              className="flex  items-center gap-2 px-3 py-2 text-white"
+            >
+              SignUp
+            </Link>
+          </>
+
           <button
             onClick={() => setMenuOpen(!isMenuOpen)}
             type="button"
