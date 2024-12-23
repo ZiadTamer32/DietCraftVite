@@ -29,7 +29,7 @@ function DietForm() {
 
   function Submit(addGuest) {
     console.log("Submitted data:", addGuest);
-    dietFn(email, addGuest);
+    dietFn({ addGuest, email });
   }
 
   return (
@@ -63,6 +63,13 @@ function DietForm() {
                 <p className="text-red-500 text-sm">{errors.age.message}</p>
               )}
             </div>
+            <input
+              type="hidden"
+              value={email || ""}
+              {...register("email")}
+              id="email"
+              name="email"
+            />
             <div>
               <label
                 htmlFor="height"
@@ -186,7 +193,7 @@ function DietForm() {
             </label>
             <select
               id="meals_per_day"
-              {...register("meals_per_day")}
+              {...register("numMeals")}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             >
               <option value="3">3</option>
@@ -204,7 +211,7 @@ function DietForm() {
             <input
               type="date"
               id="duration"
-              {...register("duration", {
+              {...register("dietDuration", {
                 required: "Diet duration is required"
               })}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
