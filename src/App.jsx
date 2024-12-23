@@ -49,7 +49,8 @@ function App() {
           success: { duration: 3000 },
           error: { duration: 5000 },
           style: {
-            fontSize: "18px",
+            fontSize: "15px",
+            textAlign: "center",
             maxWidth: "500px",
             padding: "18px 24px",
             backgroundColor: "#ffffff",

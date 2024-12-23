@@ -30,8 +30,10 @@ export async function signUp({ email, password, firstName, lastName }) {
   });
   if (error) {
     console.error("Sign up failed:", error.message);
+    return { error: error.message };
   }
-  return data;
+
+  return { data, error: null };
 }
 
 export async function signOut() {

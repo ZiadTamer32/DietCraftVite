@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { dietSubmission } from "../../services/apiDiet";
+import useUser from "../auth/useUser";
 import Results from "./Results";
 import SpinnerMini from "../../ui/SpinnerMini";
+import useDiet from "./useDiet";
 
 function DietForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    formState: { errors }
   } = useForm();
   const [result, setResult] = useState(false);
 
@@ -22,6 +23,15 @@ function DietForm() {
     setResult(true);
   };
 
+  const { dietFn, isPending } = useDiet();
+  const { user } = useUser();
+  const email = user?.user_metadata?.email;
+
+  function Submit(addGuest) {
+    console.log("Submitted data:", addGuest);
+    dietFn(email, addGuest);
+  }
+
   return (
     <div className="py-5">
       <div className="text-center text-gray-900 px-5">
@@ -34,7 +44,7 @@ function DietForm() {
         </h3>
       </div>
       <div className="block max-lg:box-shadow max-w-[850px] mx-auto sm:border sm:border-slate-200">
-        <form onSubmit={handleSubmit(dietSubmission)} className="p-7">
+        <form onSubmit={handleSubmit(Submit)} className="p-7">
           <div className="grid gap-6 mb-6 md:grid-cols-2">
             <div>
               <label
@@ -204,10 +214,11 @@ function DietForm() {
             )}
           </div>
           <button
+            disabled={isPending}
             onClick={() => Sucess()}
             className="bg-[#095c43] hover:bg-[#053728] transition focus:ring-4 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center text-white"
           >
-            {isSubmitting ? <SpinnerMini /> : "Generate"}
+            {isPending ? <SpinnerMini /> : "Generate"}
           </button>
         </form>
       </div>
