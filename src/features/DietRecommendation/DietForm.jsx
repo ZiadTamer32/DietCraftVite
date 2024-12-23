@@ -9,6 +9,7 @@ function DietForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors }
   } = useForm();
   const [result, setResult] = useState(false);
@@ -19,17 +20,19 @@ function DietForm() {
     }
   }, [result]);
 
-  const Sucess = () => {
-    setResult(true);
-  };
-
   const { dietFn, isPending } = useDiet();
   const { user } = useUser();
   const email = user?.user_metadata?.email;
 
   function Submit(addGuest) {
-    console.log("Submitted data:", addGuest);
-    dietFn({ addGuest, email });
+    dietFn(
+      { addGuest, email },
+      {
+        onSuccess: () => {
+          reset(), setResult(true);
+        }
+      }
+    );
   }
 
   return (
@@ -222,8 +225,7 @@ function DietForm() {
           </div>
           <button
             disabled={isPending}
-            onClick={() => Sucess()}
-            className="bg-[#095c43] hover:bg-[#053728] transition focus:ring-4 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center text-white"
+            className="flex items-center justify-center bg-[#095c43] hover:bg-[#053728] transition focus:ring-4 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-white"
           >
             {isPending ? <SpinnerMini /> : "Generate"}
           </button>

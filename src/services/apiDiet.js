@@ -11,9 +11,6 @@ async function getEmail() {
 export async function dietSubmission({ addGuest, email }) {
   const emails = await getEmail();
   const isEmail = emails.find((e) => e.email === email);
-
-  console.log("Supabase : ", addGuest);
-  console.log(isEmail?.email);
   if (isEmail?.email) {
     const { error } = await supabase
       .from("guests")

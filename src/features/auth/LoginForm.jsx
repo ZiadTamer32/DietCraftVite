@@ -7,10 +7,18 @@ function LoginForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors }
   } = useForm();
 
   const { login, isPending } = useLogin();
+  function Submit(data) {
+    login(data, {
+      onError: () => {
+        reset();
+      }
+    });
+  }
 
   return (
     <section className="flex-1">
@@ -20,7 +28,7 @@ function LoginForm() {
             <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-700 text-center">
               Login
             </h1>
-            <form onSubmit={handleSubmit(login)} className="space-y-4 pb-8">
+            <form onSubmit={handleSubmit(Submit)} className="space-y-4 pb-8">
               <div>
                 <label
                   htmlFor="email"
