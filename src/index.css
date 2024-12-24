@@ -48,23 +48,23 @@ html {
 }
 
 .image {
-  background-image: url("../../public/top-view-spa-frame-with-sliced-cucumber-lg.jpg");
+  background-image: url("/top-view-spa-frame-with-sliced-cucumber-lg.jpg");
   background-repeat: no-repeat;
   background-size: cover;
 }
 
 .image-login {
-  background-image: url("../../public/3d-background-with-white-cubes.jpg");
+  background-image: url("/3d-background-with-white-cubes.jpg");
   background-repeat: no-repeat;
   background-size: cover;
 }
 
 @media (max-width: 676px) {
   .image {
-    background-image: url("../../public/top-view-spa-frame-with-sliced-cucumber-sm.jpg");
+    background-image: url("/top-view-spa-frame-with-sliced-cucumber-sm.jpg");
   }
   .image-login {
-    background-image: url("../../public/3d-background-with-white-cubes-sm.jpg");
+    background-image: url("/3d-background-with-white-cubes-sm.jpg");
   }
 }
 
