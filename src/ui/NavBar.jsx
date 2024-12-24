@@ -95,7 +95,7 @@ function NavBar() {
                 <button
                   className="btn"
                   onClick={() => {
-                    logout(), navigate("/");
+                    logout({}, { onSuccess: () => navigate("/") });
                   }}
                 >
                   <Link className="text-white flex items-center justify-center">
@@ -103,7 +103,8 @@ function NavBar() {
                       <SpinnerMini />
                     ) : (
                       <span className="flex items-center justify-center gap-x-2">
-                        <TbLogout2 className="w-5 h-5" /> Logout
+                        <TbLogout2 className="w-5 h-5" />{" "}
+                        <span className="block mb-1">Logout</span>
                       </span>
                     )}
                   </Link>
