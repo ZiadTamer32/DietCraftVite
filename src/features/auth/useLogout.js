@@ -5,7 +5,10 @@ function useLogout() {
   const queryClient = useQueryClient();
   const { isPending, mutate: logout } = useMutation({
     mutationFn: signOut,
-    onSuccess: () => queryClient.removeQueries()
+    onSuccess: () => {
+      queryClient.removeQueries(["user"]);
+      queryClient.invalidateQueries(["user"]);
+    }
   });
   return { isPending, logout };
 }

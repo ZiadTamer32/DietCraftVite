@@ -1,5 +1,5 @@
 function CustomRecommendation() {
-  return <div>CustomRecommendation</div>;
+  return <div className="min-h-screen">CustomRecommendation</div>;
 }
 
 export default CustomRecommendation;

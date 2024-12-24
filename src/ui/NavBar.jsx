@@ -1,88 +1,52 @@
-import { Link, useLocation } from "react-router-dom";
-import { FaUserAlt } from "react-icons/fa";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { LuLogIn } from "react-icons/lu";
+import { RiAccountCircleFill } from "react-icons/ri";
 import { IoMenu } from "react-icons/io5";
 import { RiCloseLargeFill } from "react-icons/ri";
-import { useState } from "react";
+import { FaUserAlt } from "react-icons/fa";
+import { useState, useCallback, useMemo } from "react";
+import { TbLogout2 } from "react-icons/tb";
+import SpinnerMini from "../ui/SpinnerMini";
+import useUser from "../features/auth/useUser";
+import useLogout from "../features/auth/useLogout";
 
 function NavBar() {
   const location = useLocation();
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const session = null;
-  const menu = [
-    { id: 1, label: "Diet Recommendation", href: "/diet-recommendation" },
-    { id: 2, label: "Custom Food Recommendation", href: "/custom-diet" },
-    { id: 3, label: "Browse Foods", href: "/browse-foods" }
-  ];
+  const navigate = useNavigate();
+  const { user } = useUser();
+  const { logout, isPending } = useLogout();
 
-  function handleClick() {
+  const menu = useMemo(
+    () => [
+      { id: 1, label: "Diet Recommendation", href: "/diet-recommendation" },
+      { id: 2, label: "Custom Food Recommendation", href: "/custom-diet" },
+      { id: 3, label: "Browse Foods", href: "/browse-foods" }
+    ],
+    []
+  );
+
+  const handleClick = useCallback(() => {
     setMenuOpen(false);
-  }
+  }, []);
 
   return (
-    <nav className="bg-[#095c43] ">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <Link
-          to="/"
-          className="flex items-center space-x-3 rtl:space-x-reverse"
-          onClick={() => handleClick()}
-        >
-          <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
-            DietCraft
-          </span>
-        </Link>
-        <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-          <>
-            <Link
-              to="/account"
-              className="max-md:hidden flex items-center justify-center text-white gap-2 px-3"
-            >
-              <FaUserAlt className="w-5 h-5" />
-              Guest Area
-            </Link>
-            <Link
-              to="/login"
-              className="flex  items-center gap-2 px-3 py-2 text-white"
-            >
-              Login
-            </Link>
-            <Link
-              to="/signup"
-              className="flex  items-center gap-2 px-3 py-2 text-white"
-            >
-              SignUp
-            </Link>
-          </>
-
-          <button
-            onClick={() => setMenuOpen(!isMenuOpen)}
-            type="button"
-            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm md:hidden text-white"
-            aria-expanded={isMenuOpen}
-          >
-            <span className="sr-only">Open main menu</span>
-            {isMenuOpen ? (
-              <RiCloseLargeFill />
-            ) : (
-              <IoMenu className="w-10 h-10" />
-            )}
-          </button>
-        </div>
-        <div
-          className={`items-center justify-between w-full md:flex md:w-auto md:order-1 ${
-            isMenuOpen
-              ? "max-md:max-h-screen max-md:opacity-100"
-              : "max-md:max-h-0 max-md:opacity-0"
-          } max-md:overflow-hidden max-md:transition-all max-md:duration-500 max-md:ease-in-out`}
-        >
-          <ul className="flex flex-col md:flex-row gap-4 font-medium max-md:p-4 max-md:mt-5 max-md:border max-md:border-gray-500 max-md:bg-[#052e22] rounded-lg">
+    <nav>
+      <div className="w-full bg-[#095c43] flex items-center justify-between p-3">
+        <div className="flex items-center justify-center gap-32">
+          <Link to="/">
+            <span className="self-center text-2xl font-semibold whitespace-nowrap text-white sm:pl-7 pl-3">
+              DietCraft
+            </span>
+          </Link>
+          <ul className="lg:flex hidden items-center justify-center text-white font-semibold gap-5">
             {menu.map((item) => (
               <li key={item.id}>
                 <Link
-                  onClick={() => handleClick()}
                   to={item.href}
-                  className={`block text-white py-[0.55rem] px-3 sm:mb-0 mb-2 ${
+                  className={`block text-white py-[0.55rem] px-3 ${
                     location.pathname === item.href
-                      ? "bg-[#031c14] rounded-lg"
+                      ? "bg-[#031c14] rounded-xl"
                       : ""
                   }`}
                 >
@@ -90,32 +54,161 @@ function NavBar() {
                 </Link>
               </li>
             ))}
-            {session?.user?.image ? (
-              <Link
-                to="/account"
-                className="max-md:flex hidden items-center gap-2 px-3 py-2"
-                onClick={() => handleClick()}
-              >
-                <img
-                  src={session.user.image}
-                  alt={session.user.name}
-                  className="rounded-full w-10 h-10"
-                />
-                Your Profile
-              </Link>
+          </ul>
+        </div>
+        <div className="lg:flex hidden gap-4">
+          {!user ? (
+            <>
+              <button className="btn">
+                <Link
+                  to="/login"
+                  className="text-white flex items-center justify-center gap-x-2"
+                >
+                  <LuLogIn />
+                  <span className="block mb-1">Login</span>
+                </Link>
+              </button>
+              <button className="btn">
+                <Link
+                  to="/signup"
+                  className="text-white flex items-center justify-center gap-x-2"
+                >
+                  <RiAccountCircleFill className="w-5 h-5" />
+                  <span className="block mb-1">SignUp</span>
+                </Link>
+              </button>
+            </>
+          ) : (
+            <>
+              <p className="text-white font-semibold">
+                <button className="btn">
+                  <Link
+                    to="/account"
+                    className="flex items-center justify-center gap-3"
+                  >
+                    <FaUserAlt className="w-5 h-5" />
+                    {user.user_metadata.firstName} {user.user_metadata.lastName}
+                  </Link>
+                </button>
+              </p>
+              <p className="text-white font-semibold">
+                <button
+                  className="btn"
+                  onClick={() => {
+                    logout(), navigate("/");
+                  }}
+                >
+                  <Link className="text-white flex items-center justify-center">
+                    {isPending ? (
+                      <SpinnerMini />
+                    ) : (
+                      <span className="flex items-center justify-center gap-x-2">
+                        <TbLogout2 className="w-5 h-5" /> Logout
+                      </span>
+                    )}
+                  </Link>
+                </button>
+              </p>
+            </>
+          )}
+        </div>
+        <button
+          onClick={() => setMenuOpen(!isMenuOpen)}
+          type="button"
+          className="max-lg:inline-flex hidden items-center p-2 w-10 h-10 justify-center text-sm text-white"
+          aria-expanded={isMenuOpen ? "true" : "false"}
+          style={{ zIndex: isMenuOpen ? "101" : "100" }}
+        >
+          <span className="sr-only">Open main menu</span>
+          {isMenuOpen ? (
+            <RiCloseLargeFill className="w-10 h-10" />
+          ) : (
+            <IoMenu className="w-10 h-10" />
+          )}
+        </button>
+      </div>
+
+      {isMenuOpen && (
+        <div className="max-lg:fixed hidden top-0 left-0 w-full h-full bg-black bg-opacity-80 z-40 max-lg:flex items-center justify-center">
+          <ul className="flex flex-col items-center space-y-6 text-white text-2xl">
+            {menu.map((item) => (
+              <li key={item.id}>
+                <Link
+                  onClick={handleClick}
+                  to={item.href}
+                  className={`hover:underline ${
+                    location.pathname === item.href ? "font-bold" : ""
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+            {user ? (
+              <>
+                <li>
+                  <Link
+                    onClick={handleClick}
+                    to="/account"
+                    className="flex items-center justify-center gap-3 hover:underline"
+                  >
+                    <FaUserAlt className="w-5 h-5" />
+                    {user.user_metadata.firstName} {user.user_metadata.lastName}
+                  </Link>
+                </li>
+                <li>
+                  <button
+                    onClick={() => {
+                      logout(
+                        {},
+                        {
+                          onSuccess: () => {
+                            handleClick(), navigate("/");
+                          }
+                        }
+                      );
+                    }}
+                  >
+                    <Link className="text-white hover:underline">
+                      {isPending ? (
+                        <SpinnerMini />
+                      ) : (
+                        <span className="flex items-center justify-center gap-2">
+                          <TbLogout2 className="w-7 h-7 p-0" />{" "}
+                          <span className="block mb-1">Logout</span>
+                        </span>
+                      )}
+                    </Link>
+                  </button>
+                </li>
+              </>
             ) : (
-              <Link
-                to="/account"
-                className="max-md:flex hidden items-center gap-2 px-3 py-2 text-white"
-                onClick={() => handleClick()}
-              >
-                <FaUserAlt />
-                Guest Area
-              </Link>
+              <>
+                <li>
+                  <Link
+                    to="/login"
+                    className="text-white flex items-center justify-center gap-x-2 hover:underline"
+                    onClick={handleClick}
+                  >
+                    <LuLogIn />
+                    Login
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/signup"
+                    className="text-white flex items-center justify-center gap-x-2 hover:underline"
+                    onClick={handleClick}
+                  >
+                    <RiAccountCircleFill className="w-7 h-7" />
+                    SignUp
+                  </Link>
+                </li>
+              </>
             )}
           </ul>
         </div>
-      </div>
+      )}
     </nav>
   );
 }

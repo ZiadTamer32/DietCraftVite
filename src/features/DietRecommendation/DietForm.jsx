@@ -59,7 +59,17 @@ function DietForm() {
               <input
                 type="number"
                 id="age"
-                {...register("age", { required: "Age is required" })}
+                {...register("age", {
+                  required: "Age is required",
+                  min: {
+                    value: 14,
+                    message: "The minimum allowed age is 14 years"
+                  },
+                  max: {
+                    value: 110,
+                    message: "The maximum allowed age is 110 years"
+                  }
+                })}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               />
               {errors.age && (
@@ -85,6 +95,7 @@ function DietForm() {
                 id="height"
                 {...register("height", {
                   required: "Height is required",
+                  min: { value: 100, message: "Height must exceed 100 cm" },
                   max: { value: 250, message: "Height must not exceed 250 cm" }
                 })}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -103,7 +114,17 @@ function DietForm() {
               <input
                 type="number"
                 id="weight"
-                {...register("weight", { required: "Weight is required" })}
+                {...register("weight", {
+                  required: "Weight is required",
+                  min: {
+                    value: 60,
+                    message: "The minimum allowed weight is 60"
+                  },
+                  max: {
+                    value: 300,
+                    message: "The maximum allowed weight is 300"
+                  }
+                })}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               />
               {errors.weight && (

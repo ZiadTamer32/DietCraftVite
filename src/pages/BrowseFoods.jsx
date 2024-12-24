@@ -1,5 +1,5 @@
 function BrowseFoods() {
-  return <div>BrowseFoods</div>;
+  return <div className="min-h-screen">BrowseFoods</div>;
 }
 
 export default BrowseFoods;
