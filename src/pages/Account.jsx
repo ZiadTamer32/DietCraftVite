@@ -1,10 +1,11 @@
 import useUser from "../features/auth/useUser";
-
+import Spinner from "../ui/Spinner";
 function Account() {
-  const { user } = useUser();
+  const { user, isPending } = useUser();
 
   return (
     <div className="min-h-screen">
+      {isPending && <Spinner />}
       {!user && <p>You must log in first</p>}
 
       {user && (

@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 function HomePage() {
   return (
     <main>
-      <div className="relative flex flex-col image items-center justify-center h-screen px-4 sm:px-8 lg:px-16 text-[#313121]">
-        <div className="text-center max-w-[37.5rem] z-10">
+      <div className="flex flex-col image items-center justify-center h-screen text-[#313121]">
+        <div className="text-center max-w-[37.5rem]">
           <h1 className="sm:text-[2.25rem] text-2xl leading-relaxed sm:mb-5 max-lg:drop-shadow-xl max-md:drop-shadow-md max-sm:drop-shadow-sm">
             Welcome to DietCraft – Your journey to a healthier lifestyle starts
             here !

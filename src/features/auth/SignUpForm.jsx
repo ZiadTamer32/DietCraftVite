@@ -11,18 +11,16 @@ function SignUpForm() {
     watch
   } = useForm();
   const { signup, isPending } = useSignUp();
+
   return (
-    <section className="flex-1">
-      <div className="flex flex-col items-center justify-center px-6 mx-auto md:min-h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow-lg border sm:max-w-md xl:p-0">
-          <div className="px-6 pt-6 space-y-4 md:space-y-6 sm:px-8 sm:pt-8">
-            <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-700 text-center">
+    <section>
+      <div className="flex flex-col items-center justify-center min-h-screen max-w-[35rem] mx-auto max-sm:px-5">
+        <div className="bg-white rounded-lg shadow-lg w-full">
+          <div className="p-8 space-y-6">
+            <h1 className="text-2xl font-bold text-gray-700 text-center">
               Create an Account
             </h1>
-            <form
-              className="space-y-4 md:space-y-6"
-              onSubmit={handleSubmit(signup)}
-            >
+            <form className="space-y-6" onSubmit={handleSubmit(signup)}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* First Name Input */}
                 <div>
@@ -39,7 +37,7 @@ function SignUpForm() {
                   <input
                     type="text"
                     id="firstName"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 shadow-sm"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 shadow-sm"
                     placeholder="Your First Name"
                     {...register("firstName", {
                       required: "First Name is required"
@@ -61,7 +59,7 @@ function SignUpForm() {
                   <input
                     type="text"
                     id="lastName"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 shadow-sm"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 shadow-sm"
                     placeholder="Your Last Name"
                     {...register("lastName", {
                       required: "Last Name is required"
@@ -85,9 +83,15 @@ function SignUpForm() {
                 <input
                   type="email"
                   id="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 shadow-sm"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 shadow-sm"
                   placeholder="example@example.com"
-                  {...register("email", { required: "Email is required" })}
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                      message: "Invalid email address"
+                    }
+                  })}
                 />
               </div>
 
@@ -107,7 +111,7 @@ function SignUpForm() {
                   type="password"
                   id="password"
                   placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 shadow-sm"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 shadow-sm"
                   {...register("password", {
                     required: "Password is required",
                     minLength: {
@@ -115,8 +119,13 @@ function SignUpForm() {
                       message: "Password must be at least 6 characters"
                     },
                     maxLength: {
-                      value: 12,
-                      message: "Password cannot be longer than 12 characters"
+                      value: 20,
+                      message: "Password cannot be longer than 20 characters"
+                    },
+                    pattern: {
+                      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@])[A-Za-z\d@]{8,}$/,
+                      message:
+                        'Password must include at least 1 lowercase, 1 uppercase, 1 "@" and be at least 8 characters long'
                     }
                   })}
                 />
@@ -140,7 +149,7 @@ function SignUpForm() {
                   type="password"
                   id="confirm-password"
                   placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 shadow-sm"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 shadow-sm"
                   {...register("confirmPassword", {
                     validate: (value) =>
                       value === watch("password") || "Passwords do not match"
@@ -156,15 +165,15 @@ function SignUpForm() {
                 {isPending ? <SpinnerMini /> : "Create an account"}
               </button>
             </form>
-          </div>
-          <div className="text-sm font-light text-gray-600 px-6 my-4 text-center">
-            Already have an account ?{" "}
-            <Link
-              to="/login"
-              className="font-medium text-primary-600 hover:underline"
-            >
-              Login here
-            </Link>
+            <div className="text-sm font-light text-gray-600 text-center">
+              Already have an account ?{" "}
+              <Link
+                to="/login"
+                className="font-medium text-primary-600 hover:underline"
+              >
+                Login here
+              </Link>
+            </div>
           </div>
         </div>
       </div>

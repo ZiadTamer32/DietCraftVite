@@ -21,14 +21,14 @@ function LoginForm() {
   }
 
   return (
-    <section className="flex-1">
-      <div className="flex flex-col items-center justify-center px-6 mx-auto md:min-h-screen lg:py-0">
-        <div className=" bg-white rounded-lg shadow-lg border sm:max-w-md">
-          <div className=" space-y-4 px-8 pt-8">
-            <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-700 text-center">
+    <section>
+      <div className="flex flex-col items-center justify-center min-h-screen max-w-[25rem] mx-auto max-sm:px-5">
+        <div className=" bg-white rounded-lg shadow-lg w-full">
+          <div className="px-8 py-8">
+            <h1 className="text-2xl font-bold text-gray-700 text-center">
               Login
             </h1>
-            <form onSubmit={handleSubmit(Submit)} className="space-y-4 pb-8">
+            <form onSubmit={handleSubmit(Submit)} className="space-y-4">
               <div>
                 <label
                   htmlFor="email"
@@ -43,12 +43,15 @@ function LoginForm() {
                 <input
                   {...register("email", {
                     required: "Email is required",
-                    pattern: /^[^@]+@[^@]+\.[^@]+$/
+                    pattern: {
+                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                      message: "Invalid email address"
+                    }
                   })}
                   type="email"
                   name="email"
                   id="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 shadow-sm"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 shadow-sm"
                   placeholder="example@example.com"
                   autoComplete="email"
                 />
@@ -73,7 +76,7 @@ function LoginForm() {
                   name="password"
                   id="password"
                   placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 shadow-sm"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 shadow-sm"
                   autoComplete="current-password"
                 />
               </div>
@@ -85,7 +88,7 @@ function LoginForm() {
                 {isPending ? <SpinnerMini /> : "Login"}
               </button>
 
-              <div className="text-sm font-light text-gray-600 px-6 my-4 text-center">
+              <div className="text-sm font-light text-gray-600 text-center">
                 You don&apos;t have an account?{" "}
                 <Link
                   to="/signup"

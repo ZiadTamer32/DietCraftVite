@@ -32,8 +32,8 @@ function NavBar() {
 
   return (
     <nav>
-      <div className="w-full bg-[#095c43] flex items-center justify-between p-3">
-        <div className="flex items-center justify-center gap-32">
+      <div className="w-full bg-[#095c43] flex items-center justify-between py-3">
+        <div className="flex items-center justify-center gap-20">
           <Link to="/">
             <span className="self-center text-2xl font-semibold whitespace-nowrap text-white sm:pl-7 pl-3">
               DietCraft
@@ -87,7 +87,8 @@ function NavBar() {
                     className="flex items-center justify-center gap-3"
                   >
                     <FaUserAlt className="w-5 h-5" />
-                    {user.user_metadata.firstName} {user.user_metadata.lastName}
+                    Your Profile
+                    {/* {user.user_metadata.firstName} {user.user_metadata.lastName} */}
                   </Link>
                 </button>
               </p>
@@ -130,7 +131,7 @@ function NavBar() {
       </div>
 
       {isMenuOpen && (
-        <div className="max-lg:fixed hidden top-0 left-0 w-full h-full bg-black bg-opacity-80 z-40 max-lg:flex items-center justify-center">
+        <div className="max-lg:fixed hidden top-0 left-0 w-full h-full bg-black bg-opacity-90 z-40 max-lg:flex items-center justify-center">
           <ul className="flex flex-col items-center space-y-6 text-white text-2xl">
             {menu.map((item) => (
               <li key={item.id}>
@@ -151,10 +152,11 @@ function NavBar() {
                   <Link
                     onClick={handleClick}
                     to="/account"
-                    className="flex items-center justify-center gap-3 hover:underline"
+                    className={`flex items-center justify-center gap-3 hover:underline ${location.pathname === "/account" ? "font-bold" : ""}`}
                   >
                     <FaUserAlt className="w-5 h-5" />
-                    {user.user_metadata.firstName} {user.user_metadata.lastName}
+                    {/* {user.user_metadata.firstName} {user.user_metadata.lastName} */}
+                    Your Profile
                   </Link>
                 </li>
                 <li>
