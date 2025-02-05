@@ -15,13 +15,13 @@ function SignUpForm() {
   return (
     <section>
       <div className="flex flex-col items-center justify-center min-h-screen max-w-[35rem] mx-auto max-sm:px-5">
-        <div className="bg-white rounded-lg shadow-lg w-full">
-          <div className="p-8 space-y-6">
-            <h1 className="text-2xl font-bold text-gray-700 text-center">
+        <div className="w-full bg-white rounded-lg shadow-lg">
+          <div className="p-5 space-y-6 sm:p-8">
+            <h1 className="text-2xl font-bold text-center text-gray-700">
               Create an Account
             </h1>
             <form className="space-y-6" onSubmit={handleSubmit(signup)}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {/* First Name Input */}
                 <div>
                   <label
@@ -165,7 +165,7 @@ function SignUpForm() {
                 {isPending ? <SpinnerMini /> : "Create an account"}
               </button>
             </form>
-            <div className="text-sm font-light text-gray-600 text-center">
+            <div className="text-sm font-light text-center text-gray-600">
               Already have an account ?{" "}
               <Link
                 to="/login"

@@ -32,14 +32,14 @@ function NavBar() {
 
   return (
     <nav>
-      <div className="w-full bg-[#095c43] flex items-center justify-between py-3">
+      <div className="w-full bg-[#095c43] flex items-center justify-between p-3">
         <div className="flex items-center justify-center gap-20">
           <Link to="/">
-            <span className="self-center text-2xl font-semibold whitespace-nowrap text-white sm:pl-7 pl-3">
+            <span className="self-center pl-3 text-2xl font-semibold text-white whitespace-nowrap sm:pl-7">
               DietCraft
             </span>
           </Link>
-          <ul className="lg:flex hidden items-center justify-center text-white font-semibold gap-5">
+          <ul className="items-center justify-center hidden gap-5 font-semibold text-white lg:flex">
             {menu.map((item) => (
               <li key={item.id}>
                 <Link
@@ -56,13 +56,13 @@ function NavBar() {
             ))}
           </ul>
         </div>
-        <div className="lg:flex hidden gap-4">
+        <div className="hidden gap-4 lg:flex">
           {!user ? (
             <>
               <button className="btn">
                 <Link
                   to="/login"
-                  className="text-white flex items-center justify-center gap-x-2"
+                  className="flex items-center justify-center text-white gap-x-2"
                 >
                   <LuLogIn />
                   <span className="block mb-1">Login</span>
@@ -71,7 +71,7 @@ function NavBar() {
               <button className="btn">
                 <Link
                   to="/signup"
-                  className="text-white flex items-center justify-center gap-x-2"
+                  className="flex items-center justify-center text-white gap-x-2"
                 >
                   <RiAccountCircleFill className="w-5 h-5" />
                   <span className="block mb-1">SignUp</span>
@@ -80,7 +80,7 @@ function NavBar() {
             </>
           ) : (
             <>
-              <p className="text-white font-semibold">
+              <p className="font-semibold text-white">
                 <button className="btn">
                   <Link
                     to="/account"
@@ -92,14 +92,14 @@ function NavBar() {
                   </Link>
                 </button>
               </p>
-              <p className="text-white font-semibold">
+              <p className="font-semibold text-white">
                 <button
                   className="btn"
                   onClick={() => {
                     logout({}, { onSuccess: () => navigate("/") });
                   }}
                 >
-                  <Link className="text-white flex items-center justify-center">
+                  <Link className="flex items-center justify-center text-white">
                     {isPending ? (
                       <SpinnerMini />
                     ) : (
@@ -117,7 +117,7 @@ function NavBar() {
         <button
           onClick={() => setMenuOpen(!isMenuOpen)}
           type="button"
-          className="max-lg:inline-flex hidden items-center p-2 w-10 h-10 justify-center text-sm text-white"
+          className="items-center justify-center hidden w-10 h-10 p-2 text-sm text-white max-lg:inline-flex"
           aria-expanded={isMenuOpen ? "true" : "false"}
           style={{ zIndex: isMenuOpen ? "101" : "100" }}
         >
@@ -131,8 +131,8 @@ function NavBar() {
       </div>
 
       {isMenuOpen && (
-        <div className="max-lg:fixed hidden top-0 left-0 w-full h-full bg-black bg-opacity-90 z-40 max-lg:flex items-center justify-center">
-          <ul className="flex flex-col items-center space-y-6 text-white text-2xl">
+        <div className="top-0 left-0 z-40 items-center justify-center hidden w-full h-full bg-black max-lg:fixed bg-opacity-90 max-lg:flex">
+          <ul className="flex flex-col items-center space-y-6 text-xl text-white">
             {menu.map((item) => (
               <li key={item.id}>
                 <Link
@@ -177,7 +177,7 @@ function NavBar() {
                         <SpinnerMini />
                       ) : (
                         <span className="flex items-center justify-center gap-2">
-                          <TbLogout2 className="w-7 h-7 p-0" />{" "}
+                          <TbLogout2 className="p-0 w-7 h-7" />{" "}
                           <span className="block mb-1">Logout</span>
                         </span>
                       )}
@@ -190,7 +190,7 @@ function NavBar() {
                 <li>
                   <Link
                     to="/login"
-                    className="text-white flex items-center justify-center gap-x-2 hover:underline"
+                    className="flex items-center justify-center text-white gap-x-2 hover:underline"
                     onClick={handleClick}
                   >
                     <LuLogIn />
@@ -200,7 +200,7 @@ function NavBar() {
                 <li>
                   <Link
                     to="/signup"
-                    className="text-white flex items-center justify-center gap-x-2 hover:underline"
+                    className="flex items-center justify-center text-white gap-x-2 hover:underline"
                     onClick={handleClick}
                   >
                     <RiAccountCircleFill className="w-7 h-7" />

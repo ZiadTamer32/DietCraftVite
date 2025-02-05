@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import useUser from "../auth/useUser";
-import Results from "./Results";
 import SpinnerMini from "../../ui/SpinnerMini";
 import useDiet from "./useDiet";
+import Recipes from "../../ui/Recipes";
 
 function DietForm() {
   const {
@@ -37,11 +37,11 @@ function DietForm() {
 
   return (
     <div className="py-5">
-      <div className="text-center text-gray-900 px-5">
-        <h1 className="font-bold lg:text-4xl text-xl mb-2">
+      <div className="px-5 text-center text-gray-900">
+        <h1 className="mb-2 text-xl font-bold lg:text-4xl">
           Automatic Diet Recommendation
         </h1>
-        <h3 className="font-semibold sm:text-lg text-md sm:mb-5 mb-2">
+        <h3 className="mb-2 font-semibold sm:text-lg text-md sm:mb-5">
           Get personalized diet recommendations based on your goals and
           lifestyle
         </h3>
@@ -73,7 +73,7 @@ function DietForm() {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               />
               {errors.age && (
-                <p className="text-red-500 text-sm">{errors.age.message}</p>
+                <p className="text-sm text-red-500">{errors.age.message}</p>
               )}
             </div>
             <input
@@ -101,7 +101,7 @@ function DietForm() {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               />
               {errors.height && (
-                <p className="text-red-500 text-sm">{errors.height.message}</p>
+                <p className="text-sm text-red-500">{errors.height.message}</p>
               )}
             </div>
             <div>
@@ -128,7 +128,7 @@ function DietForm() {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               />
               {errors.weight && (
-                <p className="text-red-500 text-sm">{errors.weight.message}</p>
+                <p className="text-sm text-red-500">{errors.weight.message}</p>
               )}
             </div>
             <div>
@@ -148,7 +148,7 @@ function DietForm() {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               />
               {errors.bodyFat && (
-                <p className="text-red-500 text-sm">{errors.bodyFat.message}</p>
+                <p className="text-sm text-red-500">{errors.bodyFat.message}</p>
               )}
             </div>
           </div>
@@ -211,7 +211,7 @@ function DietForm() {
           <div className="mb-6">
             <label
               htmlFor="meals_per_day"
-              className="block text-gray-900 mb-2 text-sm font-medium"
+              className="block mb-2 text-sm font-medium text-gray-900"
             >
               Meals per day
             </label>
@@ -241,7 +241,7 @@ function DietForm() {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             />
             {errors.duration && (
-              <p className="text-red-500 text-sm">{errors.duration.message}</p>
+              <p className="text-sm text-red-500">{errors.duration.message}</p>
             )}
           </div>
           <button
@@ -252,7 +252,7 @@ function DietForm() {
           </button>
         </form>
       </div>
-      {result && <Results />}
+      {result && <Recipes />}
     </div>
   );
 }
