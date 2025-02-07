@@ -8,12 +8,13 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "server": "json-server --watch data/food.json --port 9000"
+    "server": "json-server --watch data/food_data.json --port 9000"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.47.10",
     "@tanstack/react-query": "^5.62.8",
     "@tanstack/react-query-devtools": "^5.62.8",
+    "axios": "^1.7.9",
     "i": "^0.3.7",
     "npm": "^11.0.0",
     "react": "^18.3.1",

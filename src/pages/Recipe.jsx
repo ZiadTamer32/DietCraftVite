@@ -1,5 +1,7 @@
+import RecipeDetails from "../features/DietRecommendation/RecipeDetails";
+
 function Recipe() {
-  return <div>Recipe</div>;
+  return <RecipeDetails />;
 }
 
 export default Recipe;

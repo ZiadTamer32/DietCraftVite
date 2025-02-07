@@ -1,26 +1,37 @@
 import { useContext, useEffect, useState, createContext } from "react";
+import axios from "axios";
 
 const RecipesContext = createContext();
 
 function RecipesProvider({ children }) {
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getData = () => {
+    setIsLoading(true);
+    axios
+      .get("../data/food_data.json")
+      .then((res) => {
+        setData(res?.data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error(err.message);
+        setIsLoading(false);
+      });
+  };
 
   useEffect(() => {
-    async function getRecipes() {
-      try {
-        const res = await fetch("http://localhost:9000/0");
-        const data = await res.json();
-        setData(data);
-      } catch (error) {
-        console.error("Failed to fetch recipes:", error.message);
-      }
-    }
-
-    getRecipes();
+    getData();
   }, []);
 
+  // Function to get a recipe by ID
+  const getRecipeById = (id) => {
+    return data?.find((recipe) => recipe?.RecipeId === Number(id) || null);
+  };
+
   return (
-    <RecipesContext.Provider value={{ setData, data }}>
+    <RecipesContext.Provider value={{ data, getRecipeById, isLoading }}>
       {children}
     </RecipesContext.Provider>
   );
@@ -28,7 +39,7 @@ function RecipesProvider({ children }) {
 
 function useRecipes() {
   const context = useContext(RecipesContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error(
       "useRecipes must be used within a RecipesProvider. Wrap your component with RecipesProvider."
     );
