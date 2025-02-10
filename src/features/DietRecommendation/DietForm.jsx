@@ -52,13 +52,13 @@ function DietForm() {
         <h1 className="mb-2 text-xl font-bold lg:text-4xl">
           Automatic Diet Recommendation
         </h1>
-        <h3 className="mb-2 font-semibold sm:text-lg text-md sm:mb-5">
+        <h3 className="mb-2 font-semibold sm:text-lg text-md">
           Get personalized diet recommendations based on your goals and
           lifestyle
         </h3>
       </div>
-      <div className="block max-lg:box-shadow max-w-[850px] mx-auto sm:border sm:border-slate-200">
-        <form onSubmit={handleSubmit(onSubmit)} className="p-7">
+      <div>
+        <form onSubmit={handleSubmit(onSubmit)} className="px-7 pb-7">
           <div className="grid gap-6 mb-6 md:grid-cols-2">
             <div>
               <label
@@ -239,7 +239,7 @@ function DietForm() {
             <select
               id="Duration"
               {...register("Duration")}
-              value={duration || 1}
+              value={duration ?? 1}
               onChange={(e) => setDuration(e.target.value)}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             >
@@ -271,14 +271,14 @@ function DietForm() {
           </div>
           <button
             disabled={isPending}
-            className="flex items-center justify-center bg-[#095c43] hover:bg-[#053728] transition focus:ring-4 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-white"
+            className="flex items-center justify-center bg-[#095c43] hover:bg-[#053728] transition focus:ring-4 focus:outline-none font-medium rounded-lg text-sm max-md:w-full  px-5 py-2.5 text-white"
           >
             {isPending ? <SpinnerMini /> : "Generate"}
           </button>
         </form>
       </div>
       <div
-        className={`grid grid-cols-1 gap-6 mt-5 place-items-center px-5 ${duration == 1 ? "lg:grid-cols-1" : duration == 2 ? "lg:grid-cols-2" : duration == 3 ? "lg:grid-cols-3" : "lg:grid-cols-4"} md:grid-cols-2`}
+        className={`grid max-sm:grid-cols-1 gap-6 place-items-center px-5 ${duration == 1 ? "md:grid-cols-1" : duration == 2 ? "md:grid-cols-2" : "md:grid-cols-2"}`}
       >
         {result && <Box number={duration || 1} />}
       </div>
