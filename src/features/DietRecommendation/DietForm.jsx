@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import useUser from "../auth/useUser";
 import SpinnerMini from "../../ui/SpinnerMini";
 import useDiet from "./useDiet";
-import Recipes from "../../ui/Recipes";
+import Box from "../../ui/Box";
 
 function DietForm() {
   const {
@@ -12,7 +12,11 @@ function DietForm() {
     reset,
     formState: { errors }
   } = useForm();
+
   const [result, setResult] = useState(false);
+  const [duration, setDuration] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const today = new Date().toISOString().split("T")[0];
 
   useEffect(() => {
     if (result) {
@@ -23,8 +27,15 @@ function DietForm() {
   const { dietFn, isPending } = useDiet();
   const { user } = useUser();
   const email = user?.user_metadata?.email;
+  const firstName = user?.user_metadata?.firstName;
+  const lastName = user?.user_metadata?.lastName;
 
-  function Submit(addGuest) {
+  function onSubmit(data) {
+    const addGuest = {
+      ...data,
+      fullName: `${firstName} ${lastName}`,
+      email: email
+    };
     dietFn(
       { addGuest, email },
       {
@@ -47,7 +58,7 @@ function DietForm() {
         </h3>
       </div>
       <div className="block max-lg:box-shadow max-w-[850px] mx-auto sm:border sm:border-slate-200">
-        <form onSubmit={handleSubmit(Submit)} className="p-7">
+        <form onSubmit={handleSubmit(onSubmit)} className="p-7">
           <div className="grid gap-6 mb-6 md:grid-cols-2">
             <div>
               <label
@@ -76,13 +87,6 @@ function DietForm() {
                 <p className="text-sm text-red-500">{errors.age.message}</p>
               )}
             </div>
-            <input
-              type="hidden"
-              value={email || ""}
-              {...register("email")}
-              id="email"
-              name="email"
-            />
             <div>
               <label
                 htmlFor="height"
@@ -136,14 +140,15 @@ function DietForm() {
                 htmlFor="bodyFat"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Body Fat Percentage (%)
+                Body Fat Percentage (%) (Optional)
               </label>
               <input
                 type="number"
                 id="bodyFat"
+                defaultValue={0}
                 {...register("bodyFat", {
-                  required: "Body Fat is required",
-                  max: { value: 100, message: "Body Fat must not exceed 100%" }
+                  max: { value: 100, message: "Body Fat must not exceed 100%" },
+                  min: { value: 0, message: "Body Fat must be at least 0%" }
                 })}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               />
@@ -207,7 +212,6 @@ function DietForm() {
               <option value="extreme">Extreme Weight Loss</option>
             </select>
           </div>
-          {/* <RangeForm register={register} /> */}
           <div className="mb-6">
             <label
               htmlFor="meals_per_day"
@@ -227,21 +231,42 @@ function DietForm() {
           </div>
           <div className="mb-6">
             <label
-              htmlFor="duration"
+              htmlFor="Duration"
               className="block mb-2 text-sm font-medium text-gray-900"
             >
-              Diet Duration
+              How long do you want to diet per week?
+            </label>
+            <select
+              id="Duration"
+              {...register("Duration")}
+              value={duration || 1}
+              onChange={(e) => setDuration(e.target.value)}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            >
+              <option value="1">One Week</option>
+              <option value="2">Two Weeks</option>
+              <option value="3">Three Weeks</option>
+              <option value="4">Four Weeks</option>
+            </select>
+          </div>
+          <div className="mb-6">
+            <label
+              htmlFor="startedAt"
+              className="block mb-2 text-sm font-medium text-gray-900"
+            >
+              Started At
             </label>
             <input
               type="date"
-              id="duration"
-              {...register("dietDuration", {
-                required: "Diet duration is required"
-              })}
+              id="startedAt"
+              {...register("startedAt", { required: "Start Time is required" })}
+              value={selectedDate || ""}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              min={today}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             />
-            {errors.duration && (
-              <p className="text-sm text-red-500">{errors.duration.message}</p>
+            {errors.startedAt && (
+              <p className="text-sm text-red-500">{errors.startedAt.message}</p>
             )}
           </div>
           <button
@@ -252,7 +277,11 @@ function DietForm() {
           </button>
         </form>
       </div>
-      {result && <Recipes />}
+      <div
+        className={`grid grid-cols-1 gap-6 mt-5 place-items-center px-5 ${duration == 1 ? "lg:grid-cols-1" : duration == 2 ? "lg:grid-cols-2" : duration == 3 ? "lg:grid-cols-3" : "lg:grid-cols-4"} md:grid-cols-2`}
+      >
+        {result && <Box number={duration || 1} />}
+      </div>
     </div>
   );
 }

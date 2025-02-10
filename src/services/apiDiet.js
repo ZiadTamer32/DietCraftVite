@@ -1,31 +1,40 @@
 import supabase from "./supabase";
 
-async function getEmail() {
-  let { data: guests, error } = await supabase.from("guests").select("email");
-  if (error) {
-    throw new Error("You have an Error");
-  }
-  return guests;
-}
-
 export async function dietSubmission({ addGuest, email }) {
-  const emails = await getEmail();
-  const isEmail = emails.find((e) => e.email === email);
-  if (isEmail?.email) {
-    const { error } = await supabase
+  try {
+    // Check if the email exists in the guests table
+    const { data: existingGuest, error: fetchError } = await supabase
       .from("guests")
-      .update(addGuest)
+      .select("email")
       .eq("email", email)
-      .select()
       .single();
-    if (error) {
-      throw new Error("Diet Recommendation could not be generated");
+
+    // Handle fetch errors (excluding "no rows found" error)
+    if (fetchError && fetchError.code !== "PGRST116") {
+      throw new Error("Failed to fetch guest data: " + fetchError.message);
     }
-  } else {
-    const { error } = await supabase.from("guests").insert([addGuest]);
-    if (error) {
-      console.log(error);
-      throw new Error("Diet Recommendation could not be generated");
+
+    if (existingGuest) {
+      // Update existing guest
+      const { error: updateError } = await supabase
+        .from("guests")
+        .update(addGuest)
+        .eq("email", email);
+
+      if (updateError) {
+        throw new Error("Failed to update guest: " + updateError.message);
+      }
+    } else {
+      // Insert new guest
+      const { error: insertError } = await supabase
+        .from("guests")
+        .insert([{ ...addGuest, email }]); // Ensure email is included in the insert
+
+      if (insertError) {
+        throw new Error("Failed to insert guest: " + insertError.message);
+      }
     }
+  } catch (error) {
+    throw new Error("Error in dietSubmission: " + error.message);
   }
 }
