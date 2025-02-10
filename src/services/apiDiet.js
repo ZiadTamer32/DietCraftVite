@@ -38,3 +38,16 @@ export async function dietSubmission({ addGuest, email }) {
     throw new Error("Error in dietSubmission: " + error.message);
   }
 }
+
+export async function fetchMealsByEmail(email) {
+  const { data, error } = await supabase
+    .from("guests")
+    .select("numMeals")
+    .eq("email", email);
+
+  if (error) {
+    console.error("Error fetching data:", error);
+  }
+
+  return data;
+}

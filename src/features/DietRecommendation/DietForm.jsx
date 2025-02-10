@@ -47,8 +47,8 @@ function DietForm() {
   }
 
   return (
-    <div className="py-5">
-      <div className="px-5 text-center text-gray-900">
+    <div className="max-w-[900px] mx-auto p-5">
+      <div className="text-center text-gray-900">
         <h1 className="mb-2 text-xl font-bold lg:text-4xl">
           Automatic Diet Recommendation
         </h1>
@@ -58,7 +58,10 @@ function DietForm() {
         </h3>
       </div>
       <div>
-        <form onSubmit={handleSubmit(onSubmit)} className="px-7 pb-7">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="border border-gray-200 shadow-lg p-7 mb-7"
+        >
           <div className="grid gap-6 mb-6 md:grid-cols-2">
             <div>
               <label
@@ -271,14 +274,14 @@ function DietForm() {
           </div>
           <button
             disabled={isPending}
-            className="flex items-center justify-center bg-[#095c43] hover:bg-[#053728] transition focus:ring-4 focus:outline-none font-medium rounded-lg text-sm max-md:w-full  px-5 py-2.5 text-white"
+            className="flex items-center justify-center bg-[#095c43] hover:bg-[#053728] transition focus:ring-4 focus:outline-none font-medium rounded-lg text-sm max-md:w-full  px-5 py-2.5 text-white mx-auto"
           >
             {isPending ? <SpinnerMini /> : "Generate"}
           </button>
         </form>
       </div>
       <div
-        className={`grid max-sm:grid-cols-1 gap-6 place-items-center px-5 ${duration == 1 ? "md:grid-cols-1" : duration == 2 ? "md:grid-cols-2" : "md:grid-cols-2"}`}
+        className={`grid max-sm:grid-cols-1 gap-6 mx-auto place-items-center ${duration == 1 ? "md:grid-cols-1" : duration >= 2 ? "md:grid-cols-2" : "md:grid-cols-1"}`}
       >
         {result && <Box number={duration || 1} />}
       </div>

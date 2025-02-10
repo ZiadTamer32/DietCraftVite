@@ -20,7 +20,6 @@ function Box({ number }) {
           <h5 className="mb-2 text-xl font-bold text-gray-900">
             {weeks[i]?.title || "Week"}{" "}
           </h5>
-
           <div>
             <ul className="divide-y divide-gray-200">
               {Array.from({ length: 7 }).map((_, index) => (
@@ -31,7 +30,8 @@ function Box({ number }) {
                       Day {index + 1}
                     </p>
                     <Link
-                      to={`/week/${i + 1}/day/${index + 1}`}
+                      target="_blank"
+                      to={`/diet-recommendation/${i + 1}/${index + 1}`}
                       className="font-semibold text-gray-900"
                     >
                       <GoArrowRight size={20} />

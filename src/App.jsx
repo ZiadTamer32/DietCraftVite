@@ -14,6 +14,7 @@ import Account from "./pages/Account";
 import Login from "./pages/Login";
 import Recipe from "./pages/Recipe";
 import SignUp from "./pages/SignUp";
+import RecipeDays from "./pages/RecipeDays";
 
 function App() {
   const reactQuery = new QueryClient({
@@ -23,6 +24,7 @@ function App() {
       }
     }
   });
+
   return (
     <RecipesProvider>
       <QueryClientProvider client={reactQuery}>
@@ -36,6 +38,10 @@ function App() {
                 element={<DietRecommendation />}
               />
               <Route path="/diet-recommendation/:id" element={<Recipe />} />
+              <Route
+                path="/diet-recommendation/:numWeek/:numDay"
+                element={<RecipeDays />}
+              />
               <Route path="/custom-diet" element={<CustomRecommendation />} />
               <Route path="/browse-foods" element={<BrowseFoods />} />
               <Route path="/account" element={<Account />} />
