@@ -37,7 +37,10 @@ function App() {
                 path="/diet-recommendation"
                 element={<DietRecommendation />}
               />
-              <Route path="/diet-recommendation/:id" element={<Recipe />} />
+              <Route
+                path="/diet-recommendation/week/:numWeek/day/:numDay/:id"
+                element={<Recipe />}
+              />
               <Route
                 path="/diet-recommendation/week/:numWeek/day/:numDay"
                 element={<RecipeDays />}

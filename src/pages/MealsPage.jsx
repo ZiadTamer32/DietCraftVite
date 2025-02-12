@@ -29,8 +29,8 @@ function RecipeDays() {
   const mealsLength = meals[0]?.numMeals || 3;
 
   return (
-    <div>
-      <h2 className="py-5 text-4xl font-bold text-center">
+    <div className="bg-gradient-to-tl from-[#02120d] to-[#095c43] text-white">
+      <h2 className="pt-5 text-4xl font-bold text-center ">
         Recipe for Week {numWeek}, Day {numDay}
       </h2>
       <Meals mealsLength={mealsLength} />

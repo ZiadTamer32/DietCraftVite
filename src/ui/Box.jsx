@@ -30,7 +30,6 @@ function Box({ number }) {
                       Day {index + 1}
                     </p>
                     <Link
-                      target="_blank"
                       to={`/diet-recommendation/week/${i + 1}/day/${index + 1}`}
                       className="font-semibold text-gray-900 hover:text-[#095c43] hover:translate-x-1 transition"
                     >

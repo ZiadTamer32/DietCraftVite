@@ -7,7 +7,7 @@ const RecipesContext = createContext();
 function RecipesProvider({ children }) {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  // https://dietcraftbackend.vercel.app/food-data
   const getData = () => {
     setIsLoading(true);
     axios
