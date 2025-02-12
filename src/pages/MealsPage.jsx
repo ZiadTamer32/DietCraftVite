@@ -30,7 +30,7 @@ function RecipeDays() {
 
   return (
     <div className="bg-gradient-to-tl from-[#02120d] to-[#095c43] text-white">
-      <h2 className="pt-5 text-4xl font-bold text-center ">
+      <h2 className="pt-5 text-2xl font-bold text-center md:text-4xl ">
         Recipe for Week {numWeek}, Day {numDay}
       </h2>
       <Meals mealsLength={mealsLength} />

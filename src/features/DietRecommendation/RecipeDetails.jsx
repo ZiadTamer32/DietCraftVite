@@ -11,7 +11,8 @@ function RecipeDetails() {
 
   if (isLoading) return <Spinner />;
   if (!dessert) return <p>Recipe not found</p>;
-  console.log(dessert);
+
+  // Calculate the total cooking time in minutes
   const {
     Name,
     Images = [],
@@ -41,7 +42,7 @@ function RecipeDetails() {
         />
 
         <div className="space-y-4 max-sm:my-4">
-          <h1 className="text-lg font-bold text-center text-gray-800 md:text-left md:text-3xl">
+          <h1 className="text-xl font-bold text-center text-gray-800 md:text-left md:text-3xl">
             {Name}
           </h1>
           <p className="text-sm text-center text-gray-600 md:text-base md:text-left">
