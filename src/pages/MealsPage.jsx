@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import Spinner from "../ui/Spinner";
 import useUser from "../features/auth/useUser";
 import useMeals from "../features/DietRecommendation/useMeals";
+import Meals from "../features/DietRecommendation/Meals";
 
 function RecipeDays() {
   const { numWeek, numDay } = useParams();
@@ -25,18 +26,14 @@ function RecipeDays() {
   }
 
   // Get the number of meals
-  const mealsLength = meals[0]?.numMeals || 0;
+  const mealsLength = meals[0]?.numMeals || 3;
 
   return (
     <div>
-      <h1>
-        Week-{numWeek} Day-{numDay}
-      </h1>
-      <ul>
-        {Array.from({ length: mealsLength }).map((_, index) => (
-          <li key={index}>Recipe {index + 1}</li>
-        ))}
-      </ul>
+      <h2 className="py-5 text-4xl font-bold text-center">
+        Recipe for Week {numWeek}, Day {numDay}
+      </h2>
+      <Meals mealsLength={mealsLength} />
     </div>
   );
 }

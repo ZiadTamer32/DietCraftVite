@@ -31,8 +31,8 @@ function Box({ number }) {
                     </p>
                     <Link
                       target="_blank"
-                      to={`/diet-recommendation/${i + 1}/${index + 1}`}
-                      className="font-semibold text-gray-900"
+                      to={`/diet-recommendation/week/${i + 1}/day/${index + 1}`}
+                      className="font-semibold text-gray-900 hover:text-[#095c43] hover:translate-x-1 transition"
                     >
                       <GoArrowRight size={20} />
                     </Link>

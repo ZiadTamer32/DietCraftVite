@@ -26,9 +26,9 @@ function DietForm() {
 
   const { dietFn, isPending } = useDiet();
   const { user } = useUser();
-  const email = user?.user_metadata?.email;
-  const firstName = user?.user_metadata?.firstName;
-  const lastName = user?.user_metadata?.lastName;
+  const email = user?.user_metadata?.email || "";
+  const firstName = user?.user_metadata?.firstName || "";
+  const lastName = user?.user_metadata?.lastName || "";
 
   function onSubmit(data) {
     const addGuest = {
@@ -60,7 +60,7 @@ function DietForm() {
       <div>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="border border-gray-200 shadow-lg p-7 mb-7"
+          className="p-3 md:border md:shadow-lg md:border-gray-200 md:p-7 mb-7"
         >
           <div className="grid gap-6 mb-6 md:grid-cols-2">
             <div>

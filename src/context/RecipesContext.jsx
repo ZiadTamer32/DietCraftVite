@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useContext, useEffect, useState, createContext } from "react";
 import axios from "axios";
 
@@ -10,7 +11,7 @@ function RecipesProvider({ children }) {
   const getData = () => {
     setIsLoading(true);
     axios
-      .get("../data/food_data.json")
+      .get("https://dietcraftbackend.vercel.app/food-data")
       .then((res) => {
         setData(res?.data);
         setIsLoading(false);
