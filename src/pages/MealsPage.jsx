@@ -4,7 +4,7 @@ import useUser from "../features/auth/useUser";
 import useMeals from "../features/DietRecommendation/useMeals";
 import Meals from "../features/DietRecommendation/Meals";
 
-function RecipeDays() {
+function MealsPage() {
   const { numWeek, numDay } = useParams();
   const { user } = useUser();
   const email = user?.user_metadata?.email;
@@ -38,4 +38,4 @@ function RecipeDays() {
   );
 }
 
-export default RecipeDays;
+export default MealsPage;

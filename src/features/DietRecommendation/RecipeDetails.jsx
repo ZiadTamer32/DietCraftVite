@@ -15,7 +15,7 @@ function RecipeDetails() {
   // Calculate the total cooking time in minutes
   const {
     Name,
-    Images = [],
+    Images,
     TotalTime,
     PrepTime,
     CookTime,

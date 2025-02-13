@@ -9,13 +9,11 @@ function DietForm() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors }
   } = useForm();
 
   const [result, setResult] = useState(false);
-  const [duration, setDuration] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [duration, setDuration] = useState(1);
   const today = new Date().toISOString().split("T")[0];
 
   useEffect(() => {
@@ -26,9 +24,9 @@ function DietForm() {
 
   const { dietFn, isPending } = useDiet();
   const { user } = useUser();
-  const email = user?.user_metadata?.email || "";
-  const firstName = user?.user_metadata?.firstName || "";
-  const lastName = user?.user_metadata?.lastName || "";
+  const email = user?.user_metadata?.email || null;
+  const firstName = user?.user_metadata?.firstName || null;
+  const lastName = user?.user_metadata?.lastName || null;
 
   function onSubmit(data) {
     const addGuest = {
@@ -40,10 +38,12 @@ function DietForm() {
       { addGuest, email },
       {
         onSuccess: () => {
-          reset(), setResult(true);
+          setResult(true);
         }
       }
     );
+    setDuration(Number(data.Duration));
+    setResult(false);
   }
 
   return (
@@ -242,8 +242,6 @@ function DietForm() {
             <select
               id="Duration"
               {...register("Duration")}
-              value={duration ?? 1}
-              onChange={(e) => setDuration(e.target.value)}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             >
               <option value="1">One Week</option>
@@ -263,8 +261,6 @@ function DietForm() {
               type="date"
               id="startedAt"
               {...register("startedAt", { required: "Start Time is required" })}
-              value={selectedDate || ""}
-              onChange={(e) => setSelectedDate(e.target.value)}
               min={today}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             />

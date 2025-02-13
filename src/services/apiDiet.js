@@ -14,26 +14,37 @@ export async function dietSubmission({ addGuest, email }) {
       throw new Error("Failed to fetch guest data: " + fetchError.message);
     }
 
+    let result;
+
     if (existingGuest) {
       // Update existing guest
-      const { error: updateError } = await supabase
+      const { data: updatedGuest, error: updateError } = await supabase
         .from("guests")
         .update(addGuest)
-        .eq("email", email);
+        .eq("email", email)
+        .select(); // Use `.select()` to return the updated record
 
       if (updateError) {
         throw new Error("Failed to update guest: " + updateError.message);
       }
+
+      result = updatedGuest; // Return the updated guest data
     } else {
       // Insert new guest
-      const { error: insertError } = await supabase
+      const { data: newGuest, error: insertError } = await supabase
         .from("guests")
-        .insert([{ ...addGuest, email }]); // Ensure email is included in the insert
+        .insert([{ ...addGuest, email }])
+        .select(); // Use `.select()` to return the inserted record
 
       if (insertError) {
         throw new Error("Failed to insert guest: " + insertError.message);
       }
+
+      result = newGuest; // Return the new guest data
     }
+
+    // Return the result to the caller
+    return result;
   } catch (error) {
     throw new Error("Error in dietSubmission: " + error.message);
   }

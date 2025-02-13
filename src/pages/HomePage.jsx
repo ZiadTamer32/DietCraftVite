@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 function HomePage() {
   return (
     <main>
-      <div className="flex flex-wrap flex-col image items-center justify-center h-screen text-[#313121]">
+      <div className="flex flex-col image items-center justify-center h-screen text-[#313121]">
         <div className="text-center max-w-[37.5rem] max-md:p-3 mb-10">
           <h1 className="sm:text-[2.25rem] font-bold text-2xl leading-relaxed sm:mb-5 max-lg:drop-shadow-xl max-md:drop-shadow-md max-sm:drop-shadow-sm">
-            Welcome to DietCraft <br></br> Healthy Choices, Crafted for You!
+            Welcome to DietCraft <br /> Healthy Choices, Crafted for You!
           </h1>
           <Link
             to="/diet-recommendation"

@@ -1,5 +1,7 @@
+import CustomForm from "../features/CustomRecommendation/CustomForm";
+
 function CustomRecommendation() {
-  return <div className="min-h-screen">CustomRecommendation</div>;
+  return <CustomForm />;
 }
 
 export default CustomRecommendation;

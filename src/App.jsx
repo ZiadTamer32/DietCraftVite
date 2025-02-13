@@ -3,18 +3,19 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 import { RecipesProvider } from "./context/RecipesContext";
-
+import { lazy } from "react";
 import AppLayout from "./ui/AppLayout";
-import HomePage from "./pages/HomePage";
-import PageNotFound from "./pages/PageNotFound";
-import DietRecommendation from "./pages/DietRecommendation";
-import CustomRecommendation from "./pages/CustomRecommendation";
-import BrowseFoods from "./pages/BrowseFoods";
-import Account from "./pages/Account";
-import Login from "./pages/Login";
-import Recipe from "./pages/Recipe";
-import SignUp from "./pages/SignUp";
-import RecipeDays from "./pages/MealsPage";
+
+const HomePage = lazy(() => import("./pages/HomePage"));
+const DietRecommendation = lazy(() => import("./pages/DietRecommendation"));
+const CustomRecommendation = lazy(() => import("./pages/CustomRecommendation"));
+const BrowseFoods = lazy(() => import("./pages/BrowseFoods"));
+const Account = lazy(() => import("./pages/Account"));
+const Login = lazy(() => import("./pages/Login"));
+const Recipe = lazy(() => import("./pages/Recipe"));
+const SignUp = lazy(() => import("./pages/SignUp"));
+const MealsPage = lazy(() => import("./pages/MealsPage"));
+const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 
 function App() {
   const reactQuery = new QueryClient({
@@ -43,7 +44,7 @@ function App() {
               />
               <Route
                 path="/diet-recommendation/week/:numWeek/day/:numDay"
-                element={<RecipeDays />}
+                element={<MealsPage />}
               />
               <Route path="/custom-diet" element={<CustomRecommendation />} />
               <Route path="/browse-foods" element={<BrowseFoods />} />

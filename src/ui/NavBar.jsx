@@ -34,7 +34,7 @@ function NavBar() {
     <nav>
       <div className="w-full bg-[#095c43] flex items-center justify-between p-3 border-b-2 border-b-gray-200">
         <div className="flex items-center justify-center gap-20">
-          <Link to="/">
+          <Link rel="preload" to="/">
             <span className="self-center pl-3 text-2xl font-semibold text-white whitespace-nowrap sm:pl-7">
               DietCraft
             </span>
