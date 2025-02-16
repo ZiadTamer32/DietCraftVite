@@ -1,10 +1,13 @@
 import useUser from "../features/auth/useUser";
+import usePlan from "../features/DietRecommendation/usePlan";
 import Spinner from "../ui/Spinner";
+import PlanForm from "../ui/PlanForm";
 
 function Account() {
   const { user, isPending, isAuthenticated } = useUser();
+  const { plan, isPending: isPlanning } = usePlan(user?.email);
 
-  if (isPending) return <Spinner />;
+  if (isPending || isPlanning) return <Spinner />;
 
   if (!isAuthenticated) return <p>You must log in first.</p>;
 
@@ -14,7 +17,15 @@ function Account() {
       <p>First Name: {user?.user_metadata?.firstName || "N/A"}</p>
       <p>Last Name: {user?.user_metadata?.lastName || "N/A"}</p>
       <p>Email: {user?.email || "N/A"}</p>
-      <p>User ID: {user?.id || "N/A"}</p>
+      <div className="max-w-[300px] mx-auto border border-gray-200 p-6">
+        {plan && plan.length > 0 ? (
+          plan.map((planItem, index) => (
+            <PlanForm key={index} planItem={planItem} email={user?.email} />
+          ))
+        ) : (
+          <p>No plan available.</p>
+        )}
+      </div>
     </div>
   );
 }

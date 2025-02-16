@@ -11,7 +11,6 @@ function useDiet() {
     onSuccess: (data) => {
       queryClient.setQueryData(["diet"], data);
       toast.success("Diet recommendation added successfully!");
-      console.log(data);
     },
     onError: (error) => {
       toast.error(error.message);

@@ -62,3 +62,29 @@ export async function fetchMealsByEmail(email) {
 
   return data;
 }
+
+export async function fetchDataByEmail(email) {
+  const { data, error } = await supabase
+    .from("guests")
+    .select("*")
+    .eq("email", email);
+
+  if (error) {
+    console.error("Error fetching data:", error);
+  }
+
+  return data;
+}
+
+export async function updatePlan(email, addGuest) {
+  const { data, error } = await supabase
+    .from("guests")
+    .update(addGuest)
+    .eq("email", email);
+
+  if (error) {
+    console.error("Error updating data:", error);
+  }
+
+  return data;
+}
