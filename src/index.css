@@ -27,6 +27,15 @@ html {
   border-right-color: transparent;
   animation: rotate 1s infinite linear;
 }
+.spinner-mini-black {
+  margin: 0;
+  width: 20px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px solid black;
+  border-right-color: transparent;
+  animation: rotate 1s infinite linear;
+}
 
 .spinner {
   margin: 3.2rem auto 1.6rem;
@@ -69,7 +78,7 @@ html {
 }
 
 /* From Uiverse.io by xueyuantan */
-.btn {
+/* .btn {
   width: 9em;
   height: 3em;
   color: white;
@@ -101,4 +110,4 @@ html {
 
 .btn:hover::before {
   width: 9em;
-}
+} */

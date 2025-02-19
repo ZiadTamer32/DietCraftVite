@@ -1,7 +1,11 @@
 import DietForm from "../features/DietRecommendation/DietForm";
 
 function DietRecommendation() {
-  return <DietForm />;
+  return (
+    <div>
+      <DietForm />
+    </div>
+  );
 }
 
 export default DietRecommendation;

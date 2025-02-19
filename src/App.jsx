@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 import { RecipesProvider } from "./context/RecipesContext";
+import { TargetProvider } from "./context/TargetContext";
 import { lazy } from "react";
 import AppLayout from "./ui/AppLayout";
 
@@ -27,53 +28,55 @@ function App() {
   });
 
   return (
-    <RecipesProvider>
-      <QueryClientProvider client={reactQuery}>
-        <ReactQueryDevtools initialIsOpen={false} />
-        <BrowserRouter>
-          <Routes>
-            <Route element={<AppLayout />}>
-              <Route index path="/" element={<HomePage />} />
-              <Route
-                path="/diet-recommendation"
-                element={<DietRecommendation />}
-              />
-              <Route
-                path="/diet-recommendation/week/:numWeek/day/:numDay/:id"
-                element={<Recipe />}
-              />
-              <Route
-                path="/diet-recommendation/week/:numWeek/day/:numDay"
-                element={<MealsPage />}
-              />
-              <Route path="/custom-diet" element={<CustomRecommendation />} />
-              <Route path="/browse-foods" element={<BrowseFoods />} />
-              <Route path="/account" element={<Account />} />
-            </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="*" element={<PageNotFound />} />
-          </Routes>
-        </BrowserRouter>
-        <Toaster
-          position="top-center"
-          gutter={12}
-          containerStyle={{ margin: "8px" }}
-          toastOptions={{
-            success: { duration: 3000 },
-            error: { duration: 5000 },
-            style: {
-              fontSize: "15px",
-              textAlign: "center",
-              maxWidth: "500px",
-              padding: "18px 24px",
-              backgroundColor: "#ffffff",
-              color: "#000000)"
-            }
-          }}
-        />
-      </QueryClientProvider>
-    </RecipesProvider>
+    <TargetProvider>
+      <RecipesProvider>
+        <QueryClientProvider client={reactQuery}>
+          <ReactQueryDevtools initialIsOpen={false} />
+          <BrowserRouter>
+            <Routes>
+              <Route element={<AppLayout />}>
+                <Route index path="/" element={<HomePage />} />
+                <Route
+                  path="/diet-recommendation"
+                  element={<DietRecommendation />}
+                />
+                <Route
+                  path="/diet-recommendation/week/:numWeek/day/:numDay/:id"
+                  element={<Recipe />}
+                />
+                <Route
+                  path="/diet-recommendation/week/:numWeek/day/:numDay"
+                  element={<MealsPage />}
+                />
+                <Route path="/custom-diet" element={<CustomRecommendation />} />
+                <Route path="/browse-foods" element={<BrowseFoods />} />
+                <Route path="/account" element={<Account />} />
+              </Route>
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </BrowserRouter>
+          <Toaster
+            position="top-center"
+            gutter={12}
+            containerStyle={{ margin: "8px" }}
+            toastOptions={{
+              success: { duration: 3000 },
+              error: { duration: 5000 },
+              style: {
+                fontSize: "15px",
+                textAlign: "center",
+                maxWidth: "500px",
+                padding: "18px 24px",
+                backgroundColor: "#ffffff",
+                color: "#000000)"
+              }
+            }}
+          />
+        </QueryClientProvider>
+      </RecipesProvider>
+    </TargetProvider>
   );
 }
 
