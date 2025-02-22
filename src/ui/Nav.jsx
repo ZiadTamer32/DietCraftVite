@@ -31,7 +31,7 @@ function Nav() {
       {
         id: 4,
         label: "Recipes",
-        href: "/recipes",
+        href: "/browse-foods",
         icon: <PiBowlFood size={20} />
       },
       {
@@ -46,13 +46,13 @@ function Nav() {
 
   return (
     <div className="w-full pb-5">
-      <ul className="flex flex-wrap justify-start gap-6">
+      <ul className="flex flex-wrap items-center justify-start gap-6">
         {menu.map((item) => {
           const isActive = location.pathname === item.href;
           return (
             <li key={item.id}>
               <Link
-                className={`flex gap-2 transition items-center px-3 py-2 rounded-lg text-nowrap ${
+                className={`flex gap-2 transition text-center items-center justify-center px-3 py-2 rounded-lg text-nowrap ${
                   isActive
                     ? "text-white bg-[#16a34a]"
                     : "text-[#4b5563] bg-white hover:bg-[#f9fafb]"

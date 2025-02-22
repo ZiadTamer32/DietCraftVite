@@ -1,5 +1,7 @@
+import Recipes from "../ui/Recipes";
+
 function BrowseFoods() {
-  return <div>BrowseFoods</div>;
+  return <Recipes />;
 }
 
 export default BrowseFoods;

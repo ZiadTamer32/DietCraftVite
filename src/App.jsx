@@ -9,7 +9,9 @@ import AppLayout from "./ui/AppLayout";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const DietRecommendation = lazy(() => import("./pages/DietRecommendation"));
-const CustomRecommendation = lazy(() => import("./pages/CustomRecommendation"));
+// const CustomRecommendation = lazy(() => import("./pages/CustomRecommendation"));
+const GetDietForm = lazy(() => import("./pages/GetDietForm"));
+const FoodLog = lazy(() => import("./pages/FoodLog"));
 const BrowseFoods = lazy(() => import("./pages/BrowseFoods"));
 const Account = lazy(() => import("./pages/Account"));
 const Login = lazy(() => import("./pages/Login"));
@@ -48,11 +50,13 @@ function App() {
                   path="/diet-recommendation/week/:numWeek/day/:numDay"
                   element={<MealsPage />}
                 />
-                <Route path="/custom-diet" element={<CustomRecommendation />} />
+                {/* <Route path="/custom-diet" element={<CustomRecommendation />} /> */}
+                <Route path="/food-log" element={<FoodLog />} />
                 <Route path="/browse-foods" element={<BrowseFoods />} />
                 <Route path="/account" element={<Account />} />
               </Route>
               <Route path="/login" element={<Login />} />
+              <Route path="/getData" element={<GetDietForm />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="*" element={<PageNotFound />} />
             </Routes>

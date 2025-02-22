@@ -6,54 +6,57 @@ export async function dietSubmission({ addGuest, email }) {
     const { data: existingGuest, error: fetchError } = await supabase
       .from("guests")
       .select("email")
-      .eq("email", email)
-      .single();
+      .eq("email", email);
 
-    // Handle fetch errors (excluding "no rows found" error)
-    if (fetchError && fetchError.code !== "PGRST116") {
+    if (fetchError) {
       throw new Error("Failed to fetch guest data: " + fetchError.message);
     }
 
+    console.log("Existing Guest Data:", existingGuest); // Debugging log
+
     let result;
 
-    if (existingGuest) {
+    if (existingGuest.length > 0) {
+      // Check if the guest exists
       // Update existing guest
       const { data: updatedGuest, error: updateError } = await supabase
         .from("guests")
         .update(addGuest)
         .eq("email", email)
-        .select(); // Use `.select()` to return the updated record
+        .select();
 
       if (updateError) {
         throw new Error("Failed to update guest: " + updateError.message);
       }
 
-      result = updatedGuest; // Return the updated guest data
+      console.log("Updated Guest Data:", updatedGuest); // Debugging log
+      result = updatedGuest;
     } else {
       // Insert new guest
       const { data: newGuest, error: insertError } = await supabase
         .from("guests")
         .insert([{ ...addGuest, email }])
-        .select(); // Use `.select()` to return the inserted record
+        .select();
 
       if (insertError) {
         throw new Error("Failed to insert guest: " + insertError.message);
       }
 
-      result = newGuest; // Return the new guest data
+      console.log("Inserted Guest Data:", newGuest); // Debugging log
+      result = newGuest;
     }
 
-    // Return the result to the caller
     return result;
   } catch (error) {
-    throw new Error("Error in dietSubmission: " + error.message);
+    console.error("Error in dietSubmission:", error.message);
+    throw error;
   }
 }
 
-export async function fetchMealsByEmail(email) {
+export async function fetchDataByEmail(email) {
   const { data, error } = await supabase
     .from("guests")
-    .select("numMeals")
+    .select("*")
     .eq("email", email);
 
   if (error) {
@@ -62,12 +65,8 @@ export async function fetchMealsByEmail(email) {
 
   return data;
 }
-
-export async function fetchDataByEmail(email) {
-  const { data, error } = await supabase
-    .from("guests")
-    .select("*")
-    .eq("email", email);
+export async function getEmails() {
+  const { data, error } = await supabase.from("guests").select("email");
 
   if (error) {
     console.error("Error fetching data:", error);

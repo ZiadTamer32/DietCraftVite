@@ -14,9 +14,7 @@ function Target({
 }) {
   const { data } = useTarget();
   const target = data ? data.map((e) => e) : [];
-  // console.log(target[0]?.Bmi);
-  console.log(target[0]?.Bmr.BMR.value);
-  // console.log(target[0]?.Bmr);
+
   return (
     <div className="grid grid-cols-1 gap-4 pt-5 md:grid-cols-2 lg:grid-cols-4">
       <div className="bg-[#f0fdf4] p-5 rounded-lg flex flex-col gap-3">

@@ -43,7 +43,7 @@ function NavBar() {
                   <span className="block mb-1">Login</span>
                 </Link>
               </button>
-              <button className="px-3 py-2 font-semibold border-gray-200 rounded-lg">
+              <button className="px-3 py-2 font-semibold border border-gray-200 rounded-lg">
                 <Link
                   to="/signup"
                   className="flex items-center justify-center gap-x-2"

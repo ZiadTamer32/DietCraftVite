@@ -6,7 +6,7 @@ function Results({ dessert }) {
   return (
     <li className="list-none bg-white border border-gray-200">
       <img
-        className="object-cover w-full"
+        className="object-cover w-full h-48"
         src={dessert?.Images[0] || "/6c4a7fb9-5fde-42e2-b537-b4732a92cf56.png"}
         alt={dessert?.Name || "Recipe photo"}
       />
