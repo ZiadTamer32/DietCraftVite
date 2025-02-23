@@ -1,41 +1,119 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useForm } from "react-hook-form";
+import { useTarget } from "../../context/TargetContext";
+import { useMemo, useEffect } from "react";
 import useUser from "../auth/useUser";
 import usePlan from "./usePlan";
+import useDiet from "./useDiet";
 import Target from "../DietRecommendation/Target";
+import SpinnerMini from "../../ui/SpinnerMini";
 
 function DietForm() {
+  const { user } = useUser();
+  const { plan: plans } = usePlan(user?.email);
+  const { getNutrations, isLoading } = useTarget();
+  const { dietFn } = useDiet();
+
+  // Memoize details to prevent unnecessary recalculations
+  const details = useMemo(
+    () => (Array.isArray(plans) ? plans.map((e) => e) : []),
+    [plans]
+  );
+
+  // Memoize all initial values
+  const initialAge = useMemo(
+    () => (details.length > 0 ? details[0]?.age : null),
+    [details]
+  );
+  const initialWeight = useMemo(
+    () => (details.length > 0 ? details[0]?.weight : null),
+    [details]
+  );
+  const initialHeight = useMemo(
+    () => (details.length > 0 ? details[0]?.height : null),
+    [details]
+  );
+  const initialBodyfat = useMemo(
+    () => (details.length > 0 ? details[0]?.bodyFat : null),
+    [details]
+  );
+  const initialPlan = useMemo(
+    () =>
+      details.length > 0 ? details[0]?.plan + " " + details[0]?.rate : null,
+    [details]
+  );
+  const initialGender = useMemo(
+    () => (details.length > 0 ? details[0]?.gender : null),
+    [details]
+  );
+  const initialActivity = useMemo(
+    () => (details.length > 0 ? details[0]?.activity : null),
+    [details]
+  );
+
+  // useForm hook
   const {
     register,
     formState: { errors },
-    watch
+    handleSubmit,
+    reset
   } = useForm();
 
-  const { user } = useUser();
-  const { plan: plans } = usePlan(user?.email);
-  // Initialize `myAge` and `age` state
-  const details = Array.isArray(plans) ? plans.map((e) => e) : [];
+  // Reset form with default values when data is loaded
+  useEffect(() => {
+    if (details.length > 0) {
+      reset({
+        height: initialHeight,
+        weight: initialWeight,
+        bodyFat: initialBodyfat,
+        age: initialAge,
+        plan: initialPlan,
+        gender: initialGender,
+        activity: initialActivity
+      });
+    }
+  }, [
+    details,
+    initialHeight,
+    initialWeight,
+    initialBodyfat,
+    initialAge,
+    initialPlan,
+    initialGender,
+    initialActivity
+  ]); // <-- Stable dependencies
 
-  // Initialize form values
-  const initialAge = details.length > 0 ? details[0]?.age : null;
-  const initialWeight = details.length > 0 ? details[0]?.weight : null;
-  const initialHeight = details.length > 0 ? details[0]?.height : null;
-  const initialBodyfat = details.length > 0 ? details[0]?.bodyFat : null;
-  const initialPlan = details.length > 0 ? details[0]?.plan : null;
-  const initialGender = details.length > 0 ? details[0]?.gender : null;
-  const initialActivity = details.length > 0 ? details[0]?.activity : null;
+  // Email and fullName user
+  const email = useMemo(() => user?.email || "", [user]);
+  const fullName = useMemo(
+    () =>
+      `${user?.user_metadata?.firstName || ""} ${user?.user_metadata?.lastName || ""}`.trim(),
+    [user]
+  );
 
-  const yourAge = Number(watch("age")) || initialAge;
-  const yourWeight = Number(watch("weight")) || initialWeight;
-  const yourHeight = Number(watch("height")) || initialWeight;
-  const yourBodyFat = Number(watch("bodyFat")) || initialBodyfat;
-  const yourGender = watch("gender") || initialGender;
-  const yourActivity = watch("activity") || initialActivity;
-  const yourPlan = watch("plan") || initialPlan;
+  // handleSubmit
+  const onSubmit = (data) => {
+    const rate = data?.plan?.split(" ");
+    const nutrationsGuest = {
+      ...data,
+      height: Number(data.height),
+      weight: Number(data.weight),
+      bodyFat: Number(data.bodyFat),
+      age: Number(data.age),
+      rate: rate[1],
+      plan: rate[0]
+    };
+    dietFn({
+      addGuest: { ...data, email, fullName, rate: rate[1], plan: rate[0] },
+      email
+    });
+    getNutrations(nutrationsGuest);
+  };
 
   return (
     <div>
       <div>
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-6 mb-6 md:grid-cols-2">
             <div>
               <label
@@ -47,7 +125,6 @@ function DietForm() {
               <input
                 type="number"
                 id="age"
-                defaultValue={initialAge}
                 {...register("age", {
                   required: "Age is required",
                   min: { value: 13, message: "Age must exceed 100 cm" },
@@ -68,7 +145,6 @@ function DietForm() {
               <input
                 type="number"
                 id="height"
-                defaultValue={initialHeight}
                 {...register("height", {
                   required: "Height is required",
                   min: { value: 100, message: "Height must exceed 100 cm" },
@@ -91,7 +167,6 @@ function DietForm() {
               <input
                 type="number"
                 id="weight"
-                defaultValue={initialWeight}
                 {...register("weight", {
                   required: "Weight is required",
                   min: {
@@ -118,7 +193,6 @@ function DietForm() {
                 Body Fat Percentage (%) (Optional)
               </label>
               <input
-                defaultValue={initialBodyfat}
                 type="number"
                 id="bodyFat"
                 {...register("bodyFat", {
@@ -144,7 +218,6 @@ function DietForm() {
               </label>
               <select
                 id="gender"
-                defaultValue={initialGender}
                 {...register("gender")}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               >
@@ -161,18 +234,15 @@ function DietForm() {
                 Activity
               </label>
               <select
-                defaultValue={initialActivity}
                 id="activity"
                 {...register("activity")}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               >
-                <option value="little">Little/no exercise</option>
-                <option value="light">Light exercise</option>
-                <option value="moderate">Moderate exercise</option>
-                <option value="veryActive">Very Active</option>
-                <option value="extrActive">
-                  Extra active (very active & physical job)
-                </option>
+                <option value="sedentary">Little/no exercise</option>
+                <option value="lightlyActive">Light exercise</option>
+                <option value="moderateActivity">Moderate exercise</option>
+                <option value="active">Active</option>
+                <option value="veryActive">Very active & physical job</option>
               </select>
             </div>
           </div>
@@ -186,26 +256,32 @@ function DietForm() {
           </label>
           <select
             id="plan"
-            defaultValue={initialPlan}
             {...register("plan")}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           >
-            <option value="maintain">Maintain Weight</option>
-            <option value="mild">Mild Weight Loss</option>
-            <option value="loss">Weight Loss</option>
-            <option value="extreme">Extreme Weight Loss</option>
+            <option value="gain 0.5">Gain Weight</option>
+            <option value="gain 1">Extreme gain weight</option>
+            <option value="maintain 0">Maintain</option>
+            <option value="loss 0.5">Weight Loss</option>
+            <option value="loss 1">Extreme Weight Loss</option>
           </select>
+          <div className="py-4">
+            <button
+              type="submit"
+              className="px-5 py-3 transition text-white text-sm font-medium bg-[#16a34a] rounded-lg w-full hover:bg-green-800 focus:ring-0 focus:outline-none"
+            >
+              {isLoading ? (
+                <div className="flex items-center justify-center">
+                  <SpinnerMini />
+                </div>
+              ) : (
+                "Update"
+              )}
+            </button>
+          </div>
         </form>
       </div>
-      <Target
-        yourAge={yourAge}
-        yourWeight={yourWeight}
-        yourHeight={yourHeight}
-        yourBodyFat={yourBodyFat}
-        yourGender={yourGender}
-        yourActivity={yourActivity}
-        yourPlan={yourPlan}
-      />
+      <Target />
     </div>
   );
 }

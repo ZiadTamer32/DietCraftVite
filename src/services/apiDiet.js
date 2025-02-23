@@ -12,8 +12,6 @@ export async function dietSubmission({ addGuest, email }) {
       throw new Error("Failed to fetch guest data: " + fetchError.message);
     }
 
-    console.log("Existing Guest Data:", existingGuest); // Debugging log
-
     let result;
 
     if (existingGuest.length > 0) {
@@ -29,7 +27,6 @@ export async function dietSubmission({ addGuest, email }) {
         throw new Error("Failed to update guest: " + updateError.message);
       }
 
-      console.log("Updated Guest Data:", updatedGuest); // Debugging log
       result = updatedGuest;
     } else {
       // Insert new guest
@@ -42,7 +39,6 @@ export async function dietSubmission({ addGuest, email }) {
         throw new Error("Failed to insert guest: " + insertError.message);
       }
 
-      console.log("Inserted Guest Data:", newGuest); // Debugging log
       result = newGuest;
     }
 

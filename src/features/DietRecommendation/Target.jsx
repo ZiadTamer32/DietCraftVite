@@ -1,41 +1,47 @@
-/* eslint-disable react/prop-types */
-
 import { useTarget } from "../../context/TargetContext";
+import { useEffect, useState } from "react";
 
-/* eslint-disable no-unused-vars */
-function Target({
-  yourAge,
-  yourHeight,
-  yourWeight,
-  yourBodyFat,
-  yourGender,
-  yourActivity,
-  yourPlan
-}) {
+function Target() {
   const { data } = useTarget();
-  const target = data ? data.map((e) => e) : [];
+  const [savedData, setSavedData] = useState(null);
+
+  useEffect(() => {
+    if (data) {
+      localStorage.setItem("nutrationsData", JSON.stringify(data));
+      setSavedData(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    const savedData = localStorage.getItem("nutrationsData");
+    if (savedData) {
+      setSavedData(JSON.parse(savedData));
+    }
+  }, []);
+
+  const displayData = savedData || data;
 
   return (
-    <div className="grid grid-cols-1 gap-4 pt-5 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
       <div className="bg-[#f0fdf4] p-5 rounded-lg flex flex-col gap-3">
         <h3 className="font-semibold">BMI</h3>
         <p className="text-[#16a34a] text-4xl font-bold">
-          {target[0]?.Bmi.bmi} {target[0]?.Bmi.unit}
+          {Math.ceil(displayData?.Bmi.bmi) || ""} {displayData?.Bmi.unit || ""}
         </p>
-        <p className="text-gray-600">{target[0]?.Bmi.bmiStatus}</p>
+        <p className="text-gray-600">{displayData?.Bmi.bmiStatus}</p>
       </div>
       <div className="bg-[#faf5ff] p-5 rounded-lg flex flex-col gap-3">
         <h3 className="font-semibold">BMR</h3>
         <p className="text-[#9333ea] text-4xl font-bold">
-          {target[0]?.Bmr.BMR.value} {target[0]?.Bmr.BMR.unit}
+          {Math.ceil(displayData?.Bmr.BMR.value)} {displayData?.Bmr.BMR.unit}
         </p>
         <p className="text-gray-600">Daily Calorie BMR</p>
       </div>
       <div className="bg-[#eff6ff] p-5 rounded-lg flex flex-col gap-3">
         <h3 className="font-semibold">TDEE</h3>
         <p className="text-[#2563eb] text-4xl font-bold">
-          {Math.ceil(target[0]?.Bmr.totalDailyCaloricNeeds.value)}{" "}
-          {target[0]?.Bmr.totalDailyCaloricNeeds.unit}
+          {Math.ceil(displayData?.Bmr.totalDailyCaloricNeeds.value)}{" "}
+          {displayData?.Bmr.totalDailyCaloricNeeds.unit}
         </p>
         <p className="text-gray-600">Total Daily Energy Expenditure</p>
       </div>

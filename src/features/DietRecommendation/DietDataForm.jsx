@@ -42,7 +42,11 @@ export default function DietDataForm() {
   const handlePrevious = () => setStep((prev) => prev - 1);
 
   const onSubmit = (data) => {
-    dietFn({ addGuest: { ...data, email, fullName }, email });
+    const rate = data?.plan?.split(" ");
+    dietFn({
+      addGuest: { ...data, email, fullName, rate: rate[1], plan: rate[0] },
+      email
+    });
   };
 
   return (
@@ -102,6 +106,7 @@ export default function DietDataForm() {
                     label="Body Fat Percentage (%) (Optional)"
                     type="number"
                     register={register}
+                    defaultValue={0}
                     validation={{
                       min: {
                         value: 0,
@@ -177,10 +182,11 @@ export default function DietDataForm() {
                     validation={{ required: "Plan is required" }}
                     error={errors.plan}
                     options={[
-                      { value: "maintain", label: "Maintain Weight" },
-                      { value: "mild", label: "Mild Weight Loss" },
-                      { value: "loss", label: "Weight Loss" },
-                      { value: "extreme", label: "Extreme Weight Loss" }
+                      { value: "gain 0.5", label: "Weight gain" },
+                      { value: "gain 1", label: "Extreme Weight gain" },
+                      { value: "maintain 0", label: "Maintain Weight" },
+                      { value: "loss 0.5", label: "Weight Loss" },
+                      { value: "loss 1", label: "Extreme Weight loss" }
                     ]}
                   />
                 </>
@@ -196,7 +202,7 @@ export default function DietDataForm() {
                   <GoArrowLeft size={18} /> Back
                 </button>
               )}
-              <div className="flex-1"></div>
+              {/* <div className="flex-1"></div> */}
               <button
                 onClick={step === 3 ? handleSubmit(onSubmit) : handleNext}
                 className="text-white bg-green-600 hover:bg-green-700 transition font-medium rounded-lg text-sm px-5 py-2.5 flex gap-2 items-center shadow-md"

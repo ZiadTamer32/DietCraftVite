@@ -1,5 +1,13 @@
 /* eslint-disable react/prop-types */
-function InputField({ id, label, type, register, validation, error }) {
+function InputField({
+  id,
+  label,
+  type,
+  register,
+  validation,
+  error,
+  defaultValue
+}) {
   return (
     <div>
       <label
@@ -10,6 +18,7 @@ function InputField({ id, label, type, register, validation, error }) {
       </label>
       <input
         id={id}
+        defaultValue={defaultValue}
         type={type}
         {...register(id, validation)}
         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 shadow-sm focus:ring-green-500 focus:border-green-500"

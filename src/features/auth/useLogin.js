@@ -19,7 +19,6 @@ function useLogin() {
       const isEmail = emails?.length
         ? emails.find((e) => e.email === user.user.email)
         : null;
-      console.log(isEmail);
       // Update query cache properly
       queryClient.setQueryData(["user"], (prev) => ({ ...prev, ...user.user }));
 

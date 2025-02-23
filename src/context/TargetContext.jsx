@@ -1,28 +1,44 @@
 /* eslint-disable react/prop-types */
-import { useContext, useEffect, useState, createContext } from "react";
-import axios from "axios";
+import { useContext, useState, createContext } from "react";
 
 const targetContext = createContext();
 
 function TargetProvider({ children }) {
   const [data, setData] = useState(null);
-  const getData = () => {
-    axios
-      .get("../data/response.json")
-      .then((res) => {
-        setData(res?.data);
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
-  };
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    getData();
-  }, []);
+  async function getNutrations(data) {
+    setIsLoading(true);
+    try {
+      const res = await fetch(
+        "https://dietcraftbackend.vercel.app/diet_recommendation",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch nutrations");
+      }
+
+      const nutrations = await res.json();
+      setData(nutrations);
+      return nutrations;
+    } catch (err) {
+      console.error(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   return (
-    <targetContext.Provider value={{ data }}>{children}</targetContext.Provider>
+    <targetContext.Provider value={{ data, isLoading, getNutrations }}>
+      {children}
+    </targetContext.Provider>
   );
 }
 
@@ -30,7 +46,7 @@ function useTarget() {
   const context = useContext(targetContext);
   if (!context) {
     throw new Error(
-      "useTarget must be used within a RecipesProvider. Wrap your component with RecipesProvider."
+      "useTarget must be used within a TargetProvider. Wrap your component with TargetProvider."
     );
   }
   return context;
