@@ -17,7 +17,7 @@ const Account = lazy(() => import("./pages/Account"));
 const Login = lazy(() => import("./pages/Login"));
 const Recipe = lazy(() => import("./pages/Recipe"));
 const SignUp = lazy(() => import("./pages/SignUp"));
-const MealsPage = lazy(() => import("./pages/MealsPage"));
+// const MealsPage = lazy(() => import("./pages/MealsPage"));
 const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 
 function App() {
@@ -45,10 +45,6 @@ function App() {
                 <Route
                   path="/diet-recommendation/week/:numWeek/day/:numDay/:id"
                   element={<Recipe />}
-                />
-                <Route
-                  path="/diet-recommendation/week/:numWeek/day/:numDay"
-                  element={<MealsPage />}
                 />
                 {/* <Route path="/custom-diet" element={<CustomRecommendation />} /> */}
                 <Route path="/food-log" element={<FoodLog />} />
