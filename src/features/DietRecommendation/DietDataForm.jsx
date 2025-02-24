@@ -52,7 +52,7 @@ export default function DietDataForm() {
   return (
     <section>
       {/* {  h-[450px] max-md:h-[500px]} */}
-      <div className="flex flex-col items-center justify-center min-h-screen max-w-[25rem] mx-auto max-sm:px-5">
+      <div className="max-w-[25rem] mx-auto max-sm:px-5">
         <div className="w-full bg-white rounded-lg shadow-lg">
           <Progress maxSteps={3} step={step} />
           <div className="flex flex-col justify-between h-full gap-4 px-8 py-8 max-md:px-4 max-md:py-6">

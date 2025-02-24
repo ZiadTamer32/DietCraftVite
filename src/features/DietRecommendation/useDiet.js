@@ -13,9 +13,9 @@ function useDiet() {
     onSuccess: (data) => {
       queryClient.setQueryData(["diet"], data);
       toast.success(
-        `Diet recommendation ${location.pathname === "getData" ? "added" : "updated"}  successfully!`
+        `Diet recommendation ${location.pathname === "/getData" ? "added" : "updated"}  successfully!`
       );
-      navigate(`${location.pathname === "getData" ? "/" : ""}`, {
+      navigate(`${location.pathname === "/getData" ? "/" : ""}`, {
         replace: true
       });
     },
