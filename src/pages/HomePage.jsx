@@ -1,7 +1,7 @@
 function HomePage() {
   return (
     <main className="w-full">
-      <div>Hi</div>
+      <div className="p-6">Hi</div>
     </main>
   );
 }

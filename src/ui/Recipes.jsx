@@ -7,7 +7,7 @@ function Recipes() {
   const { data = [], isLoading } = useRecipes();
   if (isLoading) return <Spinner />;
   return (
-    <div className="flex flex-col max-w-[1050px] mx-auto gap-3 px-4">
+    <div className="flex flex-col max-w-[1050px] mx-auto gap-3">
       <h2 className="text-3xl font-bold text-center md:text-4xl md:text-start">
         Featured Recipes
       </h2>

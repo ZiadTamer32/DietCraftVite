@@ -92,12 +92,18 @@ function NavBar() {
         <button
           onClick={() => setMenuOpen(!isMenuOpen)}
           type="button"
-          className="items-center justify-center hidden w-10 h-10 p-2 text-sm text-black max-lg:inline-flex"
+          className="items-center justify-center hidden w-10 h-10 p-2 text-sm max-lg:inline-flex"
           aria-expanded={isMenuOpen ? "true" : "false"}
           style={{ zIndex: isMenuOpen ? "101" : "100" }}
         >
           <span className="sr-only">Open main menu</span>
-          {isMenuOpen ? <RiCloseLargeFill size={20} /> : <IoMenu size={20} />}
+          {isMenuOpen ? (
+            <div className="text-white">
+              <RiCloseLargeFill size={20} />
+            </div>
+          ) : (
+            <IoMenu size={20} />
+          )}
         </button>
       </div>
 

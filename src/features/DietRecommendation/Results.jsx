@@ -4,7 +4,7 @@ import { FaFire, FaCubes, FaDrumstickBite } from "react-icons/fa";
 
 function Results({ dessert }) {
   return (
-    <li className="flex flex-col justify-between w-full py-3 mx-auto shadow-lg rounded-2xl">
+    <li className="flex flex-col justify-between w-full py-4 mx-auto shadow-lg rounded-2xl">
       <div className="block p-2 rounded-lg shadow-xs shadow-green-200">
         <img
           alt={dessert?.Name || "Dessert image"}
