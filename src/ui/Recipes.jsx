@@ -1,15 +1,17 @@
+// import { Suspense } from "react";
 import { useRecipes } from "../context/RecipesContext";
 import Result from "../features/DietRecommendation/Results";
+import Spinner from "./Spinner";
 
 function Recipes() {
-  const { data = [] } = useRecipes();
-
+  const { data = [], isLoading } = useRecipes();
+  if (isLoading) return <Spinner />;
   return (
-    <div className="flex flex-col w-full gap-3 px-4">
-      <h2 className="text-4xl font-bold text-center md:text-start">
+    <div className="flex flex-col max-w-[1050px] mx-auto gap-3 px-4">
+      <h2 className="text-3xl font-bold text-center md:text-4xl md:text-start">
         Featured Recipes
       </h2>
-      <p className="text-center text-gray-700 text-md md:text-start">
+      <p className="text-sm text-center text-gray-700 md:text-md md:text-start">
         Discover our collection of delicious, easy-to-follow recipes that will
         help you stay on track with your fitness goals.
       </p>
@@ -36,8 +38,9 @@ function Recipes() {
           ></path>
         </svg>
       </div>
-      <ul className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        {data.slice(0, 6).map((dessert, index) => (
+
+      <ul className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+        {data.slice(0, 12).map((dessert, index) => (
           <Result key={index} dessert={dessert} />
         ))}
       </ul>

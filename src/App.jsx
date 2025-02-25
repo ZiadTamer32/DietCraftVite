@@ -42,13 +42,10 @@ function App() {
                   path="/diet-recommendation"
                   element={<DietRecommendation />}
                 />
-                <Route
-                  path="/diet-recommendation/week/:numWeek/day/:numDay/:id"
-                  element={<Recipe />}
-                />
                 {/* <Route path="/custom-diet" element={<CustomRecommendation />} /> */}
                 <Route path="/food-log" element={<FoodLog />} />
                 <Route path="/browse-foods" element={<BrowseFoods />} />
+                <Route path="/browse-foods/:id" element={<Recipe />} />
                 <Route path="/account" element={<Account />} />
               </Route>
               <Route path="/login" element={<Login />} />

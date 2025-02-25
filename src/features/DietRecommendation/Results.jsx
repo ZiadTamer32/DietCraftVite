@@ -1,37 +1,69 @@
 /* eslint-disable react/prop-types */
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { FaFire, FaCubes, FaDrumstickBite } from "react-icons/fa";
 
 function Results({ dessert }) {
-  const { numWeek, numDay } = useParams();
-
   return (
-    <li className="flex flex-col overflow-hidden shadow-md rounded-2xl">
-      <img
-        className="object-cover w-full h-48 rounded-t-2xl"
-        src={dessert?.Images[0] || "/6c4a7fb9-5fde-42e2-b537-b4732a92cf56.png"}
-        alt={dessert?.Name || "Recipe photo"}
-      />
+    <li className="flex flex-col justify-between w-full py-3 mx-auto shadow-lg rounded-2xl">
+      <div className="block p-2 rounded-lg shadow-xs shadow-green-200">
+        <img
+          alt={dessert?.Name || "Dessert image"}
+          src={
+            dessert?.Images[0] || "/6c4a7fb9-5fde-42e2-b537-b4732a92cf56.png"
+          }
+          className="object-cover w-full h-56 rounded-md"
+        />
+      </div>
 
-      <div className="flex flex-col gap-4 p-5">
-        <p className="text-xl font-semibold text-start">{dessert?.Name}</p>
-        <div className="flex justify-between">
-          <div className="flex flex-col gap-3 md:flex-row">
-            <p className="font-normal text-gray-700">
-              {dessert?.Calories || "N/A"} kcal
-            </p>
-            <p className="font-normal text-gray-700">
-              {dessert?.ProteinContent || "N/A"}g protien
-            </p>
+      <div>
+        <p className="px-3 py-1 text-xl font-medium text-center">
+          {dessert?.Name}
+        </p>
+      </div>
+
+      <div className="flex flex-col flex-wrap justify-between gap-4 px-5 mt-3">
+        <div className="flex justify-between w-full gap-4">
+          {/* Calories */}
+          <div className="inline-flex items-center gap-2 shrink-0">
+            <FaFire className="text-green-600 size-5" />
+            <div className="mt-1.5 sm:mt-0">
+              <p className="text-gray-500">Calories</p>
+              <p className="font-medium">
+                {Math.ceil(dessert?.Calories) || "N/A"} kcal
+              </p>
+            </div>
           </div>
-          <div>
-            <Link
-              to={`/diet-recommendation/week/${numWeek}/day/${numDay}/${dessert?.RecipeId || "#"}`}
-              className=" block transition px-3 py-2 text-sm font-medium text-[#16a34a] hover:text-white border border-[#16a34a] rounded-lg hover:bg-[#16a34a] focus:outline-none"
-            >
-              More details
-            </Link>
+
+          {/* Sugar */}
+          <div className="items-center hidden gap-2 sm:inline-flex shrink-0">
+            <FaCubes className="text-green-600 size-5" />
+            <div className="mt-1.5 sm:mt-0">
+              <p className="text-gray-500">Sugar</p>
+              <p className="font-medium">
+                {Math.ceil(dessert?.SugarContent) || "N/A"} g
+              </p>
+            </div>
+          </div>
+
+          {/* Protein */}
+          <div className="inline-flex items-center gap-2 shrink-0">
+            <FaDrumstickBite className="text-green-600 size-5" />
+            <div className="mt-1.5 sm:mt-0">
+              <p className="text-gray-500">Protein</p>
+              <p className="font-medium">
+                {Math.ceil(dessert?.ProteinContent) || "N/A"} g
+              </p>
+            </div>
           </div>
         </div>
+
+        {/* Button */}
+        <Link
+          to={`/browse-foods/${dessert?.RecipeId}`}
+          className="flex items-center justify-center w-full gap-2 px-3 py-2 mx-auto text-sm font-medium text-green-600 transition border border-green-700 rounded-lg hover:text-white hover:bg-green-700 hover:border-green-800"
+        >
+          Find out more
+        </Link>
       </div>
     </li>
   );

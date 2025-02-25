@@ -42,8 +42,8 @@ html {
   width: 60px;
   aspect-ratio: 1;
   border-radius: 50%;
-  border: 8px solid #08533c;
-  border-right-color: #619787;
+  border: 8px solid #04210f;
+  border-right-color: #149343;
   animation: rotate 1s infinite linear;
 }
 
