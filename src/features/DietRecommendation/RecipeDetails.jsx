@@ -1,12 +1,13 @@
 import { useParams } from "react-router-dom";
 import { useRecipes } from "../../context/RecipesContext";
+import { useMemo } from "react";
 import { FaCheck, FaNutritionix, FaRegClock } from "react-icons/fa6";
 import Spinner from "../../ui/Spinner";
 
 function RecipeDetails() {
   const { id } = useParams();
   const { getRecipeById, isLoading } = useRecipes();
-  const dessert = getRecipeById(id);
+  const dessert = useMemo(() => getRecipeById(id), [id, getRecipeById]);
 
   if (isLoading) return <Spinner />;
   if (!dessert) return <p>Recipe not found</p>;
@@ -40,9 +41,6 @@ function RecipeDetails() {
             src={Images[0] || "/6c4a7fb9-5fde-42e2-b537-b4732a92cf56.png"}
             alt={Name || "Dessert"}
             className="object-cover w-full h-full"
-            onError={(e) => {
-              e.target.src = "/6c4a7fb9-5fde-42e2-b537-b4732a92cf56.png"; // Fallback image
-            }}
           />
         </div>
 
