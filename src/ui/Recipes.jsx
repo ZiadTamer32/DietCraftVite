@@ -1,10 +1,19 @@
 // import { Suspense } from "react";
+import { useState } from "react";
 import { useRecipes } from "../context/RecipesContext";
 import Result from "../features/DietRecommendation/Results";
 import Spinner from "./Spinner";
+import Pagination from "./Pagination";
 
 function Recipes() {
   const { data = [], isLoading } = useRecipes();
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(10);
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = data?.slice(indexOfFirstPost, indexOfLastPost);
+  // Loading State
   if (isLoading) return <Spinner />;
   return (
     <div className="flex flex-col max-w-[1050px] mx-auto gap-3">
@@ -40,10 +49,16 @@ function Recipes() {
       </div>
 
       <ul className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
-        {data.slice(0, 12).map((dessert, index) => (
+        {currentPosts.map((dessert, index) => (
           <Result key={index} dessert={dessert} />
         ))}
       </ul>
+      <Pagination
+        currentPage={currentPage}
+        totalPosts={data?.length}
+        postsPerPage={postsPerPage}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 }

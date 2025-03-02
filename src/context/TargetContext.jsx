@@ -7,7 +7,7 @@ function TargetProvider({ children }) {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  async function getNutrations(data) {
+  async function getNutritions(data) {
     setIsLoading(true);
     try {
       const res = await fetch(
@@ -36,7 +36,7 @@ function TargetProvider({ children }) {
   }
 
   return (
-    <targetContext.Provider value={{ data, isLoading, getNutrations }}>
+    <targetContext.Provider value={{ data, isLoading, getNutritions }}>
       {children}
     </targetContext.Provider>
   );

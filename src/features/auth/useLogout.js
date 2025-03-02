@@ -8,6 +8,7 @@ function useLogout() {
     onSuccess: () => {
       queryClient.removeQueries(["user"]);
       queryClient.invalidateQueries(["user"]);
+      localStorage.removeItem("nutrationsData");
     }
   });
   return { isPending, logout };

@@ -140,7 +140,7 @@ function RecipeDetails() {
             {RecipeInstructions?.map((item, index) => (
               <li key={index} className="flex gap-2">
                 <span className="font-semibold">{index + 1}.</span>
-                {item}
+                {item.charAt(0).toUpperCase() + item.slice(1)}
               </li>
             ))}
           </ol>

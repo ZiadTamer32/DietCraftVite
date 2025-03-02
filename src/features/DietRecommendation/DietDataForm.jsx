@@ -9,6 +9,7 @@ import useUser from "../auth/useUser";
 import SpinnerMini from "../../ui/SpinnerMini";
 import InputField from "../../ui/InputField";
 import SelectField from "../../ui/SelectField";
+import { useTarget } from "../../context/TargetContext";
 
 export default function DietDataForm() {
   const {
@@ -19,6 +20,7 @@ export default function DietDataForm() {
   } = useForm();
   const { dietFn, isPending } = useDiet();
   const { user } = useUser();
+  const { getNutritions } = useTarget();
   const [step, setStep] = useState(1);
 
   const email = useMemo(() => user?.email || "", [user]);
@@ -47,6 +49,16 @@ export default function DietDataForm() {
       addGuest: { ...data, email, fullName, rate: rate[1], plan: rate[0] },
       email
     });
+    const nutrationsGuest = {
+      ...data,
+      height: Number(data.height),
+      weight: Number(data.weight),
+      bodyFat: Number(data.bodyFat),
+      age: Number(data.age),
+      rate: rate[1],
+      plan: rate[0]
+    };
+    getNutritions(nutrationsGuest);
   };
 
   return (

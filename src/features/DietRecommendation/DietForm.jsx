@@ -11,7 +11,7 @@ import SpinnerMini from "../../ui/SpinnerMini";
 function DietForm() {
   const { user } = useUser();
   const { plan: plans } = usePlan(user?.email);
-  const { getNutrations, isLoading } = useTarget();
+  const { getNutritions, isLoading } = useTarget();
   const { dietFn } = useDiet();
 
   // Memoize details to prevent unnecessary recalculations
@@ -107,7 +107,7 @@ function DietForm() {
       addGuest: { ...data, email, fullName, rate: rate[1], plan: rate[0] },
       email
     });
-    getNutrations(nutrationsGuest);
+    getNutritions(nutrationsGuest);
   };
 
   return (
