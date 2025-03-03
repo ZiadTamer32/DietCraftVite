@@ -14,10 +14,7 @@ function Recipes() {
   const pageFromParams = Number(searchParams.get("page")) || 1;
   const [currentPage, setCurrentPage] = useState(pageFromParams);
   const [postsPerPage] = useState(12);
-
-  useEffect(() => {
-    setSearchParams({ page: currentPage });
-  }, [currentPage, setSearchParams]);
+  // console.log(searchParams.get("page"));
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -28,6 +25,15 @@ function Recipes() {
     recipe.Name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
   );
   const currentPosts = filteredData?.slice(indexOfFirstPost, indexOfLastPost);
+
+  useEffect(() => {
+    if (pageFromParams > 84) {
+      setCurrentPage(84);
+      setSearchParams({ page: 84 });
+    } else {
+      setSearchParams({ page: currentPage });
+    }
+  }, [currentPage, setSearchParams, setCurrentPage, pageFromParams]);
 
   if (isLoading) return <Spinner />;
 

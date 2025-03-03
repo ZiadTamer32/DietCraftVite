@@ -106,17 +106,17 @@ function FoodLogForm() {
             </div>
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-4 md:flex-nowrap">
             <button
               type="submit"
-              className="w-fit flex gap-2 items-center justify-center bg-[#16A34A] text-white p-2 rounded-lg hover:bg-[#1b8444]"
+              className="w-full md:w-40 flex gap-2 items-center justify-center bg-[#16A34A] text-white p-2 rounded-lg hover:bg-[#1b8444]"
             >
               <FiPlusCircle size={18} /> Add Food
             </button>
             <button
               type="button"
               onClick={() => serOverlay((e) => !e)}
-              className="w-fit flex gap-2 items-center justify-center bg-[#16A34A] text-white p-2 rounded-lg hover:bg-[#1b8444]"
+              className="w-full md:w-40 flex gap-2 items-center justify-center bg-[#16A34A] text-white p-2 rounded-lg hover:bg-[#1b8444]"
             >
               <FiPlusCircle size={18} /> Add Ingredients
             </button>

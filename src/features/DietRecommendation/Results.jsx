@@ -5,7 +5,7 @@ import { FaFire, FaCubes, FaDrumstickBite } from "react-icons/fa";
 function Results({ dessert }) {
   // Limit the name to 4 words
   const Name =
-    dessert.Name.split(" ").length > 4
+    dessert.Name.split(" ").length > 3
       ? dessert.Name.split(" ").slice(0, 3).join(" ") + "..."
       : dessert.Name;
 
