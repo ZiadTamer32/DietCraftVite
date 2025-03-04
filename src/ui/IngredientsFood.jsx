@@ -10,7 +10,7 @@ function IngredientsFood({ serOverlay }) {
   return (
     <div className="fixed top-0 left-0 z-40 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
       <div className="w-[45rem] px-3 md:px-0">
-        <div className="flex flex-col w-full gap-3 p-5 text-black bg-white rounded-lg shadow-lg">
+        <div className="flex flex-col w-full gap-3 p-3 text-black bg-white rounded-lg shadow-lg sm:p-5">
           <div className="flex items-center justify-between w-full text-right">
             <h1 className="text-2xl font-bold">Ingredients</h1>
             <button
@@ -40,7 +40,7 @@ function IngredientsFood({ serOverlay }) {
           </div>
 
           {/* Scrollable container */}
-          <div className="max-h-[400px] overflow-y-auto flex flex-col gap-3 py-3">
+          <div className="max-h-[400px] overflow-y-auto flex flex-col">
             {/* Ingredients List */}
             {isLoading ? (
               <Spinner />

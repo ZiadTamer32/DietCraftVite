@@ -5,7 +5,7 @@ const IngredientsContext = createContext();
 
 function IngredientsProvider({ children }) {
   const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false); // Set initial state to false
+  const [isLoading, setIsLoading] = useState(false);
   const [searchItem, setSearchItem] = useState("");
 
   useEffect(() => {
@@ -40,7 +40,7 @@ function IngredientsProvider({ children }) {
         setData(data);
       } catch (error) {
         console.error("Error fetching ingredients: ", error);
-        setData(null); // Clear data on error
+        setData(null);
       } finally {
         setIsLoading(false);
       }

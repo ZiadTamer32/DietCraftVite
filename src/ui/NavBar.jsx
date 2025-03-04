@@ -40,7 +40,7 @@ function NavBar() {
                   className="flex items-center justify-center gap-x-2"
                 >
                   <LuLogIn size={20} />
-                  <span className="block mb-1">Login</span>
+                  <span>Login</span>
                 </Link>
               </button>
               <button className="px-3 py-2 font-semibold border border-gray-200 rounded-lg">
@@ -49,7 +49,7 @@ function NavBar() {
                   className="flex items-center justify-center gap-x-2"
                 >
                   <RiAccountCircleFill size={24} />
-                  <span className="block mb-1">SignUp</span>
+                  <span>SignUp</span>
                 </Link>
               </button>
             </>
@@ -59,7 +59,7 @@ function NavBar() {
                 <button className="px-3 py-2 border border-gray-200 rounded-lg">
                   <Link
                     to="/account"
-                    className="flex items-center justify-center gap-3"
+                    className="flex items-center justify-center gap-x-2"
                   >
                     <FaUserAlt size={20} />
                     {user.user_metadata.firstName +
