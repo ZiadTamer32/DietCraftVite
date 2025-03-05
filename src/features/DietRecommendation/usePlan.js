@@ -5,15 +5,16 @@ import toast from "react-hot-toast";
 function usePlan(email) {
   const queryClient = useQueryClient();
 
-  const { data: plan, isPending: isPlanning } = useQuery({
-    queryKey: ["plan"],
-    queryFn: () => fetchDataByEmail(email), // Pass email to the query function
-    enabled: !!email, // Only run the query if email is available
+  const {
+    data: plan,
+    isPending,
+    isFetched
+  } = useQuery({
+    queryKey: ["plan", email],
+    queryFn: () => fetchDataByEmail(email),
+    enabled: !!email,
     onSuccess: (data) => {
-      queryClient.setQueryData(["plan", email], (prev) => ({
-        ...(prev || {}), // Handle case where prev is undefined
-        ...data
-      }));
+      queryClient.setQueryData(["plan", email], data || []);
       toast.success("Fetched plan successfully!");
     },
     onError: (error) => {
@@ -21,7 +22,7 @@ function usePlan(email) {
     }
   });
 
-  return { plan, isPlanning };
+  return { plan: plan || [], isPending, isFetched }; // Ensure plan is always an array
 }
 
 export default usePlan;

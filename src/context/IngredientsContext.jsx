@@ -9,10 +9,12 @@ function IngredientsProvider({ children }) {
   const [searchItem, setSearchItem] = useState("");
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     async function fetchIngredients() {
-      // Skip the API call if searchItem is empty
       if (!searchItem.trim()) {
-        setData(null); // Clear the data if searchItem is empty
+        setData(null);
         setIsLoading(false);
         return;
       }
@@ -27,11 +29,11 @@ function IngredientsProvider({ children }) {
               "Content-Type": "application/json",
               "x-app-id": "dd5778c4",
               "x-app-key": "7cbbe7b7640b0437df5603f2ebc8597d"
-            }
+            },
+            signal
           }
         );
 
-        // Check if the response is OK
         if (!res.ok) {
           throw new Error(`HTTP error! Status: ${res.status}`);
         }
@@ -39,14 +41,20 @@ function IngredientsProvider({ children }) {
         const data = await res.json();
         setData(data);
       } catch (error) {
-        console.error("Error fetching ingredients: ", error);
-        setData(null);
+        if (error.name !== "AbortError") {
+          console.error("Error fetching ingredients: ", error);
+          setData(null);
+        }
       } finally {
         setIsLoading(false);
       }
     }
 
     fetchIngredients();
+
+    return () => {
+      controller.abort(); // إلغاء الطلب السابق عند تحديث `searchItem`
+    };
   }, [searchItem]);
 
   return (

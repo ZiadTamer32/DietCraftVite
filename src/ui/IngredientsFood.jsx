@@ -6,7 +6,7 @@ import IngredientsList from "./IngredientsList";
 import Spinner from "../ui/Spinner";
 
 function IngredientsFood({ serOverlay }) {
-  const { data, isLoading, setSearchItem } = useIngredients();
+  const { data, isLoading, setSearchItem, searchItem } = useIngredients();
   return (
     <div className="fixed top-0 left-0 z-40 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
       <div className="w-[45rem] px-3 md:px-0">
@@ -29,6 +29,7 @@ function IngredientsFood({ serOverlay }) {
               name="search"
               type="text"
               autoComplete="off"
+              value={searchItem || ""}
               onChange={(e) => {
                 setSearchItem(e.target.value);
               }}

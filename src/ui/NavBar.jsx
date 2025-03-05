@@ -4,7 +4,7 @@ import { RiAccountCircleFill } from "react-icons/ri";
 import { IoMenu } from "react-icons/io5";
 import { RiCloseLargeFill } from "react-icons/ri";
 import { FaUserAlt } from "react-icons/fa";
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { TbLogout2 } from "react-icons/tb";
 import SpinnerMini from "../ui/SpinnerMini";
 import useUser from "../features/auth/useUser";
@@ -14,17 +14,19 @@ function NavBar() {
   const location = useLocation();
   const [isMenuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const { user } = useUser();
+  const { user, isPending: isUserLoading } = useUser();
   const { logout, isPending } = useLogout();
 
-  const handleClick = useCallback(() => {
-    setMenuOpen(false);
-  }, []);
+  const handleMenuToggle = () => setMenuOpen(!isMenuOpen);
+
+  const handleLogout = () => {
+    logout({}, { onSuccess: () => navigate("/") });
+  };
 
   return (
     <nav>
       <div className="flex items-center justify-between w-full p-3 bg-white border-b-2 shadow-lg border-b-gray-200">
-        <div className="flex items-center justify-center gap-20 ">
+        <div className="flex items-center justify-center gap-20">
           <Link rel="preload" to="/">
             <span className="self-center pl-3 text-2xl font-bold text-black sm:pl-7">
               DietCraft
@@ -32,7 +34,38 @@ function NavBar() {
           </Link>
         </div>
         <div className="hidden gap-4 lg:flex">
-          {!user ? (
+          {isUserLoading ? (
+            <div className="spinner-mini-black"></div>
+          ) : user ? (
+            <>
+              <button className="px-3 py-2 border border-gray-200 rounded-lg">
+                <Link
+                  to="/account"
+                  className="flex items-center justify-center gap-x-2"
+                >
+                  <FaUserAlt size={20} />
+                  {user.user_metadata.firstName +
+                    " " +
+                    user.user_metadata.lastName}
+                </Link>
+              </button>
+              <button
+                className="px-3 py-2 border border-gray-200 rounded-lg"
+                onClick={handleLogout}
+              >
+                <div className="flex items-center justify-center gap-x-2">
+                  {isPending ? (
+                    <div className="spinner-mini-black"></div>
+                  ) : (
+                    <>
+                      <TbLogout2 size={20} />
+                      <span>Logout</span>
+                    </>
+                  )}
+                </div>
+              </button>
+            </>
+          ) : (
             <>
               <button className="px-3 py-2 font-semibold border border-gray-200 rounded-lg">
                 <Link
@@ -53,54 +86,20 @@ function NavBar() {
                 </Link>
               </button>
             </>
-          ) : (
-            <>
-              <p className="font-semibold">
-                <button className="px-3 py-2 border border-gray-200 rounded-lg">
-                  <Link
-                    to="/account"
-                    className="flex items-center justify-center gap-x-2"
-                  >
-                    <FaUserAlt size={20} />
-                    {user.user_metadata.firstName +
-                      " " +
-                      user.user_metadata.lastName}
-                  </Link>
-                </button>
-              </p>
-              <p className="font-semibold">
-                <button
-                  className="px-3 py-2 border border-gray-200 rounded-lg"
-                  onClick={() => {
-                    logout({}, { onSuccess: () => navigate("/") });
-                  }}
-                >
-                  <Link className="flex items-center justify-center">
-                    {isPending ? (
-                      <div className="spinner-mini-black"></div>
-                    ) : (
-                      <span className="flex items-center justify-center gap-x-2">
-                        <TbLogout2 size={20} /> <span>Logout</span>
-                      </span>
-                    )}
-                  </Link>
-                </button>
-              </p>
-            </>
           )}
         </div>
+
         <button
-          onClick={() => setMenuOpen(!isMenuOpen)}
+          onClick={handleMenuToggle}
           type="button"
           className="items-center justify-center hidden w-10 h-10 p-2 text-sm max-lg:inline-flex"
           aria-expanded={isMenuOpen ? "true" : "false"}
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           style={{ zIndex: isMenuOpen ? "101" : "100" }}
         >
           <span className="sr-only">Open main menu</span>
           {isMenuOpen ? (
-            <div className="text-white">
-              <RiCloseLargeFill size={20} />
-            </div>
+            <RiCloseLargeFill className="text-white" size={20} />
           ) : (
             <IoMenu size={20} />
           )}
@@ -114,7 +113,7 @@ function NavBar() {
               <>
                 <li>
                   <Link
-                    onClick={handleClick}
+                    onClick={handleMenuToggle}
                     to="/account"
                     className={`flex items-center justify-center gap-3 hover:underline ${location.pathname === "/account" ? "font-bold" : ""}`}
                   >
@@ -125,28 +124,17 @@ function NavBar() {
                   </Link>
                 </li>
                 <li>
-                  <button
-                    onClick={() => {
-                      logout(
-                        {},
-                        {
-                          onSuccess: () => {
-                            handleClick(), navigate("/");
-                          }
-                        }
-                      );
-                    }}
-                  >
-                    <Link className="text-white hover:underline">
+                  <button onClick={handleLogout}>
+                    <div className="text-white hover:underline">
                       {isPending ? (
                         <SpinnerMini />
                       ) : (
                         <span className="flex items-center justify-center gap-2">
-                          <TbLogout2 size={20} />{" "}
+                          <TbLogout2 size={20} />
                           <span className="block mb-1">Logout</span>
                         </span>
                       )}
-                    </Link>
+                    </div>
                   </button>
                 </li>
               </>
@@ -156,7 +144,7 @@ function NavBar() {
                   <Link
                     to="/login"
                     className="flex items-center justify-center text-white gap-x-2 hover:underline"
-                    onClick={handleClick}
+                    onClick={handleMenuToggle}
                   >
                     <LuLogIn />
                     Login
@@ -166,7 +154,7 @@ function NavBar() {
                   <Link
                     to="/signup"
                     className="flex items-center justify-center text-white gap-x-2 hover:underline"
-                    onClick={handleClick}
+                    onClick={handleMenuToggle}
                   >
                     <RiAccountCircleFill size={20} />
                     SignUp
