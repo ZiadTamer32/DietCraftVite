@@ -113,6 +113,9 @@ function DietForm() {
   return (
     <div>
       <div>
+        <h2 className="mb-4 text-2xl font-bold text-gray-800">
+          Calculate Your Diet Plan
+        </h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-6 mb-6 md:grid-cols-2">
             <div>
@@ -275,7 +278,7 @@ function DietForm() {
                   <SpinnerMini />
                 </div>
               ) : (
-                "Update"
+                "Calculate"
               )}
             </button>
           </div>

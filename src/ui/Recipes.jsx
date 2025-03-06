@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useRecipes } from "../context/RecipesContext";
-import { CiSearch } from "react-icons/ci";
+import { CiSearch, CiCircleRemove } from "react-icons/ci";
 import Result from "../features/DietRecommendation/Results";
 import Spinner from "./Spinner";
 import Pagination from "./Pagination";
@@ -14,7 +14,6 @@ function Recipes() {
   const pageFromParams = Number(searchParams.get("page")) || 1;
   const [currentPage, setCurrentPage] = useState(pageFromParams);
   const [postsPerPage] = useState(12);
-  // console.log(searchParams.get("page"));
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -35,6 +34,11 @@ function Recipes() {
     }
   }, [currentPage, setSearchParams, setCurrentPage, pageFromParams]);
 
+  const handleClearSearch = () => {
+    setSearchTerm("");
+    setCurrentPage(1);
+  };
+
   if (isLoading) return <Spinner />;
 
   return (
@@ -48,20 +52,29 @@ function Recipes() {
       </p>
       <div className="relative w-full max-w-full mx-auto">
         <input
-          placeholder="Search..."
-          className="w-full px-5 py-3 border border-gray-300 shadow-sm outline-none rounded-xl transition-72"
+          placeholder="Search for recipes..."
+          className="w-full px-5 py-3 transition-all duration-200 border border-gray-300 shadow-sm outline-none rounded-xl"
           name="search"
           type="text"
           autoComplete="off"
+          value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value);
             setCurrentPage(1);
           }}
         />
-        <CiSearch
-          size={20}
-          className="absolute w-5 h-5 text-gray-500 transform -translate-y-1/2 top-1/2 right-4"
-        />
+        {searchTerm ? (
+          <CiCircleRemove
+            size={20}
+            onClick={handleClearSearch}
+            className="absolute w-5 h-5 text-gray-500 transform -translate-y-1/2 cursor-pointer top-1/2 right-4 hover:text-red-500"
+          />
+        ) : (
+          <CiSearch
+            size={20}
+            className="absolute w-5 h-5 text-gray-500 transform -translate-y-1/2 top-1/2 right-4"
+          />
+        )}
       </div>
 
       {currentPosts.length > 0 ? (
@@ -71,7 +84,14 @@ function Recipes() {
           ))}
         </ul>
       ) : (
-        <p className="text-center text-gray-500">No recipes found.</p>
+        <div className="flex flex-col items-center justify-center gap-2 py-10">
+          <p className="text-center text-gray-500">No recipes found.</p>
+          <img
+            src="/no-results.svg" // Add a no-results illustration
+            alt="No results"
+            className="w-32 h-32"
+          />
+        </div>
       )}
 
       <Pagination

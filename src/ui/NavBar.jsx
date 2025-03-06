@@ -14,13 +14,11 @@ function NavBar() {
   const location = useLocation();
   const [isMenuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const { user, isPending: isUserLoading } = useUser();
+  const { isAuthenticated } = useUser();
   const { logout, isPending } = useLogout();
-
   const handleMenuToggle = () => setMenuOpen(!isMenuOpen);
-
   const handleLogout = () => {
-    logout({}, { onSuccess: () => navigate("/") });
+    logout({}, { onSuccess: () => navigate("/login") });
   };
 
   return (
@@ -34,9 +32,7 @@ function NavBar() {
           </Link>
         </div>
         <div className="hidden gap-4 lg:flex">
-          {isUserLoading ? (
-            <div className="spinner-mini-black"></div>
-          ) : user ? (
+          {isAuthenticated ? (
             <>
               <button className="px-3 py-2 border border-gray-200 rounded-lg">
                 <Link
@@ -44,9 +40,10 @@ function NavBar() {
                   className="flex items-center justify-center gap-x-2"
                 >
                   <FaUserAlt size={20} />
-                  {user.user_metadata.firstName +
+                  Your Profile
+                  {/* {user.user_metadata.firstName +
                     " " +
-                    user.user_metadata.lastName}
+                    user.user_metadata.lastName} */}
                 </Link>
               </button>
               <button
@@ -109,7 +106,7 @@ function NavBar() {
       {isMenuOpen && (
         <div className="top-0 left-0 z-40 items-center justify-center hidden w-full h-full bg-black max-lg:fixed bg-opacity-90 max-lg:flex">
           <ul className="flex flex-col items-center space-y-6 text-xl text-white">
-            {user ? (
+            {isAuthenticated ? (
               <>
                 <li>
                   <Link
@@ -118,9 +115,10 @@ function NavBar() {
                     className={`flex items-center justify-center gap-3 hover:underline ${location.pathname === "/account" ? "font-bold" : ""}`}
                   >
                     <FaUserAlt className="w-5 h-5" />
-                    {user.user_metadata.firstName +
+                    {/* {user.user_metadata.firstName +
                       " " +
-                      user.user_metadata.lastName}
+                      user.user_metadata.lastName} */}
+                    Your Profile
                   </Link>
                 </li>
                 <li>
