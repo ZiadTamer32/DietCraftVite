@@ -8,7 +8,7 @@ function AppLayout() {
       <NavBar />
       <main className="p-5 m-auto max-w-7xl">
         <Nav />
-        <div className="w-full mx-auto bg-white shadow-xl rounded-2xl md">
+        <div className="w-full mx-auto bg-white shadow-xl rounded-2xl">
           <Outlet />
         </div>
       </main>

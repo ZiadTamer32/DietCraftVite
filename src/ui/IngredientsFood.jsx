@@ -4,9 +4,12 @@ import { IoIosClose } from "react-icons/io";
 import { useIngredients } from "../context/IngredientsContext";
 import IngredientsList from "./IngredientsList";
 import Spinner from "../ui/Spinner";
+import { useState } from "react";
+import SelectedIngredient from "./SelectedIngredient";
 
-function IngredientsFood({ serOverlay }) {
+function IngredientsFood({ setOverlay }) {
   const { data, isLoading, setSearchItem, searchItem } = useIngredients();
+  const [selectedIngredient, setSelectedIngredient] = useState(null);
   return (
     <div className="fixed top-0 left-0 z-40 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
       <div className="w-[45rem] px-3 md:px-0">
@@ -15,7 +18,7 @@ function IngredientsFood({ serOverlay }) {
             <h1 className="text-2xl font-bold">Ingredients</h1>
             <button
               type="button"
-              onClick={() => serOverlay((e) => !e)}
+              onClick={() => setOverlay((e) => !e)}
               className="text-black hover:text-[#FB0101] transition"
             >
               <IoIosClose size={40} />
@@ -32,6 +35,7 @@ function IngredientsFood({ serOverlay }) {
               value={searchItem || ""}
               onChange={(e) => {
                 setSearchItem(e.target.value);
+                setSelectedIngredient(null);
               }}
             />
             <CiSearch
@@ -42,14 +46,24 @@ function IngredientsFood({ serOverlay }) {
 
           {/* Scrollable container */}
           <div className="max-h-[400px] overflow-y-auto flex flex-col">
-            {/* Ingredients List */}
             {isLoading ? (
               <Spinner />
-            ) : !data ? (
+            ) : !data || data.foods.length === 0 ? (
               <p className="text-center text-gray-700">No result found</p>
+            ) : selectedIngredient ? (
+              // Show Selected Ingredient Details
+              <SelectedIngredient
+                selectedIngredient={selectedIngredient}
+                setSelectedIngredient={setSelectedIngredient}
+              />
             ) : (
-              data?.common?.map((item, index) => (
-                <IngredientsList key={index} item={item} />
+              // Show Ingredients List
+              data?.foods?.map((item, index) => (
+                <IngredientsList
+                  key={index}
+                  item={item}
+                  setSelectedIngredient={setSelectedIngredient}
+                />
               ))
             )}
           </div>

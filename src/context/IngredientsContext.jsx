@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useContext, useEffect, useState, createContext } from "react";
-
+// https://trackapi.nutritionix.com/v2/search/instant/?query=${searchItem}
 const IngredientsContext = createContext();
 
 function IngredientsProvider({ children }) {
@@ -22,16 +22,8 @@ function IngredientsProvider({ children }) {
       setIsLoading(true);
       try {
         const res = await fetch(
-          `https://trackapi.nutritionix.com/v2/search/instant/?query=${searchItem}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "x-app-id": "dd5778c4",
-              "x-app-key": "7cbbe7b7640b0437df5603f2ebc8597d"
-            },
-            signal
-          }
+          `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=7OzdgD1h7fyklruZGsBB77TgSAEIb9KugGQizT4e&query=${searchItem}&dataType=Foundation`,
+          signal
         );
 
         if (!res.ok) {
@@ -49,7 +41,6 @@ function IngredientsProvider({ children }) {
         setIsLoading(false);
       }
     }
-
     fetchIngredients();
 
     return () => {
