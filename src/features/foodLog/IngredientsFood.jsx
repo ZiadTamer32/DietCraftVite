@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { CiSearch } from "react-icons/ci";
 import { IoIosClose } from "react-icons/io";
-import { useIngredients } from "../context/IngredientsContext";
+import { useIngredients } from "../../context/IngredientsContext";
 import IngredientsList from "./IngredientsList";
-import Spinner from "../ui/Spinner";
+import Spinner from "../../ui/Spinner";
 import { useState } from "react";
 import SelectedIngredient from "./SelectedIngredient";
 
@@ -12,8 +12,8 @@ function IngredientsFood({ setOverlay }) {
   const [selectedIngredient, setSelectedIngredient] = useState(null);
   return (
     <div className="fixed top-0 left-0 z-40 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-      <div className="w-[45rem] px-3 md:px-0">
-        <div className="flex flex-col w-full gap-3 p-3 text-black bg-white rounded-lg shadow-lg sm:p-5">
+      <div className="w-[45rem] px-4 md:px-0">
+        <div className="flex flex-col w-full gap-3 p-4 text-black bg-white rounded-lg shadow-lg sm:p-5">
           <div className="flex items-center justify-between w-full text-right">
             <h1 className="text-2xl font-bold">Ingredients</h1>
             <button

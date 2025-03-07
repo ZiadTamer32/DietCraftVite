@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useRecipes } from "../context/RecipesContext";
+import { useRecipes } from "../../context/RecipesContext";
 import { CiSearch, CiCircleRemove } from "react-icons/ci";
-import Result from "../features/DietRecommendation/Results";
-import Spinner from "./Spinner";
-import Pagination from "./Pagination";
+import Result from "../DietRecommendation/Results";
+import Spinner from "../../ui/Spinner";
+import Pagination from "../../ui/Pagination";
 
 function Recipes() {
   const { data = [], isLoading } = useRecipes();
@@ -42,7 +42,7 @@ function Recipes() {
   if (isLoading) return <Spinner />;
 
   return (
-    <div className="flex flex-col max-w-[1050px] mx-auto gap-3">
+    <div className="flex flex-col gap-3 mx-auto max-w-8xl">
       <h2 className="text-3xl font-bold text-center md:text-4xl md:text-start">
         Featured Recipes
       </h2>
