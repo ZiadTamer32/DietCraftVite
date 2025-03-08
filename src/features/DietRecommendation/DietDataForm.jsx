@@ -1,6 +1,5 @@
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
-
 import { useForm } from "react-hook-form";
 import { useState, useMemo } from "react";
 import Progress from "../../ui/Progress";
@@ -22,7 +21,6 @@ export default function DietDataForm() {
   const { user } = useUser();
   const { getNutritions } = useTarget();
   const [step, setStep] = useState(1);
-  // console.log(user);
   const email = useMemo(() => user?.email || "", [user]);
   const fullName = useMemo(
     () =>
@@ -63,7 +61,6 @@ export default function DietDataForm() {
 
   return (
     <section>
-      {/* {  h-[450px] max-md:h-[500px]} */}
       <div className="max-w-[25rem] mx-auto max-sm:px-5">
         <div className="w-full bg-white rounded-lg shadow-lg">
           <Progress maxSteps={3} step={step} />
@@ -112,24 +109,6 @@ export default function DietDataForm() {
                       }
                     }}
                     error={errors.height}
-                  />
-                  <InputField
-                    id="bodyFat"
-                    label="Body Fat Percentage (%) (Optional)"
-                    type="number"
-                    register={register}
-                    defaultValue={0}
-                    validation={{
-                      min: {
-                        value: 0,
-                        message: "Body fat should be greater than 0"
-                      },
-                      max: {
-                        value: 100,
-                        message: "Body fat should be less than or equal 100"
-                      }
-                    }}
-                    error={errors.bodyFat}
                   />
                 </>
               )}

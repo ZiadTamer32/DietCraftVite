@@ -12,9 +12,11 @@ function useDiet() {
     mutationKey: ["diet"],
     onSuccess: (data) => {
       queryClient.setQueryData(["diet"], data);
-      toast.success(
-        `Diet recommendation ${location.pathname === "/getData" ? "added" : "updated"}  successfully!`
-      );
+      {
+        location.pathname !== "/diet-recommendation"
+          ? toast.success("Diet recommendation added successfully!")
+          : null;
+      }
       navigate(`${location.pathname === "/getData" ? "/" : ""}`, {
         replace: true
       });

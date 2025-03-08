@@ -8,7 +8,7 @@ function IngredientsList({ item, setSelectedIngredient }) {
     <div className="p-2 sm:p-3">
       <button
         onClick={() => setSelectedIngredient(item)}
-        className="w-full p-4 text-left transition-shadow duration-300 bg-white rounded-lg shadow-md hover:shadow-lg"
+        className="w-full p-4 text-left transition-shadow duration-300 bg-white border-2 rounded-lg shadow-md hover:shadow-lg"
       >
         <h1 className="mb-1 text-xl font-bold text-gray-800">
           {Name?.charAt(0).toUpperCase() + Name?.slice(1)}

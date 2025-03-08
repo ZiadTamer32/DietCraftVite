@@ -48,16 +48,6 @@ html {
   animation: rotate 1s infinite linear;
 }
 
-/* .spinner {
-  margin: 3.2rem auto 1.6rem;
-  width: 60px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  border: 8px solid #04210f;
-  border-right-color: #149343;
-  animation: rotate 1s infinite linear;
-} */
-
 .image {
   background-image: url("/ac884af0-02e9-4321-80cd-07a03aadf062.png");
   background-repeat: no-repeat;

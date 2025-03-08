@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useContext, useState, createContext } from "react";
+import toast from "react-hot-toast";
 
 const targetContext = createContext();
 
@@ -32,9 +33,9 @@ function TargetProvider({ children }) {
       console.error(err.message);
     } finally {
       setIsLoading(false);
+      toast.success("Nutritions updated successfully");
     }
   }
-
   return (
     <targetContext.Provider value={{ data, isLoading, getNutritions }}>
       {children}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaUserCircle, FaEdit, FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import useUser from "../features/auth/useUser";
@@ -20,7 +20,25 @@ function Account() {
   );
   const [lastName, setLastName] = useState(user?.user_metadata?.lastName || "");
   const [avatar, setAvatar] = useState(null);
-
+  const [originalData, setOriginalData] = useState({
+    firstName: "",
+    lastName: "",
+    avatar: null
+  });
+  // Set the original user data on component mount
+  useEffect(() => {
+    if (user) {
+      setOriginalData({
+        firstName: user?.user_metadata?.firstName || "",
+        lastName: user?.user_metadata?.lastName || "",
+        avatar: user?.user_metadata?.avatar || null
+      });
+    }
+  }, [user]);
+  const hasDataChanged =
+    firstName !== originalData.firstName ||
+    lastName !== originalData.lastName ||
+    avatar !== null;
   // Show a full-page spinner while loading user or plan data
   if (isPending || isPlanning) return <Spinner />;
 
@@ -56,11 +74,11 @@ function Account() {
             <FaUserCircle className="text-6xl text-gray-400" />
           )}
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">
+            <h1 className="text-lg font-bold text-gray-800 md:text-2xl">
               {user?.user_metadata?.firstName || "User"}{" "}
               {user?.user_metadata?.lastName}
             </h1>
-            <p className="text-gray-600">{user?.email}</p>
+            <p className="text-sm text-gray-600 md:text-base">{user?.email}</p>
           </div>
         </div>
         <button
@@ -110,8 +128,8 @@ function Account() {
             />
             <button
               type="submit"
-              className="flex items-center justify-center w-full px-4 py-2 text-white bg-green-600 rounded-lg md:w-40 hover:bg-green-700"
-              disabled={isUpdating}
+              className={`flex items-center justify-center w-full px-4 py-2 text-white ${hasDataChanged ? "bg-green-600 hover:bg-green-700" : "bg-gray-400 cursor-not-allowed"} rounded-lg md:w-40`}
+              disabled={!hasDataChanged || isUpdating}
             >
               {isUpdating ? <SpinnerMini /> : "Save Changes"}
             </button>

@@ -201,33 +201,6 @@ function DietForm() {
 
           <div>
             <label
-              htmlFor="bodyFat"
-              className="block mb-2 text-sm font-medium text-gray-900"
-            >
-              Body Fat Percentage (%) (Optional)
-            </label>
-            <input
-              type="number"
-              id="bodyFat"
-              {...register("bodyFat", {
-                max: { value: 100, message: "Body Fat must not exceed 100%" },
-                min: { value: 0, message: "Body Fat must be at least 0%" }
-              })}
-              className={`w-full p-3 border rounded-lg outline-none ${
-                errors.bodyFat ? "border-red-500" : "border-gray-300"
-              }
-                `}
-            />
-            {errors.bodyFat && (
-              <p className="text-sm text-red-500">{errors.bodyFat.message}</p>
-            )}
-          </div>
-        </div>
-
-        {/* Gender and Activity fields */}
-        <div className="grid gap-6 mb-6 md:grid-cols-2">
-          <div>
-            <label
               htmlFor="gender"
               className="block mb-2 text-sm font-medium text-gray-900"
             >
@@ -245,7 +218,32 @@ function DietForm() {
               <option value="female">Female</option>
             </select>
           </div>
+        </div>
 
+        {/* Gender and Activity fields */}
+        <div className="grid gap-6 md:grid-cols-2">
+          <div>
+            <label
+              htmlFor="plan"
+              className="block mb-2 text-sm font-medium text-gray-900"
+            >
+              Choose your weight loss plan:
+            </label>
+            <select
+              id="plan"
+              {...register("plan")}
+              className={`w-full p-3 border rounded-lg outline-none ${
+                errors.plan ? "border-red-500" : "border-gray-300"
+              }
+            `}
+            >
+              <option value="gain 0.5">Gain Weight</option>
+              <option value="gain 1">Extreme gain weight</option>
+              <option value="maintain 0">Maintain</option>
+              <option value="loss 0.5">Weight Loss</option>
+              <option value="loss 1">Extreme Weight Loss</option>
+            </select>
+          </div>
           <div>
             <label
               htmlFor="activity"
@@ -270,27 +268,6 @@ function DietForm() {
           </div>
         </div>
 
-        {/* Plan selection */}
-        <label
-          htmlFor="plan"
-          className="block mb-2 text-sm font-medium text-gray-900"
-        >
-          Choose your weight loss plan:
-        </label>
-        <select
-          id="plan"
-          {...register("plan")}
-          className={`w-full p-3 border rounded-lg outline-none ${
-            errors.plan ? "border-red-500" : "border-gray-300"
-          }
-            `}
-        >
-          <option value="gain 0.5">Gain Weight</option>
-          <option value="gain 1">Extreme gain weight</option>
-          <option value="maintain 0">Maintain</option>
-          <option value="loss 0.5">Weight Loss</option>
-          <option value="loss 1">Extreme Weight Loss</option>
-        </select>
         <div className="py-4">
           <button
             type="submit"
