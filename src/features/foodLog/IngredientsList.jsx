@@ -8,12 +8,19 @@ function IngredientsList({ item, setSelectedIngredient }) {
     <div className="p-2 sm:p-3">
       <button
         onClick={() => setSelectedIngredient(item)}
-        className="h-[5em] w-full shadow-xl cursor-pointer bg-white rounded-[1em] overflow-hidden relative group p-2 z-0"
+        className="w-full p-4 text-left transition-shadow duration-300 bg-white rounded-lg shadow-md hover:shadow-lg"
       >
-        <div className="absolute h-[5em] w-[5em] sm:group-hover:scale-[1700%] duration-500 -top-[2.5em] -right-[2.5em] rounded-full bg-green-600 z-[-1]"></div>
-        <h1 className="flex items-center h-full px-2 text-xl font-bold duration-500 md:text-2xl sm:group-hover:text-white">
+        <h1 className="mb-1 text-xl font-bold text-gray-800">
           {Name?.charAt(0).toUpperCase() + Name?.slice(1)}
         </h1>
+        <p className="text-sm text-gray-500">
+          Calories:{" "}
+          {item.foodNutrients
+            .filter((nutrient) => nutrient.nutrientId === 1008)
+            .map((nutrient) => nutrient.value)
+            .join(" ") || "0"}{" "}
+          kcal
+        </p>
       </button>
     </div>
   );

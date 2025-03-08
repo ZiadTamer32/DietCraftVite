@@ -33,7 +33,7 @@ function SelectedIngredient({ setSelectedIngredient, selectedIngredient }) {
 
       <h2 className="mb-4 font-bold text-l">Nutrients:</h2>
 
-      <div className="grid w-full grid-cols-1 p-3 text-gray-700 bg-white border rounded-lg shadow md:p-6 gap-y-3 gap-x-6 border-except-last-2 md:grid-cols-2">
+      <div className="grid w-full grid-cols-1 p-3 text-gray-700 bg-white rounded-lg shadow md:p-6 gap-y-3 gap-x-6 md:grid-cols-2">
         {selectedIngredient.foodNutrients
           .filter((nutrient) =>
             Object.keys(filteredFoods).includes(nutrient.nutrientName)
@@ -44,7 +44,10 @@ function SelectedIngredient({ setSelectedIngredient, selectedIngredient }) {
                 ? "Calories"
                 : filteredFoods[nutrient.nutrientName];
             return (
-              <div key={index} className="flex justify-between p-2 md:p-4">
+              <div
+                key={index}
+                className="flex justify-between p-2 border-b md:p-4"
+              >
                 <span className="font-semibold">{displayName}</span>
                 <span>
                   {parseFloat(nutrient.value.toFixed(2))}{" "}
@@ -58,11 +61,11 @@ function SelectedIngredient({ setSelectedIngredient, selectedIngredient }) {
       <div className="flex flex-wrap items-center justify-between gap-4 mt-6">
         <button
           onClick={() => setSelectedIngredient(null)}
-          className="px-6 py-3 text-white bg-green-500 rounded-lg max-sm:w-full hover:bg-green-600"
+          className="px-4 py-2 text-white bg-green-500 rounded-lg max-sm:w-full hover:bg-green-600"
         >
           Back to Ingredients
         </button>
-        <button className="px-6 py-3 text-white bg-blue-500 rounded-lg max-sm:w-full hover:bg-blue-600">
+        <button className="px-4 py-2 text-white bg-blue-500 rounded-lg max-sm:w-full hover:bg-blue-600">
           Add to Diary
         </button>
       </div>

@@ -22,7 +22,7 @@ export default function DietDataForm() {
   const { user } = useUser();
   const { getNutritions } = useTarget();
   const [step, setStep] = useState(1);
-
+  // console.log(user);
   const email = useMemo(() => user?.email || "", [user]);
   const fullName = useMemo(
     () =>

@@ -1,13 +1,25 @@
-import useUser from "../features/auth/useUser";
-import usePlan from "../features/DietRecommendation/usePlan";
-import Spinner from "../ui/Spinner";
-import PlanForm from "../ui/PlanForm";
+import { useState } from "react";
 import { FaUserCircle, FaEdit, FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import useUser from "../features/auth/useUser";
+import usePlan from "../features/DietRecommendation/usePlan";
+import useUpdateUser from "../features/auth/useUpdateUser";
+import Spinner from "../ui/Spinner";
+import SpinnerMini from "../ui/SpinnerMini";
+import PlanForm from "../ui/PlanForm";
+import Modal from "../ui/Modal";
+import { IoIosClose } from "react-icons/io";
 
 function Account() {
   const { user, isPending, isAuthenticated } = useUser();
   const { plan, isPending: isPlanning } = usePlan(user?.email);
+  const { editUser, isPending: isUpdating } = useUpdateUser();
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [firstName, setFirstName] = useState(
+    user?.user_metadata?.firstName || ""
+  );
+  const [lastName, setLastName] = useState(user?.user_metadata?.lastName || "");
+  const [avatar, setAvatar] = useState(null);
 
   // Show a full-page spinner while loading user or plan data
   if (isPending || isPlanning) return <Spinner />;
@@ -15,12 +27,34 @@ function Account() {
   // Redirect or show a message if the user is not authenticated
   if (!isAuthenticated) return <p>You must log in first.</p>;
 
+  // Handle profile update
+  const handleProfileUpdate = (e) => {
+    e.preventDefault();
+    editUser(
+      { firstName, lastName, avatar },
+      {
+        onSuccess: () => {
+          setIsEditModalOpen(false);
+        }
+      }
+    );
+  };
+
   return (
-    <div className="min-h-screen p-6 bg-gray-50">
+    <div className="min-h-screen p-3 md:p-6 bg-gray-50">
       {/* User Profile Section */}
-      <div className="p-8 mx-auto mb-8 bg-white rounded-lg shadow-md max-w-8xl">
-        <div className="flex items-center gap-4 mb-6">
-          <FaUserCircle className="text-6xl text-gray-400" />
+      <div className="flex flex-wrap items-center justify-between p-4 mx-auto mb-8 bg-white rounded-lg shadow-md max-w-8xl">
+        <div className="flex items-center gap-4">
+          {/* Display user avatar */}
+          {user?.user_metadata?.avatar ? (
+            <img
+              src={user.user_metadata.avatar}
+              alt="User Avatar"
+              className="rounded-full block w-[4rem] h-[4rem] object-cover object-center aspect-square"
+            />
+          ) : (
+            <FaUserCircle className="text-6xl text-gray-400" />
+          )}
           <div>
             <h1 className="text-2xl font-bold text-gray-800">
               {user?.user_metadata?.firstName || "User"}{" "}
@@ -29,10 +63,61 @@ function Account() {
             <p className="text-gray-600">{user?.email}</p>
           </div>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700">
+        <button
+          type="button"
+          className="flex items-center gap-2 px-4 py-2 mt-3 font-medium text-white transition-colors bg-green-600 rounded-lg max-sm:justify-center max-sm:w-full hover:bg-green-700"
+          onClick={() => setIsEditModalOpen(true)}
+        >
           <FaEdit /> Edit Profile
         </button>
       </div>
+
+      {/* Edit Profile Modal */}
+      <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)}>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-800">Edit Profile</h2>
+          <button
+            type="button"
+            onClick={() => setIsEditModalOpen(false)}
+            className="text-black hover:text-[#FB0101] transition"
+          >
+            <IoIosClose size={40} />
+          </button>
+        </div>
+        <form onSubmit={handleProfileUpdate}>
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="First Name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg"
+              required
+            />
+            <input
+              type="text"
+              placeholder="Last Name"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg"
+              required
+            />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setAvatar(e.target.files[0])}
+              className="w-full px-4 py-2 border rounded-lg"
+            />
+            <button
+              type="submit"
+              className="flex items-center justify-center w-full px-4 py-2 text-white bg-green-600 rounded-lg md:w-40 hover:bg-green-700"
+              disabled={isUpdating}
+            >
+              {isUpdating ? <SpinnerMini /> : "Save Changes"}
+            </button>
+          </div>
+        </form>
+      </Modal>
 
       {/* Diet Plan Section */}
       <div className="p-8 mx-auto mb-8 bg-white rounded-lg shadow-md max-w-8xl">

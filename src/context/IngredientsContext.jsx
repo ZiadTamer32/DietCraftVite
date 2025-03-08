@@ -1,29 +1,33 @@
 /* eslint-disable react/prop-types */
 import { useContext, useEffect, useState, createContext } from "react";
-// https://trackapi.nutritionix.com/v2/search/instant/?query=${searchItem}
+
 const IngredientsContext = createContext();
 
 function IngredientsProvider({ children }) {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [searchItem, setSearchItem] = useState("");
+  const [prevSearch, setPrevSearch] = useState("");
 
   useEffect(() => {
+    if (searchItem === prevSearch) return;
+    setPrevSearch(searchItem);
+
+    if (!searchItem.trim() || searchItem.trim().length < 3) {
+      if (isLoading) setIsLoading(false);
+      setData(null);
+      return;
+    }
+
     const controller = new AbortController();
-    const signal = controller.signal;
+    const { signal } = controller;
 
     async function fetchIngredients() {
-      if (!searchItem.trim()) {
-        setData(null);
-        setIsLoading(false);
-        return;
-      }
-
-      setIsLoading(true);
       try {
+        setIsLoading(true);
         const res = await fetch(
           `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=7OzdgD1h7fyklruZGsBB77TgSAEIb9KugGQizT4e&query=${searchItem}&dataType=Foundation`,
-          signal
+          { signal }
         );
 
         if (!res.ok) {
@@ -41,11 +45,9 @@ function IngredientsProvider({ children }) {
         setIsLoading(false);
       }
     }
-    fetchIngredients();
 
-    return () => {
-      controller.abort(); // إلغاء الطلب السابق عند تحديث `searchItem`
-    };
+    fetchIngredients();
+    return () => controller.abort();
   }, [searchItem]);
 
   return (
@@ -58,13 +60,7 @@ function IngredientsProvider({ children }) {
 }
 
 function useIngredients() {
-  const context = useContext(IngredientsContext);
-  if (!context) {
-    throw new Error(
-      "useIngredients must be used within a IngredientsProvider. Wrap your component with IngredientsProvider."
-    );
-  }
-  return context;
+  return useContext(IngredientsContext);
 }
 
 export { IngredientsProvider, useIngredients };
