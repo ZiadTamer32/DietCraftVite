@@ -7,12 +7,14 @@ import usePlan from "./usePlan";
 import useDiet from "./useDiet";
 import Target from "../DietRecommendation/Target";
 import SpinnerMini from "../../ui/SpinnerMini";
+import useCreateTarget from "./useCreateTarget";
 
 function DietForm() {
   const { user } = useUser();
   const { plan: plans } = usePlan(user?.email);
-  const { getNutritions, isLoading } = useTarget();
+  const { getNutritions, isLoading, data: res } = useTarget();
   const { dietFn } = useDiet();
+  const { targetFn } = useCreateTarget();
 
   // Memoize details to prevent unnecessary recalculations
   const details = useMemo(
@@ -56,7 +58,7 @@ function DietForm() {
     register,
     formState: { errors },
     handleSubmit,
-    reset,
+    reset
   } = useForm();
 
   // Reset form with default values when data is loaded
@@ -69,7 +71,7 @@ function DietForm() {
         age: initialAge,
         plan: initialPlan,
         gender: initialGender,
-        activity: initialActivity,
+        activity: initialActivity
       });
     }
   }, [
@@ -80,7 +82,7 @@ function DietForm() {
     initialAge,
     initialPlan,
     initialGender,
-    initialActivity,
+    initialActivity
   ]); // <-- Stable dependencies
 
   // Email and fullName user
@@ -101,14 +103,17 @@ function DietForm() {
       bodyFat: Number(data.bodyFat),
       age: Number(data.age),
       rate: rate[1],
-      plan: rate[0],
+      plan: rate[0]
     };
     dietFn({
       addGuest: { ...data, email, fullName, rate: rate[1], plan: rate[0] },
-      email,
+      email
     });
     getNutritions(nutrationsGuest);
   };
+  useEffect(() => {
+    if (res) targetFn({ email, targetData: res });
+  }, [res]);
 
   return (
     <div>
@@ -130,7 +135,7 @@ function DietForm() {
               {...register("age", {
                 required: "Age is required",
                 min: { value: 13, message: "Age must exceed 100 cm" },
-                max: { value: 110, message: "Age must not exceed 250 cm" },
+                max: { value: 110, message: "Age must not exceed 250 cm" }
               })}
               className={`w-full p-3 border rounded-lg outline-none ${
                 errors.age ? "border-red-500" : "border-gray-300"
@@ -156,7 +161,7 @@ function DietForm() {
               {...register("height", {
                 required: "Height is required",
                 min: { value: 100, message: "Height must exceed 100 cm" },
-                max: { value: 250, message: "Height must not exceed 250 cm" },
+                max: { value: 250, message: "Height must not exceed 250 cm" }
               })}
               className={`w-full p-3 border rounded-lg outline-none ${
                 errors.height ? "border-red-500" : "border-gray-300"
@@ -182,12 +187,12 @@ function DietForm() {
                 required: "Weight is required",
                 min: {
                   value: 60,
-                  message: "The minimum allowed weight is 60",
+                  message: "The minimum allowed weight is 60"
                 },
                 max: {
                   value: 300,
-                  message: "The maximum allowed weight is 300",
-                },
+                  message: "The maximum allowed weight is 300"
+                }
               })}
               className={`w-full p-3 border rounded-lg outline-none ${
                 errors.weight ? "border-red-500" : "border-gray-300"
