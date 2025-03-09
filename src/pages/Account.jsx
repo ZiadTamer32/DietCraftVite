@@ -68,6 +68,7 @@ function Account() {
             <img
               src={user.user_metadata.avatar}
               alt="User Avatar"
+              loading="lazy"
               className="rounded-full block w-[4rem] h-[4rem] object-cover object-center aspect-square"
             />
           ) : (

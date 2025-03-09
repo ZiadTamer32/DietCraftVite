@@ -17,6 +17,7 @@ import Login from "./pages/Login";
 import Recipe from "./pages/Recipe";
 import SignUp from "./pages/SignUp";
 import PageNotFound from "./pages/PageNotFound";
+import Progress from "./pages/Progress";
 
 function App() {
   const reactQuery = new QueryClient({
@@ -50,6 +51,7 @@ function App() {
                   <Route path="/food-log" element={<FoodLog />} />
                   <Route path="/browse-foods" element={<BrowseFoods />} />
                   <Route path="/browse-foods/:id" element={<Recipe />} />
+                  <Route path="/progress" element={<Progress />} />
                   <Route path="/account" element={<Account />} />
                 </Route>
                 <Route path="/login" element={<Login />} />

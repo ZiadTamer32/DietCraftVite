@@ -25,10 +25,12 @@ function SelectedIngredient({ setSelectedIngredient, selectedIngredient }) {
           defaultValue={1}
           className="w-20 px-2 py-1 text-center border rounded-md"
         />
-        <select className="w-full px-2 py-1 ml-2 text-center bg-white border rounded-md sm:w-28">
-          <option>1 slice</option>
-          <option>100g</option>
-        </select>
+        <input
+          type="text"
+          value={"1g"}
+          disabled
+          className="w-full px-2 py-1 ml-2 text-center bg-white border rounded-md sm:w-28"
+        />
       </div>
 
       <h2 className="mb-4 font-bold text-l">Nutrients:</h2>
