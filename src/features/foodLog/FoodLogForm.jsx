@@ -20,7 +20,10 @@ function FoodLogForm({ dispatch, setOverlay }) {
     }
   });
   const onSubmit = (data) => {
-    dispatch({ type: "ADD", payload: { ...data, id: Date.now().toString() } });
+    dispatch({
+      type: "ADD",
+      payload: { ...data, id: Date.now().toString() }
+    });
     reset();
     toast.success("Food entry added successfully!");
   };

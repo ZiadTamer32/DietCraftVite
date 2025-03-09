@@ -68,6 +68,7 @@ function IngredientsFood({ setOverlay }) {
         ) : selectedIngredient ? (
           // Show Selected Ingredient Details
           <SelectedIngredient
+            setOverlay={setOverlay}
             selectedIngredient={selectedIngredient}
             setSelectedIngredient={setSelectedIngredient}
           />
