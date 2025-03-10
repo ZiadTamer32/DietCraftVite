@@ -2,9 +2,9 @@
 import { CiCircleRemove, CiSearch } from "react-icons/ci";
 import { IoIosClose } from "react-icons/io";
 import { useIngredients } from "../../context/IngredientsContext";
-import IngredientsList from "./IngredientsList";
-import Spinner from "../../ui/Spinner";
 import { useState } from "react";
+import IngredientsSearch from "./IngredientsSearch";
+import Spinner from "../../ui/Spinner";
 import SelectedIngredient from "./SelectedIngredient";
 import Modal from "../../ui/Modal";
 
@@ -75,7 +75,7 @@ function IngredientsFood({ setOverlay }) {
         ) : (
           // Show Ingredients List
           data?.foods?.map((item, index) => (
-            <IngredientsList
+            <IngredientsSearch
               key={index}
               item={item}
               setSelectedIngredient={setSelectedIngredient}

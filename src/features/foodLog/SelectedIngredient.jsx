@@ -69,7 +69,8 @@ function SelectedIngredient({
       {
         ...meal,
         mealName: selectedIngredient.description,
-        email: user.email
+        email: user.email,
+        IngredientsId: Date.now()
       },
       {
         onSuccess: () => {
@@ -124,7 +125,7 @@ function SelectedIngredient({
         <button
           onClick={() => handleAddToDiary(nutrientsObject)}
           disabled={isPending}
-          className="px-4 py-2 text-white bg-blue-500 rounded-lg max-sm:w-full hover:bg-blue-600"
+          className="flex items-center justify-center px-4 py-2 text-white bg-blue-500 rounded-lg max-sm:w-full hover:bg-blue-600"
         >
           {isPending ? <SpinnerMini /> : "Add to Diary"}
         </button>

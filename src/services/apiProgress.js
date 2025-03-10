@@ -22,3 +22,12 @@ export async function getProgress(email) {
   }
   return MealsNutritions;
 }
+export async function deleteMeal(id) {
+  const { error } = await supabase
+    .from("MealsNutritions")
+    .delete()
+    .eq("IngredientsId", id);
+  if (error) {
+    throw new Error("Failed to delete data: " + error.message);
+  }
+}
