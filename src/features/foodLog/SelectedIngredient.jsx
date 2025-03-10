@@ -12,7 +12,7 @@ function SelectedIngredient({
   const [servings, setServings] = useState(1);
   const { user } = useUser();
   const { addMealFn, isPending } = useAddMeal();
-
+  const [mealType, setMealType] = useState("Breakfast");
   const filteredFoods = {
     1008: "Calories",
     1004: "Total Fat",
@@ -70,7 +70,8 @@ function SelectedIngredient({
         ...meal,
         mealName: selectedIngredient.description,
         email: user.email,
-        IngredientsId: Date.now()
+        IngredientsId: Date.now(),
+        mealType: mealType
       },
       {
         onSuccess: () => {
@@ -86,23 +87,40 @@ function SelectedIngredient({
         {selectedIngredient.description}
       </h2>
 
-      <div className="flex items-center mb-4">
-        <label className="mr-2 font-semibold text-l">Servings:</label>
-        <input
-          type="number"
-          value={servings}
-          onChange={handleServingsChange}
-          className="w-20 px-2 py-1 text-center border rounded-md"
-        />
-        <input
-          type="text"
-          value="1g"
-          disabled
-          className="w-full px-2 py-1 ml-2 text-center bg-white border rounded-md sm:w-28"
-        />
+      <div className="flex flex-col flex-wrap items-center mb-4 space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
+        {/* Servings Label and Input */}
+        <h3 className="w-full mb-2 font-bold text-l">Servings:</h3>
+        <div className="flex items-center gap-2 max-sm:w-full">
+          <input
+            type="number"
+            value={servings}
+            onChange={handleServingsChange}
+            className="py-1 text-center border rounded-md max-sm:w-[50%] w-24"
+          />
+
+          {/* Disabled Input for "1g" */}
+          <input
+            type="text"
+            value="1g"
+            disabled
+            className="w-24 py-1 text-center bg-white border rounded-md max-sm:w-[50%] disabled:opacity-50"
+          />
+        </div>
+
+        {/* Meal Type Select Dropdown */}
+        <select
+          value={mealType}
+          onChange={(e) => setMealType(e.target.value)}
+          className="w-full py-1 text-center bg-white border rounded-md sm:flex-1"
+        >
+          <option>Breakfast</option>
+          <option>Lunch</option>
+          <option>Dinner</option>
+          <option>Snack</option>
+        </select>
       </div>
 
-      <h2 className="mb-4 font-bold text-l">Nutrients:</h2>
+      <h3 className="mb-2 font-bold text-l">Nutrients:</h3>
 
       <div className="grid w-full grid-cols-1 p-3 text-gray-700 bg-white rounded-lg shadow md:p-6 gap-y-3 gap-x-6 md:grid-cols-2">
         {handleNameAndValue.map(({ name, value, unit }) => (
