@@ -23,6 +23,7 @@ function SelectedIngredient({
     1079: "Fiber",
     1253: "Cholesterol"
   };
+  console.log(selectedIngredient);
   // Convert the following code to use the filteredFoods object {1008: "Calories", ...}
   const handleFilter = selectedIngredient.foodNutrients.filter((nutrient) =>
     Object.keys(filteredFoods).includes(nutrient.nutrientId.toString())
@@ -59,8 +60,8 @@ function SelectedIngredient({
   );
 
   const handleServingsChange = (e) => {
-    const value = parseInt(e.target.value, 10);
-    if (!isNaN(value) && value > 0) setServings(value);
+    if (e.target.value < 0) return;
+    setServings(e.target.value);
   };
 
   function handleAddToDiary(meal) {
@@ -119,18 +120,27 @@ function SelectedIngredient({
           <option>Snack</option>
         </select>
       </div>
-
-      <h3 className="mb-2 font-bold text-l">Nutrients:</h3>
-
-      <div className="grid w-full grid-cols-1 p-3 text-gray-700 bg-white rounded-lg shadow md:p-6 gap-y-3 gap-x-6 md:grid-cols-2">
-        {handleNameAndValue.map(({ name, value, unit }) => (
-          <div key={name} className="flex justify-between p-2 border-b md:p-4">
-            <span className="font-semibold">{name}</span>
-            <span>
-              {parseFloat(value)} {unit}
-            </span>
-          </div>
-        ))}
+      <div>
+        {handleNameAndValue.length > 0 ? (
+          <>
+            <h3 className="mb-2 font-bold text-l">Nutrients:</h3>
+            <div className="grid w-full grid-cols-1 p-3 text-gray-700 bg-white rounded-lg shadow md:p-6 gap-y-3 gap-x-6 md:grid-cols-2">
+              {handleNameAndValue.map(({ name, value, unit }) => (
+                <div
+                  key={name}
+                  className="flex justify-between p-2 border-b md:p-4"
+                >
+                  <span className="font-semibold">{name}</span>
+                  <span>
+                    {parseFloat(value)} {unit}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <p>No Nutrients Found</p>
+        )}
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-4 mt-6">

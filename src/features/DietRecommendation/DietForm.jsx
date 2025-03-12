@@ -250,7 +250,7 @@ function DietForm() {
             type="submit"
             disabled={isLoading}
             aria-label="Calculate Diet Plan"
-            className="px-5 py-3 transition text-white text-sm font-medium bg-[#16a34a] rounded-lg w-full hover:bg-green-800 focus:ring-0 focus:outline-none"
+            className="flex items-center justify-center w-full gap-2 p-3 text-white transition-transform transform bg-green-600 rounded-lg md:w-48 hover:bg-green-700"
           >
             {isLoading ? (
               <div className="flex items-center justify-center">
