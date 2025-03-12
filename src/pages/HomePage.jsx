@@ -53,7 +53,7 @@ function HomePage() {
   const randomTip = dailyTips[Math.floor(Math.random() * dailyTips.length)];
 
   return (
-    <main className="w-full min-h-screen p-6 bg-[#feffff]">
+    <main className="w-full min-h-screen p-6 rounded-lg bg-[#feffff]">
       {/* Welcome Section */}
       <div className="mb-8 text-center md:text-left">
         <h1 className="mb-3 text-2xl font-bold text-gray-800 sm:text-3xl">
@@ -152,6 +152,7 @@ function HomePage() {
           ))}
         </div>
         <Link
+          rel="preload"
           to="/activity"
           className="block mt-4 text-sm text-blue-600 hover:underline"
         >
@@ -197,6 +198,7 @@ function HomePage() {
         <h2 className="mb-4 text-2xl font-bold text-gray-800">Quick Actions</h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <Link
+            rel="preload"
             to="/food-log"
             className="flex items-center justify-center gap-2 p-6 transition-all bg-white rounded-lg shadow-md hover:bg-green-50"
           >
@@ -206,6 +208,7 @@ function HomePage() {
             </span>
           </Link>
           <Link
+            rel="preload"
             to="/start-workout"
             className="flex items-center justify-center gap-2 p-6 transition-all bg-white rounded-lg shadow-md hover:bg-blue-50"
           >
@@ -215,7 +218,8 @@ function HomePage() {
             </span>
           </Link>
           <Link
-            to="/recipes"
+            rel="preload"
+            to="/browse-foods"
             className="flex items-center justify-center gap-2 p-6 transition-all bg-white rounded-lg shadow-md hover:bg-orange-50"
           >
             <FaUtensils className="text-orange-600" size={24} />
