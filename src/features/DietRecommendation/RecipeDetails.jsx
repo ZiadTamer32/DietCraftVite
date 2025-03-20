@@ -100,10 +100,10 @@ function RecipeDetails() {
                 <strong>Sugar:</strong> {SugarContent ?? "N/A"} g
               </p>
               <p>
-                <strong>Cholesterol:</strong> {CholesterolContent ?? "N/A"} g
+                <strong>Cholesterol:</strong> {CholesterolContent ?? "N/A"} mg
               </p>
               <p>
-                <strong>Sodium:</strong> {SodiumContent ?? "N/A"} g
+                <strong>Sodium:</strong> {SodiumContent ?? "N/A"} mg
               </p>
               <p>
                 <strong>Fiber:</strong> {FiberContent ?? "N/A"} g

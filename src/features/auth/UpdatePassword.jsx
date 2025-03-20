@@ -3,10 +3,8 @@ import { IoIosClose } from "react-icons/io";
 import { useForm } from "react-hook-form";
 import Modal from "../../ui/Modal";
 import useUpdateUser from "./useUpdateUser";
-import SpinnerMini from "../../ui/SpinnerMini";
 import toast from "react-hot-toast";
 
-/* eslint-disable react/prop-types */
 function UpdatePassword() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const {
@@ -24,7 +22,7 @@ function UpdatePassword() {
       onSuccess: () => {
         toast.success("Password updated successfully!");
         setIsEditModalOpen(false);
-        reset(); // Reset the form fields
+        reset();
       },
       onError: (error) => {
         toast.error(error.message || "Failed to update password");
@@ -106,10 +104,10 @@ function UpdatePassword() {
             </div>
             <button
               type="submit"
-              className={`flex items-center justify-center w-full px-4 py-2 ${isPasswordChanged ? "bg-green-500 hover:bg-green-700" : "disabled:cursor-pointer bg-gray-400"} text-white rounded-lg md:w-40`}
-              disabled={isUpdating}
+              className={`flex items-center justify-center w-full px-4 py-2 ${isPasswordChanged ? "bg-green-500 hover:bg-green-700" : "cursor-not-allowed bg-gray-400"} text-white rounded-lg md:w-40`}
+              disabled={isUpdating || !isPasswordChanged}
             >
-              {isUpdating ? <SpinnerMini /> : "Save Changes"}
+              {isUpdating ? "Saving..." : "Save Changes"}
             </button>
           </div>
         </form>

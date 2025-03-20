@@ -45,7 +45,7 @@ function Nav() {
   );
 
   return (
-    <div className="pb-5">
+    <div className="pb-3 md:pb-3">
       <ul className="flex flex-wrap items-center justify-between w-full gap-4 md:justify-start">
         {menu.map((item) => {
           const isActive = location.pathname === item.href;

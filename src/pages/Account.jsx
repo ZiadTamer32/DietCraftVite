@@ -6,7 +6,6 @@ import useUser from "../features/auth/useUser";
 import usePlan from "../features/DietRecommendation/usePlan";
 import useUpdateUser from "../features/auth/useUpdateUser";
 import Spinner from "../ui/Spinner";
-import SpinnerMini from "../ui/SpinnerMini";
 import PlanForm from "../ui/PlanForm";
 import Modal from "../ui/Modal";
 import UpdatePassword from "../features/auth/UpdatePassword";
@@ -25,6 +24,7 @@ function Account() {
   const [originalData, setOriginalData] = useState({
     firstName: "",
     lastName: "",
+    email: "",
     avatar: null
   });
   // Set the original user data on component mount
@@ -60,7 +60,6 @@ function Account() {
       }
     );
   };
-
   return (
     <div className="min-h-screen p-3 md:p-6 bg-gray-50">
       {/* User Profile Section */}
@@ -135,7 +134,7 @@ function Account() {
               className={`flex items-center justify-center w-full px-4 py-2 text-white ${hasDataChanged ? "bg-green-600 hover:bg-green-700" : "bg-gray-400 cursor-not-allowed"} rounded-lg md:w-40`}
               disabled={!hasDataChanged || isUpdating}
             >
-              {isUpdating ? <SpinnerMini /> : "Save Changes"}
+              {isUpdating ? "Saving..." : "Save Changes"}
             </button>
           </div>
         </form>

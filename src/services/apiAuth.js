@@ -36,9 +36,16 @@ export async function signUp({ email, password, firstName, lastName, avatar }) {
 
   return { data, error: null };
 }
-export async function updateUser({ firstName, lastName, password, avatar }) {
+export async function updateUser({
+  firstName,
+  lastName,
+  email,
+  password,
+  avatar
+}) {
   let updateData;
   if (password) updateData = { password };
+  if (email) updateData = { email };
   if (firstName && lastName) updateData = { data: { firstName, lastName } };
   const { data, error } = await supabase.auth.updateUser(updateData);
   if (!avatar) return data;
