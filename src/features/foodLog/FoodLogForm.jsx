@@ -1,13 +1,15 @@
 /* eslint-disable react/prop-types */
 import { FiPlusCircle } from "react-icons/fi";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
+import useAddFood from "./useAddFood";
 
-function FoodLogForm({ dispatch, setOverlay }) {
+function FoodLogForm({ setOverlay, email }) {
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
+    watch,
     formState: { errors }
   } = useForm({
     defaultValues: {
@@ -19,14 +21,17 @@ function FoodLogForm({ dispatch, setOverlay }) {
       fat: 0
     }
   });
-  const onSubmit = (data) => {
-    dispatch({
-      type: "ADD",
-      payload: { ...data, id: Date.now().toString() }
-    });
-    reset();
-    toast.success("Food entry added successfully!");
+
+  const handleNumberChange = (field) => (e) => {
+    const value = Math.max(0, Number(e.target.value));
+    setValue(field, value);
   };
+  const { addFoodFn, isPending } = useAddFood();
+  const onSubmit = (data) => {
+    addFoodFn({ ...data, mealId: Date.now().toString(), email });
+    reset();
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -76,6 +81,8 @@ function FoodLogForm({ dispatch, setOverlay }) {
             className="w-full p-3 border border-gray-300 rounded-lg outline-none"
             placeholder="Enter calories"
             {...register("calories", { valueAsNumber: true })}
+            value={watch("calories")}
+            onChange={handleNumberChange("calories")}
           />
         </div>
 
@@ -89,6 +96,8 @@ function FoodLogForm({ dispatch, setOverlay }) {
             className="w-full p-3 border border-gray-300 rounded-lg outline-none"
             placeholder="Enter carbs"
             {...register("carbs", { valueAsNumber: true })}
+            value={watch("carbs")}
+            onChange={handleNumberChange("carbs")}
           />
         </div>
       </div>
@@ -104,6 +113,8 @@ function FoodLogForm({ dispatch, setOverlay }) {
             className="w-full p-3 border border-gray-300 rounded-lg outline-none"
             placeholder="Enter protein"
             {...register("protein", { valueAsNumber: true })}
+            value={watch("protein")}
+            onChange={handleNumberChange("protein")}
           />
         </div>
 
@@ -117,6 +128,8 @@ function FoodLogForm({ dispatch, setOverlay }) {
             className="w-full p-3 border border-gray-300 rounded-lg outline-none"
             placeholder="Enter fat"
             {...register("fat", { valueAsNumber: true })}
+            value={watch("fat")}
+            onChange={handleNumberChange("fat")}
           />
         </div>
       </div>
@@ -127,7 +140,13 @@ function FoodLogForm({ dispatch, setOverlay }) {
           type="submit"
           className="flex items-center justify-center w-full gap-2 p-3 text-white transition-transform transform bg-green-600 rounded-lg md:w-48 hover:bg-green-700"
         >
-          <FiPlusCircle size={18} /> Add Food
+          {isPending ? (
+            "Adding..."
+          ) : (
+            <span className="flex items-center gap-2">
+              <FiPlusCircle size={18} /> Add Food
+            </span>
+          )}
         </button>
         <button
           type="button"

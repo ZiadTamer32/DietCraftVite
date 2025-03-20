@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
-import toast from "react-hot-toast";
 import NutritionLogItem from "../../ui/NutritionLogItem";
-function FoodLogList({ foodLog, dispatch }) {
+import useDeleteFood from "./useDeleteFood";
+function FoodLogList({ foodLog }) {
+  const { deleteFood, isPending: isDeletePending } = useDeleteFood();
   return (
     <div className="w-full p-4 mx-auto bg-white rounded-lg shadow-md max-w-8xl">
       {foodLog.length === 0 ? (
@@ -30,10 +31,9 @@ function FoodLogList({ foodLog, dispatch }) {
               cholesterol={log.cholesterol}
               fiber={log.fiber}
               onDelete={() => {
-                dispatch({ type: "REMOVE", payload: log.id });
-                toast.success("Food entry removed.");
+                deleteFood(log.mealId);
               }}
-              isDeleting={false}
+              isDeleting={isDeletePending ? true : false}
               showDetailsButton={false}
             />
           ))}

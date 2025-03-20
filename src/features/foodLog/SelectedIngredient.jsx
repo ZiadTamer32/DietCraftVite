@@ -23,7 +23,6 @@ function SelectedIngredient({
     1079: "Fiber",
     1253: "Cholesterol"
   };
-  console.log(selectedIngredient);
   // Convert the following code to use the filteredFoods object {1008: "Calories", ...}
   const handleFilter = selectedIngredient.foodNutrients.filter((nutrient) =>
     Object.keys(filteredFoods).includes(nutrient.nutrientId.toString())

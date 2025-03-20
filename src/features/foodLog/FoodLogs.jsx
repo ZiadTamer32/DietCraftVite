@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useState } from "react";
 import IngredientsModal from "./IngredientsModal";
 import FoodLogList from "./FoodLogList";
 import FoodLogForm from "./FoodLogForm";
@@ -6,27 +6,17 @@ import useGetProgress from "./useGetProgress";
 import useUser from "../auth/useUser";
 import Spinner from "../../ui/Spinner";
 import IngredientsLogList from "./IngredientsLogList";
-
-const foodReducer = (state, action) => {
-  switch (action.type) {
-    case "ADD":
-      return [...state, action.payload];
-    case "REMOVE":
-      return state.filter((log) => log.id !== action.payload);
-    default:
-      return state;
-  }
-};
+import useGetFood from "./useGetFood";
 
 function FoodLogs() {
   const [overlay, setOverlay] = useState(false);
-  const [foodLog, dispatch] = useReducer(foodReducer, []);
   const { user } = useUser();
   const { progressData, isPending: isProgressPending } = useGetProgress(
     user?.email
   );
+  const { foodData, isPending: isFoodPending } = useGetFood(user?.email);
 
-  if (isProgressPending) return <Spinner />;
+  if (isProgressPending || isFoodPending) return <Spinner />;
 
   return (
     <div className="flex flex-col min-h-screen gap-5 rounded-lg md:p-4 bg-gray-50">
@@ -36,12 +26,12 @@ function FoodLogs() {
           Add Food Entry
         </h2>
         {/* Form */}
-        <FoodLogForm dispatch={dispatch} setOverlay={setOverlay} />
+        <FoodLogForm setOverlay={setOverlay} email={user?.email} />
       </div>
       {/* Overlay for Ingredients */}
       {overlay && <IngredientsModal setOverlay={setOverlay} />}
       {/* Food Log List */}
-      <FoodLogList foodLog={foodLog} dispatch={dispatch} />
+      <FoodLogList foodLog={foodData} />
       {/* Ingredients List */}
       <IngredientsLogList progressData={progressData} />
     </div>
