@@ -1,11 +1,16 @@
 /* eslint-disable react/prop-types */
-import NutritionLogItem from "../../ui/NutritionLogItem";
-import useDeleteFood from "./useDeleteFood";
+import { useDate } from "../../context/DateContext";
+import FoodLogItem from "./FoodLogItem";
+import useFilteredAndSortedLogs from "./useFilteredAndSortedLogs";
+
 function FoodLogList({ foodLog }) {
-  const { deleteFood, isPending: isDeletePending } = useDeleteFood();
+  const { selectedDate } = useDate();
+  const sortedFoodLog = useFilteredAndSortedLogs(foodLog, selectedDate);
+
+  // Render the list of food logs
   return (
-    <div className="w-full p-4 mx-auto bg-white rounded-lg shadow-md max-w-8xl">
-      {foodLog.length === 0 ? (
+    <section className="w-full px-2 mx-auto bg-white rounded-lg max-w-8xl">
+      {sortedFoodLog.length === 0 ? (
         <>
           <h4 className="mb-2 text-2xl font-bold text-gray-800">
             Log Your Meals
@@ -15,32 +20,15 @@ function FoodLogList({ foodLog }) {
           </p>
         </>
       ) : (
-        <div className="space-y-4">
-          {foodLog.map((log, index) => (
-            <NutritionLogItem
-              key={index}
-              id={log.id}
-              name={log.food}
-              mealType={log.mealType}
-              calories={log.calories}
-              carbs={log.carbs}
-              protein={log.protein}
-              fat={log.fat}
-              sugar={log.sugar}
-              sodium={log.sodium}
-              cholesterol={log.cholesterol}
-              fiber={log.fiber}
-              onDelete={() => {
-                deleteFood(log.mealId);
-              }}
-              isDeleting={isDeletePending ? true : false}
-              showDetailsButton={false}
-            />
+        <ul className="space-y-4" role="list">
+          {sortedFoodLog.map((log) => (
+            <li key={log.id}>
+              <FoodLogItem log={log} />
+            </li>
           ))}
-        </div>
+        </ul>
       )}
-    </div>
+    </section>
   );
 }
-
 export default FoodLogList;

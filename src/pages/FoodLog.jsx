@@ -1,8 +1,8 @@
-import FoodLogs from "../features/foodLog/FoodLogs";
+import FoodLogs from "../features/foodLog/FoodLogs"; // Your form component
 
 function FoodLog() {
   return (
-    <div className="md:p-4">
+    <div>
       <FoodLogs />
     </div>
   );

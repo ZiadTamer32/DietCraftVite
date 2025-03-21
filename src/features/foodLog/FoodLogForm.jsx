@@ -1,7 +1,10 @@
 /* eslint-disable react/prop-types */
-import { FiPlusCircle } from "react-icons/fi";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
+import { FiPlusCircle } from "react-icons/fi";
+import { useDate } from "../../context/DateContext";
 import useAddFood from "./useAddFood";
+import DatePicker from "../../ui/DatePicker";
 
 function FoodLogForm({ setOverlay, email }) {
   const {
@@ -9,7 +12,6 @@ function FoodLogForm({ setOverlay, email }) {
     handleSubmit,
     reset,
     setValue,
-    watch,
     formState: { errors }
   } = useForm({
     defaultValues: {
@@ -21,11 +23,15 @@ function FoodLogForm({ setOverlay, email }) {
       fat: 0
     }
   });
+  const { selectedDate, setSelectedDate } = useDate();
+  const handleNumberChange = useCallback(
+    (field) => (e) => {
+      const value = Math.max(0, Number(e.target.value));
+      setValue(field, value);
+    },
+    [setValue]
+  );
 
-  const handleNumberChange = (field) => (e) => {
-    const value = Math.max(0, Number(e.target.value));
-    setValue(field, value);
-  };
   const { addFoodFn, isPending } = useAddFood();
   const onSubmit = (data) => {
     addFoodFn({ ...data, mealId: Date.now().toString(), email });
@@ -33,7 +39,10 @@ function FoodLogForm({ setOverlay, email }) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="mx-auto space-y-6 max-w-8xl"
+    >
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {/* Food Name */}
         <div>
@@ -42,9 +51,7 @@ function FoodLogForm({ setOverlay, email }) {
           </label>
           <input
             type="text"
-            className={`w-full p-3 border rounded-lg outline-none ${
-              errors.food ? "border-red-500" : "border-gray-300"
-            }`}
+            className={`w-full p-3 border rounded-lg outline-none ${errors.food ? "border-red-500" : "border-gray-300"}`}
             placeholder="Enter food name"
             {...register("food", { required: "Food name is required" })}
           />
@@ -71,90 +78,47 @@ function FoodLogForm({ setOverlay, email }) {
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {/* Calories */}
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">
-            Calories (kcal)
-          </label>
-          <input
-            type="number"
-            className="w-full p-3 border border-gray-300 rounded-lg outline-none"
-            placeholder="Enter calories"
-            {...register("calories", { valueAsNumber: true })}
-            value={watch("calories")}
-            onChange={handleNumberChange("calories")}
-          />
-        </div>
-
-        {/* Carbs */}
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">
-            Carbs (g)
-          </label>
-          <input
-            type="number"
-            className="w-full p-3 border border-gray-300 rounded-lg outline-none"
-            placeholder="Enter carbs"
-            {...register("carbs", { valueAsNumber: true })}
-            value={watch("carbs")}
-            onChange={handleNumberChange("carbs")}
-          />
-        </div>
+        {["calories", "carbs", "protein", "fat"].map((field) => (
+          <div key={field}>
+            <label className="block mb-2 text-sm font-medium text-gray-700">
+              {field.charAt(0).toUpperCase() + field.slice(1)} (g)
+            </label>
+            <input
+              type="number"
+              className="w-full p-3 border border-gray-300 rounded-lg outline-none"
+              placeholder={`Enter ${field}`}
+              {...register(field, { valueAsNumber: true })}
+              onChange={handleNumberChange(field)}
+            />
+          </div>
+        ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {/* Protein */}
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">
-            Protein (g)
-          </label>
-          <input
-            type="number"
-            className="w-full p-3 border border-gray-300 rounded-lg outline-none"
-            placeholder="Enter protein"
-            {...register("protein", { valueAsNumber: true })}
-            value={watch("protein")}
-            onChange={handleNumberChange("protein")}
-          />
+      <div className="flex flex-col-reverse flex-wrap justify-between gap-4 lg:flex-row">
+        <div className="flex flex-wrap justify-between gap-4 max-sm:w-full">
+          <button
+            type="submit"
+            className="flex items-center justify-center w-full gap-2 p-3 text-white transition-transform transform bg-green-600 rounded-lg sm:w-48 hover:bg-green-700"
+          >
+            {isPending ? (
+              "Adding..."
+            ) : (
+              <>
+                <FiPlusCircle size={18} /> Add Food
+              </>
+            )}
+          </button>
+          <button
+            type="button"
+            onClick={() => setOverlay(true)}
+            className="flex items-center justify-center w-full gap-2 p-3 text-white transition-transform transform bg-blue-600 rounded-lg sm:w-48 hover:bg-blue-700"
+          >
+            <FiPlusCircle size={18} /> Add Ingredients
+          </button>
         </div>
-
-        {/* Fat */}
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">
-            Fat (g)
-          </label>
-          <input
-            type="number"
-            className="w-full p-3 border border-gray-300 rounded-lg outline-none"
-            placeholder="Enter fat"
-            {...register("fat", { valueAsNumber: true })}
-            value={watch("fat")}
-            onChange={handleNumberChange("fat")}
-          />
+        <div className="max-sm:w-full md:basis-[49%] w-full">
+          <DatePicker selectedDate={selectedDate} onChange={setSelectedDate} />
         </div>
-      </div>
-
-      {/* Buttons */}
-      <div className="flex flex-wrap gap-4">
-        <button
-          type="submit"
-          className="flex items-center justify-center w-full gap-2 p-3 text-white transition-transform transform bg-green-600 rounded-lg md:w-48 hover:bg-green-700"
-        >
-          {isPending ? (
-            "Adding..."
-          ) : (
-            <span className="flex items-center gap-2">
-              <FiPlusCircle size={18} /> Add Food
-            </span>
-          )}
-        </button>
-        <button
-          type="button"
-          onClick={() => setOverlay(true)}
-          className="flex items-center justify-center w-full gap-2 p-3 text-white transition-transform transform bg-blue-600 rounded-lg md:w-48 hover:bg-blue-700"
-        >
-          <FiPlusCircle size={18} /> Add Ingredients
-        </button>
       </div>
     </form>
   );

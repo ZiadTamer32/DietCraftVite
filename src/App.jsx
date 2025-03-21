@@ -4,6 +4,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 import { RecipesProvider } from "./context/RecipesContext";
 import { TargetProvider } from "./context/TargetContext";
+import { DateContextProvider } from "./context/DateContext";
 import { IngredientsProvider } from "./context/IngredientsContext";
 import { Suspense, lazy } from "react";
 import AppLayout from "./ui/AppLayout";
@@ -33,60 +34,62 @@ function App() {
   });
 
   return (
-    <IngredientsProvider>
-      <TargetProvider>
-        <RecipesProvider>
-          <QueryClientProvider client={reactQuery}>
-            <ReactQueryDevtools initialIsOpen={false} />
-            <BrowserRouter>
-              <Suspense fallback={<Spinner />}>
-                <Routes>
-                  <Route
-                    element={
-                      <ProtectedRoute>
-                        <AppLayout />
-                      </ProtectedRoute>
-                    }
-                  >
-                    <Route index path="/" element={<HomePage />} />
+    <DateContextProvider>
+      <IngredientsProvider>
+        <TargetProvider>
+          <RecipesProvider>
+            <QueryClientProvider client={reactQuery}>
+              <ReactQueryDevtools initialIsOpen={false} />
+              <BrowserRouter>
+                <Suspense fallback={<Spinner />}>
+                  <Routes>
                     <Route
-                      path="/diet-recommendation"
-                      element={<DietRecommendation />}
-                    />
-                    <Route path="/food-log" element={<FoodLog />} />
-                    <Route path="/browse-foods" element={<BrowseFoods />} />
-                    <Route path="/browse-foods/:id" element={<Recipe />} />
-                    <Route path="/progress" element={<Progress />} />
-                    <Route path="/account" element={<Account />} />
-                  </Route>
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/getData" element={<GetDietForm />} />
-                  <Route path="/signup" element={<SignUp />} />
-                  <Route path="*" element={<PageNotFound />} />
-                </Routes>
-              </Suspense>
-            </BrowserRouter>
-            <Toaster
-              position="top-center"
-              gutter={12}
-              containerStyle={{ margin: "8px" }}
-              toastOptions={{
-                success: { duration: 3000 },
-                error: { duration: 5000 },
-                style: {
-                  fontSize: "15px",
-                  textAlign: "center",
-                  maxWidth: "500px",
-                  padding: "18px 24px",
-                  backgroundColor: "#ffffff",
-                  color: "#000000"
-                }
-              }}
-            />
-          </QueryClientProvider>
-        </RecipesProvider>
-      </TargetProvider>
-    </IngredientsProvider>
+                      element={
+                        <ProtectedRoute>
+                          <AppLayout />
+                        </ProtectedRoute>
+                      }
+                    >
+                      <Route index path="/" element={<HomePage />} />
+                      <Route
+                        path="/diet-recommendation"
+                        element={<DietRecommendation />}
+                      />
+                      <Route path="/food-log" element={<FoodLog />} />
+                      <Route path="/browse-foods" element={<BrowseFoods />} />
+                      <Route path="/browse-foods/:id" element={<Recipe />} />
+                      <Route path="/progress" element={<Progress />} />
+                      <Route path="/account" element={<Account />} />
+                    </Route>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/getData" element={<GetDietForm />} />
+                    <Route path="/signup" element={<SignUp />} />
+                    <Route path="*" element={<PageNotFound />} />
+                  </Routes>
+                </Suspense>
+              </BrowserRouter>
+              <Toaster
+                position="top-center"
+                gutter={12}
+                containerStyle={{ margin: "8px" }}
+                toastOptions={{
+                  success: { duration: 3000 },
+                  error: { duration: 5000 },
+                  style: {
+                    fontSize: "15px",
+                    textAlign: "center",
+                    maxWidth: "500px",
+                    padding: "18px 24px",
+                    backgroundColor: "#ffffff",
+                    color: "#000000"
+                  }
+                }}
+              />
+            </QueryClientProvider>
+          </RecipesProvider>
+        </TargetProvider>
+      </IngredientsProvider>
+    </DateContextProvider>
   );
 }
 

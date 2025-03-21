@@ -20,7 +20,6 @@ function NutritionLogItem({
   showDetailsButton = false
 }) {
   const [showDetails, setShowDetails] = useState(false);
-
   const toggleDetails = () => {
     setShowDetails((prev) => !prev);
   };

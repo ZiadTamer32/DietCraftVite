@@ -17,23 +17,28 @@ function FoodLogs() {
   const { foodData, isPending: isFoodPending } = useGetFood(user?.email);
 
   if (isProgressPending || isFoodPending) return <Spinner />;
-
   return (
-    <div className="flex flex-col min-h-screen gap-5 rounded-lg md:p-4 bg-gray-50">
+    <div className="flex flex-col gap-5 bg-gray-50">
       {/* Food Entry Form */}
-      <div className="w-full p-6 mx-auto bg-white rounded-lg shadow-md max-w-8xl">
+      <div className="w-full p-4 mx-auto bg-white rounded-lg shadow-md max-w-8xl">
         <h2 className="mb-6 text-2xl font-bold text-gray-800">
           Add Food Entry
         </h2>
-        {/* Form */}
         <FoodLogForm setOverlay={setOverlay} email={user?.email} />
       </div>
+
       {/* Overlay for Ingredients */}
       {overlay && <IngredientsModal setOverlay={setOverlay} />}
+
       {/* Food Log List */}
-      <FoodLogList foodLog={foodData} />
+      <div className="w-full p-3 mx-auto bg-white rounded-lg shadow-md max-w-8xl">
+        <FoodLogList foodLog={foodData} />
+      </div>
+
       {/* Ingredients List */}
-      <IngredientsLogList progressData={progressData} />
+      <div className="w-full p-3 mx-auto bg-white rounded-lg shadow-md max-w-8xl">
+        <IngredientsLogList progressData={progressData} />
+      </div>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { IoIosClose } from "react-icons/io";
 import { useForm } from "react-hook-form";
 import Modal from "../../ui/Modal";
 import useUpdateUser from "./useUpdateUser";
+
 import toast from "react-hot-toast";
 
 function UpdatePassword() {

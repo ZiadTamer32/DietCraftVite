@@ -60,7 +60,7 @@ function IngredientsFood({ setOverlay }) {
           <div className="flex items-center justify-center h-40">
             <Spinner />
           </div>
-        ) : !data || data.foods.length === 0 ? (
+        ) : data?.length === 0 || data?.foods?.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-40 text-gray-500">
             <CiSearch size={40} className="mb-2" />
             <p>No results found</p>
