@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@plugin "daisyui";
 
 @keyframes rotate {
   0% {
@@ -13,21 +12,6 @@
 }
 html {
   scroll-behavior: smooth;
-}
-
-.card-container {
-  @apply p-6 bg-gray-100 rounded-lg;
-}
-
-@layer utilities {
-  .border-except-last-2 > *:nth-last-child(n + 1) {
-    @apply border-b;
-  }
-  @media (max-width: 676px) {
-    .border-except-last-2 > *:nth-last-child(n + 2) {
-      @apply border-b;
-    }
-  }
 }
 
 .spinner-mini {
@@ -49,11 +33,6 @@ html {
   animation: rotate 1s infinite linear;
 }
 
-.image {
-  background-image: url("/ac884af0-02e9-4321-80cd-07a03aadf062.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-}
 .image-login {
   background-image: url("/c5b9d4e7-d919-4224-9dc4-b4fffa8aa7e2.png");
   background-repeat: no-repeat;

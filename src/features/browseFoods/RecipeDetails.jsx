@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useRecipes } from "../../context/RecipesContext";
 import { useMemo } from "react";
-import { FaCheck, FaNutritionix, FaRegClock } from "react-icons/fa6";
+import { FaCheck, FaNutritionix, FaPlus, FaRegClock } from "react-icons/fa6";
 import Spinner from "../../ui/Spinner";
 
 function RecipeDetails() {
@@ -135,7 +135,7 @@ function RecipeDetails() {
           <h2 className="flex items-center gap-2 text-xl font-semibold text-gray-700">
             Instructions:
           </h2>
-          <ol className="mt-2 space-y-2 text-gray-700 overflow-y-auto max-h-[50vh]">
+          <ol className="mt-2 space-y-2 text-gray-700 overflow-y-auto max-h-[40vh]">
             {RecipeInstructions?.map((item, index) => (
               <li key={index} className="flex gap-2">
                 <span className="font-semibold">{index + 1}.</span>
@@ -143,6 +143,12 @@ function RecipeDetails() {
               </li>
             ))}
           </ol>
+        </div>
+        {/* Button Add to food log */}
+        <div className="flex justify-end w-full">
+          <button className="flex items-center justify-end gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg max-sm:justify-center max-sm:w-full hover:bg-indigo-700">
+            <FaPlus className="text-white" /> Add to Food Log
+          </button>
         </div>
       </div>
     </div>

@@ -5,7 +5,7 @@ import { createContext, useContext, useState } from "react";
 const DateContext = createContext();
 
 function DateContextProvider({ children }) {
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   return (
     <DateContext.Provider value={{ setSelectedDate, selectedDate }}>
       {children}

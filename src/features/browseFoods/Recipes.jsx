@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useRecipes } from "../../context/RecipesContext";
 import { CiSearch, CiCircleRemove } from "react-icons/ci";
-import Result from "../DietRecommendation/Results";
+import Result from "./Results";
 import Spinner from "../../ui/Spinner";
 import Pagination from "../../ui/Pagination";
 

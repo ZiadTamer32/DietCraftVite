@@ -14,9 +14,7 @@ function Results({ dessert }) {
       <div className="block shadow-xs shadow-green-200">
         <img
           alt={dessert?.Name || "Dessert image"}
-          src={
-            dessert?.Images[0] || "/6c4a7fb9-5fde-42e2-b537-b4732a92cf56.png"
-          }
+          src={dessert?.Images[0] || "/15.15.37_4f397ebf.jpg"}
           loading="lazy"
           className="object-cover w-full h-56 rounded-t-lg rounded-b-none"
         />

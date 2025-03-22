@@ -12,17 +12,17 @@ import ProtectedRoute from "./ui/ProtectedRoute";
 import Spinner from "./ui/Spinner";
 
 // Dynamically import pages
-const HomePage = lazy(() => import("./pages/HomePage"));
-const DietRecommendation = lazy(() => import("./pages/DietRecommendation"));
-const GetDietForm = lazy(() => import("./pages/GetDietForm"));
-const FoodLog = lazy(() => import("./pages/FoodLog"));
-const BrowseFoods = lazy(() => import("./pages/BrowseFoods"));
 const Account = lazy(() => import("./pages/Account"));
+const BrowseFoods = lazy(() => import("./pages/BrowseFoods"));
+const DietRecommendation = lazy(() => import("./pages/DietRecommendation"));
+const FoodLog = lazy(() => import("./pages/FoodLog"));
+const GetDietForm = lazy(() => import("./pages/GetDietForm"));
+const HomePage = lazy(() => import("./pages/HomePage"));
 const Login = lazy(() => import("./pages/Login"));
-const Recipe = lazy(() => import("./pages/Recipe"));
 const SignUp = lazy(() => import("./pages/SignUp"));
-const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 const Progress = lazy(() => import("./pages/Progress"));
+const Recipe = lazy(() => import("./pages/Recipe"));
+const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 
 function App() {
   const reactQuery = new QueryClient({

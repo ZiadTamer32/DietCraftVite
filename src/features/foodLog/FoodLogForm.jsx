@@ -2,9 +2,7 @@
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { FiPlusCircle } from "react-icons/fi";
-import { useDate } from "../../context/DateContext";
 import useAddFood from "./useAddFood";
-import DatePicker from "../../ui/DatePicker";
 
 function FoodLogForm({ setOverlay, email }) {
   const {
@@ -23,7 +21,6 @@ function FoodLogForm({ setOverlay, email }) {
       fat: 0
     }
   });
-  const { selectedDate, setSelectedDate } = useDate();
   const handleNumberChange = useCallback(
     (field) => (e) => {
       const value = Math.max(0, Number(e.target.value));
@@ -115,9 +112,6 @@ function FoodLogForm({ setOverlay, email }) {
           >
             <FiPlusCircle size={18} /> Add Ingredients
           </button>
-        </div>
-        <div className="max-sm:w-full md:basis-[49%] w-full">
-          <DatePicker selectedDate={selectedDate} onChange={setSelectedDate} />
         </div>
       </div>
     </form>
