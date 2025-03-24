@@ -1,18 +1,30 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useRecipes } from "../../context/RecipesContext";
-import { useMemo } from "react";
-import { FaCheck, FaNutritionix, FaPlus, FaRegClock } from "react-icons/fa6";
+import { useMemo, useState } from "react";
+import {
+  FaArrowLeft,
+  FaCheck,
+  FaNutritionix,
+  FaRegClock
+} from "react-icons/fa6";
 import Spinner from "../../ui/Spinner";
+import useAddMeal from "../foodLog/useAddMeal";
+import useUser from "../auth/useUser";
+import SpinnerMini from "../../ui/SpinnerMini";
 
 function RecipeDetails() {
   const { id } = useParams();
+  const navigate = useNavigate(); // For back navigation
   const { getRecipeById, isLoading } = useRecipes();
+  const { user } = useUser();
+  const { addMealFn, isPending: isAddingToFoodLog } = useAddMeal();
+
   const dessert = useMemo(() => getRecipeById(id), [id, getRecipeById]);
+  const [mealType, setMealType] = useState("Breakfast");
 
   if (isLoading) return <Spinner />;
   if (!dessert) return <p>Recipe not found</p>;
 
-  // Destructure dessert properties
   const {
     Name,
     Images,
@@ -31,14 +43,39 @@ function RecipeDetails() {
     RecipeIngredientParts = []
   } = dessert;
 
+  function handleAddToFoodLog() {
+    const totalNutrition = {
+      IngredientsId: Date.now(),
+      mealName: Name,
+      mealType,
+      email: user.email,
+      calories: Calories,
+      fat: FatContent,
+      carb: CarbohydrateContent,
+      protein: ProteinContent,
+      cholesterol: CholesterolContent,
+      sugar: SugarContent,
+      sodium: SodiumContent,
+      fiber: FiberContent
+    };
+    addMealFn(totalNutrition);
+  }
+
   return (
     <div className="grid grid-cols-1 gap-6 p-4 sm:gap-8 sm:p-6 md:p-8 md:grid-cols-2 lg:gap-10">
       {/* Left Column: Image & Title */}
       <div className="flex flex-col justify-between h-full gap-6">
+        {/* Back Button */}
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:underline"
+        >
+          <FaArrowLeft /> Back
+        </button>
         {/* Image */}
         <div className="relative w-full h-48 overflow-hidden rounded-lg sm:h-72 md:h-80">
           <img
-            src={Images[0] || "/6c4a7fb9-5fde-42e2-b537-b4732a92cf56.png"}
+            src={Images?.[0] || "/fallback-image.jpg"}
             alt={Name || "Dessert"}
             loading="lazy"
             className="object-cover w-full h-full"
@@ -51,9 +88,8 @@ function RecipeDetails() {
             {Name}
           </h1>
           <p className="text-sm text-center text-gray-600 md:text-base md:text-start">
-            A simple and delicious dish, perfect for any occasion. This classic
-            recipe is quick to prepare and can be customized with your favorite
-            ingredients, making it a versatile and satisfying meal.
+            A simple and delicious dish, perfect for any occasion. Customize it
+            with your favorite ingredients for a satisfying meal.
           </p>
         </div>
 
@@ -144,10 +180,29 @@ function RecipeDetails() {
             ))}
           </ol>
         </div>
-        {/* Button Add to food log */}
+
+        {/* Meal Type Dropdown */}
+        <div className="flex flex-col gap-2">
+          <label className="font-medium text-gray-700">Select Meal Type:</label>
+          <select
+            value={mealType}
+            onChange={(e) => setMealType(e.target.value)}
+            className="p-2 border rounded-lg"
+          >
+            <option value="Breakfast">Breakfast</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Dinner">Dinner</option>
+            <option value="Snack">Snack</option>
+          </select>
+        </div>
+
+        {/* Add to Food Log Button */}
         <div className="flex justify-end w-full">
-          <button className="flex items-center justify-end gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg max-sm:justify-center max-sm:w-full hover:bg-indigo-700">
-            <FaPlus className="text-white" /> Add to Food Log
+          <button
+            onClick={handleAddToFoodLog}
+            className="flex items-center justify-center w-40 gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 max-sm:w-full"
+          >
+            {isAddingToFoodLog ? <SpinnerMini /> : "Add to food log"}
           </button>
         </div>
       </div>

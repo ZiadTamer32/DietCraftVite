@@ -14,19 +14,21 @@ import {
   Area,
   ResponsiveContainer
 } from "recharts";
+import useGetFakeData from "../features/Progress/useGetFakeData";
 
 function Progress() {
-  // Fake data for charts
-  const calorieData = [
-    { day: "Mon", calories: 2000 },
-    { day: "Tue", calories: 1800 },
-    { day: "Wed", calories: 2200 },
-    { day: "Thu", calories: 1900 },
-    { day: "Fri", calories: 2100 },
-    { day: "Sat", calories: 2300 },
-    { day: "Sun", calories: 2000 }
-  ];
+  function getMonthName(monthNumber) {
+    const date = new Date();
+    date.setMonth(monthNumber - 1);
+    return date.toLocaleString("en-US", { month: "long" });
+  }
 
+  const { fakeData, isPending } = useGetFakeData();
+  const dateAndCalories = fakeData?.map((log) => ({
+    month: getMonthName(log.month),
+    calories: log.calories
+  }));
+  console.log(dateAndCalories);
   const macroData = [
     { name: "Carbs", value: 50 },
     { name: "Proteins", value: 30 },
@@ -66,8 +68,8 @@ function Progress() {
             Calorie Intake Over Time
           </h2>
           <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={calorieData}>
-              <XAxis dataKey="day" />
+            <LineChart data={dateAndCalories}>
+              <XAxis dataKey="month" />
               <YAxis />
               <CartesianGrid strokeDasharray="3 3" />
               <Tooltip />
@@ -77,6 +79,7 @@ function Progress() {
                 dataKey="calories"
                 stroke="#3B82F6" // Blue for Calorie Chart
                 strokeWidth={2}
+                dot={false}
               />
             </LineChart>
           </ResponsiveContainer>

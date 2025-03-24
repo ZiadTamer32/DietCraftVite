@@ -28,7 +28,7 @@ function DietForm() {
     register,
     formState: { errors },
     handleSubmit,
-    reset,
+    reset
   } = useForm();
 
   useEffect(() => {
@@ -40,7 +40,7 @@ function DietForm() {
         age: initialValues.age,
         plan: initialValues.plan + " " + initialValues.rate,
         gender: initialValues.gender,
-        activity: initialValues.activity,
+        activity: initialValues.activity
       });
     }
   }, [initialValues, reset]);
@@ -59,11 +59,11 @@ function DietForm() {
         bodyFat: Number(data.bodyFat),
         age: Number(data.age),
         rate: rate[1],
-        plan: rate[0],
+        plan: rate[0]
       };
       await dietFn({
         addGuest: { ...data, email, fullName, rate: rate[1], plan: rate[0] },
-        email,
+        email
       });
       await getNutritions(nutrationsGuest);
     } catch (error) {
@@ -100,7 +100,7 @@ function DietForm() {
               {...register("age", {
                 required: "Age is required",
                 min: { value: 13, message: "Age must be at least 13" },
-                max: { value: 110, message: "Age must not exceed 110" },
+                max: { value: 110, message: "Age must not exceed 110" }
               })}
               onChange={(e) => {
                 if (e.target.value < 0) e.target.value = 0;
@@ -128,7 +128,7 @@ function DietForm() {
               {...register("height", {
                 required: "Height is required",
                 min: { value: 100, message: "Height must be at least 100 cm" },
-                max: { value: 250, message: "Height must not exceed 250 cm" },
+                max: { value: 250, message: "Height must not exceed 250 cm" }
               })}
               onChange={(e) => {
                 if (e.target.value < 0) e.target.value = 0;
@@ -156,7 +156,7 @@ function DietForm() {
               {...register("weight", {
                 required: "Weight is required",
                 min: { value: 60, message: "Weight must be at least 60 kg" },
-                max: { value: 300, message: "Weight must not exceed 300 kg" },
+                max: { value: 300, message: "Weight must not exceed 300 kg" }
               })}
               onChange={(e) => {
                 if (e.target.value < 0) e.target.value = 0;
@@ -238,7 +238,13 @@ function DietForm() {
             disabled={isLoading}
             className="w-full p-3 text-white bg-green-600 rounded-lg md:w-48 hover:bg-green-700"
           >
-            {isLoading ? <SpinnerMini /> : "Calculate"}
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <SpinnerMini />
+              </div>
+            ) : (
+              "Calculate"
+            )}
           </button>
         </div>
       </form>

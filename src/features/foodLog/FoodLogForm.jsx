@@ -50,7 +50,13 @@ function FoodLogForm({ setOverlay, email }) {
             type="text"
             className={`w-full p-3 border rounded-lg outline-none ${errors.food ? "border-red-500" : "border-gray-300"}`}
             placeholder="Enter food name"
-            {...register("food", { required: "Food name is required" })}
+            {...register("food", {
+              required: "Food name is required",
+              pattern: {
+                value: /^[a-zA-Z\s]+$/,
+                message: "Only letters and spaces are allowed"
+              }
+            })}
           />
           {errors.food && (
             <p className="mt-2 text-sm text-red-500">{errors.food.message}</p>
