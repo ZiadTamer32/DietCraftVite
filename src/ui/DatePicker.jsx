@@ -6,7 +6,6 @@ import "./CalendarStyles.css"; // Custom styles
 
 const DatePicker = ({ selectedDate, setSelectedDate }) => {
   const onChange = (newDate) => {
-    // If the clicked date is the same as the currently selected date, deselect it (set to null)
     if (formatDateToYYYYMMDD(newDate) === selectedDate) {
       setSelectedDate(null);
     } else {

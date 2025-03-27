@@ -9,8 +9,16 @@ import Spinner from "../../ui/Spinner";
 import IngredientsLogList from "./IngredientsLogList";
 import useGetFood from "./useGetFood";
 import DatePicker from "../../ui/DatePicker";
+import formatDateToYYYYMMDD from "../../ui/DateFormat";
 
 function FoodLogs() {
+  function storedDate(data) {
+    if (typeof selectedDate !== "string") return data;
+    return data
+      ?.map((log) => log.created_at)
+      ?.map((log) => formatDateToYYYYMMDD(log))
+      ?.filter((log) => log === selectedDate);
+  }
   const [overlay, setOverlay] = useState(false);
   const { user } = useUser();
   const { progressData, isPending: isProgressPending } = useGetProgress(
@@ -18,12 +26,13 @@ function FoodLogs() {
   );
   const { foodData, isPending: isFoodPending } = useGetFood(user?.email);
   const { selectedDate, setSelectedDate } = useDate();
+
   if (isProgressPending || isFoodPending) return <Spinner />;
 
   return (
     <div className="flex flex-col gap-4 bg-[#f9fafb]">
       {/* Split Layout for Form and Calendar */}
-      <div className="flex flex-col gap-4 lg:flex-row">
+      <div className="flex flex-col-reverse gap-4 lg:flex-row">
         {/* Food Entry Form */}
         <div className="w-full p-5 bg-white rounded-lg shadow-sm lg:w-3/4">
           <h2 className="mb-4 text-lg font-bold text-gray-800 md:text-xl">
@@ -44,7 +53,8 @@ function FoodLogs() {
       {overlay && <IngredientsModal setOverlay={setOverlay} />}
 
       <div className="w-full p-4 bg-white rounded-lg shadow-sm">
-        {foodData.length === 0 && progressData.length === 0 && (
+        {storedDate(foodData).length === 0 &&
+        storedDate(progressData).length === 0 ? (
           <>
             <h2 className="text-lg font-bold text-gray-800 md:text-xl">
               Log your meals and track your progress
@@ -53,11 +63,14 @@ function FoodLogs() {
               No food entries or ingredient data found. Start adding your meals!
             </p>
           </>
+        ) : (
+          <>
+            {/* Render the list of food logs */}
+            <FoodLogList foodLog={foodData} />
+            {/* Render the list of ingredient logs */}
+            <IngredientsLogList progressData={progressData} />
+          </>
         )}
-        {/* Food Log List */}
-        <FoodLogList foodLog={foodData} />
-        {/* Ingredients List */}
-        <IngredientsLogList progressData={progressData} />
       </div>
     </div>
   );

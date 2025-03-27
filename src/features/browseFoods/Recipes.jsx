@@ -12,7 +12,7 @@ function Recipes() {
 
   const pageFromParams = Number(searchParams.get("page")) || 1;
   const [currentPage, setCurrentPage] = useState(pageFromParams);
-  const [postsPerPage] = useState(12);
+  const postsPerPage = 12;
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
