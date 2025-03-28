@@ -167,14 +167,14 @@ function Progress() {
 
       {/* Filter List */}
       <div className="pb-5">
-        <ul className="flex bg-[#f5f5f5] dark:bg-gray-800 gap-5 rounded-lg w-fit p-1 text-gray-500 dark:text-gray-300">
+        <ul className="flex flex-wrap bg-[#f5f5f5] dark:bg-gray-800 gap-5 rounded-lg w-fit max-md:justify-between max-md:w-full p-1 text-gray-500 dark:text-gray-300">
           {filterList.map((item, index) => {
             const isActive = item === filterData;
             return (
               <li
                 key={index}
                 onClick={() => setSearchParams({ filterBy: item })}
-                className={`flex items-center gap-2 px-4 py-2 cursor-pointer rounded-lg text-sm ${
+                className={`px-4 py-2 cursor-pointer rounded-lg text-sm ${
                   isActive
                     ? "text-black bg-white dark:bg-gray-600 dark:text-white"
                     : "text-[#4b5563] dark:text-gray-400"

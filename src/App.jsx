@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -28,68 +29,74 @@ function App() {
   const reactQuery = new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 0
+        staleTime: 60 * 1000, // Cache data for 1 minute instead of 0
+        refetchOnWindowFocus: false, // Reduce unnecessary refetches
+        retry: 1 // Reduce retry attempts
       }
     }
   });
 
-  return (
+  const AppProviders = ({ children }) => (
     <DateContextProvider>
       <IngredientsProvider>
         <TargetProvider>
-          <RecipesProvider>
-            <QueryClientProvider client={reactQuery}>
-              <ReactQueryDevtools initialIsOpen={false} />
-              <BrowserRouter>
-                <Suspense fallback={<Spinner />}>
-                  <Routes>
-                    <Route
-                      element={
-                        <ProtectedRoute>
-                          <AppLayout />
-                        </ProtectedRoute>
-                      }
-                    >
-                      <Route index path="/" element={<HomePage />} />
-                      <Route
-                        path="/diet-recommendation"
-                        element={<DietRecommendation />}
-                      />
-                      <Route path="/food-log" element={<FoodLog />} />
-                      <Route path="/browse-foods" element={<BrowseFoods />} />
-                      <Route path="/browse-foods/:id" element={<Recipe />} />
-                      <Route path="/progress" element={<Progress />} />
-                      <Route path="/account" element={<Account />} />
-                    </Route>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/getData" element={<GetDietForm />} />
-                    <Route path="/signup" element={<SignUp />} />
-                    <Route path="*" element={<PageNotFound />} />
-                  </Routes>
-                </Suspense>
-              </BrowserRouter>
-              <Toaster
-                position="top-center"
-                gutter={12}
-                containerStyle={{ margin: "8px" }}
-                toastOptions={{
-                  success: { duration: 3000 },
-                  error: { duration: 5000 },
-                  style: {
-                    fontSize: "15px",
-                    textAlign: "center",
-                    maxWidth: "500px",
-                    padding: "18px 24px",
-                    backgroundColor: "#ffffff",
-                    color: "#000000"
-                  }
-                }}
-              />
-            </QueryClientProvider>
-          </RecipesProvider>
+          <RecipesProvider>{children}</RecipesProvider>
         </TargetProvider>
       </IngredientsProvider>
     </DateContextProvider>
+  );
+
+  return (
+    <AppProviders>
+      <QueryClientProvider client={reactQuery}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <BrowserRouter>
+          <Suspense fallback={<Spinner />}>
+            <Routes>
+              <Route
+                element={
+                  <ProtectedRoute>
+                    <AppLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route index path="/" element={<HomePage />} />
+                <Route
+                  path="/diet-recommendation"
+                  element={<DietRecommendation />}
+                />
+                <Route path="/food-log" element={<FoodLog />} />
+                <Route path="/browse-foods" element={<BrowseFoods />} />
+                <Route path="/browse-foods/:id" element={<Recipe />} />
+                <Route path="/progress" element={<Progress />} />
+                <Route path="/account" element={<Account />} />
+              </Route>
+              <Route path="/login" element={<Login />} />
+              <Route path="/getData" element={<GetDietForm />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
+        <Toaster
+          position="top-center"
+          gutter={12}
+          containerStyle={{ margin: "8px" }}
+          toastOptions={{
+            success: { duration: 3000 },
+            error: { duration: 5000 },
+            style: {
+              fontSize: "15px",
+              textAlign: "center",
+              maxWidth: "500px",
+              padding: "18px 24px",
+              backgroundColor: "#ffffff",
+              color: "#000000"
+            }
+          }}
+        />
+      </QueryClientProvider>
+    </AppProviders>
   );
 }
 
