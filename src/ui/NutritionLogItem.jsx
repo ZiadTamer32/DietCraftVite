@@ -1,6 +1,7 @@
 import { FiTrash2 } from "react-icons/fi";
 import SpinnerMini from "./SpinnerMini";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 /* eslint-disable react/prop-types */
 function NutritionLogItem({
@@ -17,6 +18,7 @@ function NutritionLogItem({
   fiber,
   onDelete,
   isDeleting,
+  fromRecipe = false,
   showDetailsButton = false
 }) {
   const [showDetails, setShowDetails] = useState(false);
@@ -43,7 +45,16 @@ function NutritionLogItem({
       <div className="w-full sm:w-auto">
         <div className="flex items-center gap-2">
           <p className="text-xl font-semibold">
-            {name}{" "}
+            {fromRecipe ? (
+              <Link
+                to={`/browse-foods/${id}`}
+                className="hover:underline hover:text-blue-600"
+              >
+                {name}
+              </Link>
+            ) : (
+              name
+            )}{" "}
             <span className="text-sm font-normal text-gray-600">
               ({mealType})
             </span>

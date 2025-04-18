@@ -152,7 +152,7 @@ function SelectedIngredient({
         <button
           onClick={() => handleAddToDiary(nutrientsObject)}
           disabled={isPending}
-          className="flex items-center justify-center w-40 px-4 py-2 text-white bg-blue-500 rounded-lg max-sm:w-full hover:bg-blue-600"
+          className="flex items-center justify-center w-40 h-10 px-4 py-2 text-white bg-blue-500 rounded-lg max-sm:w-full hover:bg-blue-600"
         >
           {isPending ? <SpinnerMini /> : "Add to Diary"}
         </button>

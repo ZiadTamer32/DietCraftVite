@@ -6,7 +6,7 @@ function AppLayout() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
       <NavBar />
-      <main className="p-3 m-auto md:p-5 max-w-7xl">
+      <main className="p-3 m-auto md:p-5">
         <Nav />
         <div className="w-full mx-auto bg-white shadow-xl rounded-2xl">
           <Outlet />

@@ -1,12 +1,7 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useRecipes } from "../../context/RecipesContext";
 import { useMemo, useState } from "react";
-import {
-  FaArrowLeft,
-  FaCheck,
-  FaNutritionix,
-  FaRegClock
-} from "react-icons/fa6";
+import { FaCheck, FaNutritionix, FaRegClock } from "react-icons/fa6";
 import Spinner from "../../ui/Spinner";
 import useAddMeal from "../foodLog/useAddMeal";
 import useUser from "../auth/useUser";
@@ -14,7 +9,6 @@ import SpinnerMini from "../../ui/SpinnerMini";
 
 function RecipeDetails() {
   const { id } = useParams();
-  const navigate = useNavigate(); // For back navigation
   const { getRecipeById, isLoading } = useRecipes();
   const { user } = useUser();
   const { addMealFn, isPending: isAddingToFoodLog } = useAddMeal();
@@ -26,6 +20,7 @@ function RecipeDetails() {
   if (!dessert) return <p>Recipe not found</p>;
 
   const {
+    RecipeId,
     Name,
     Images,
     TotalTime,
@@ -45,7 +40,7 @@ function RecipeDetails() {
 
   function handleAddToFoodLog() {
     const totalNutrition = {
-      IngredientsId: Date.now(),
+      IngredientsId: RecipeId,
       mealName: Name,
       mealType,
       email: user.email,
@@ -56,7 +51,8 @@ function RecipeDetails() {
       cholesterol: CholesterolContent,
       sugar: SugarContent,
       sodium: SodiumContent,
-      fiber: FiberContent
+      fiber: FiberContent,
+      fromRecipes: true
     };
     addMealFn(totalNutrition);
   }
@@ -65,17 +61,10 @@ function RecipeDetails() {
     <div className="grid grid-cols-1 gap-6 p-4 sm:gap-8 sm:p-6 md:p-8 md:grid-cols-2 lg:gap-10">
       {/* Left Column: Image & Title */}
       <div className="flex flex-col justify-between h-full gap-6">
-        {/* Back Button */}
-        <button
-          onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:underline"
-        >
-          <FaArrowLeft /> Back
-        </button>
         {/* Image */}
         <div className="relative w-full h-48 overflow-hidden rounded-lg sm:h-72 md:h-80">
           <img
-            src={Images?.[0] || "/fallback-image.jpg"}
+            src={Images?.[0] || "/15.15.37_4f397ebf.jpg"}
             alt={Name || "Dessert"}
             loading="lazy"
             className="object-cover w-full h-full"

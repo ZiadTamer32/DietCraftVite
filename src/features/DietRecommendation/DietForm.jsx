@@ -236,7 +236,7 @@ function DietForm() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full p-3 text-white bg-green-600 rounded-lg md:w-48 hover:bg-green-700"
+            className="w-full h-12 p-3 text-white bg-green-600 rounded-lg md:w-48 hover:bg-green-700"
           >
             {isLoading ? (
               <div className="flex items-center justify-center">

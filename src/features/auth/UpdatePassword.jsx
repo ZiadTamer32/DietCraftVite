@@ -43,9 +43,6 @@ function UpdatePassword() {
         >
           Change Password
         </button>
-        <button className="w-full px-4 py-2 text-sm font-medium text-left text-red-600 bg-red-100 rounded-lg hover:bg-red-200">
-          Delete Account
-        </button>
       </div>
       {/* Modal */}
       <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)}>

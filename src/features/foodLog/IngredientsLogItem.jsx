@@ -22,6 +22,7 @@ function IngredientsLogItem({ progress }) {
       onDelete={deleteIngredients}
       isDeleting={isDeleting}
       showDetailsButton={true}
+      fromRecipe={progress.fromRecipes}
     />
   );
 }

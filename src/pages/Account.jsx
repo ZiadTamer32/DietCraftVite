@@ -1,19 +1,15 @@
 import { useEffect, useState } from "react";
-import { FaUserCircle, FaEdit, FaPlus } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { FaUserCircle, FaEdit } from "react-icons/fa";
 import { IoIosClose } from "react-icons/io";
 import useUser from "../features/auth/useUser";
-import usePlan from "../features/DietRecommendation/usePlan";
 import useUpdateUser from "../features/auth/useUpdateUser";
 import Spinner from "../ui/Spinner";
-import PlanForm from "../ui/PlanForm";
 import Modal from "../ui/Modal";
 import UpdatePassword from "../features/auth/UpdatePassword";
 import toast from "react-hot-toast";
 
 function Account() {
   const { user, isPending, isAuthenticated } = useUser();
-  const { plan, isPending: isPlanning } = usePlan(user?.email);
   const { editUser, isPending: isUpdating } = useUpdateUser();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [firstName, setFirstName] = useState(
@@ -42,7 +38,7 @@ function Account() {
     lastName !== originalData.lastName ||
     avatar !== null;
   // Show a full-page spinner while loading user or plan data
-  if (isPending || isPlanning) return <Spinner />;
+  if (isPending) return <Spinner />;
 
   // Redirect or show a message if the user is not authenticated
   if (!isAuthenticated) return <p>You must log in first.</p>;
@@ -139,32 +135,6 @@ function Account() {
           </div>
         </form>
       </Modal>
-
-      {/* Diet Plan Section */}
-      <div className="p-8 mx-auto mb-8 bg-white rounded-lg shadow-md max-w-8xl">
-        <h2 className="mb-6 text-2xl font-bold text-gray-800">
-          Your Diet Plans
-        </h2>
-        {Array.isArray(plan) && plan.length > 0 ? (
-          <div className="space-y-4">
-            {plan.map((planItem, index) => (
-              <PlanForm key={index} planItem={planItem} email={user?.email} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center">
-            <p className="mb-4 text-gray-600">
-              No saved diet plans found. Create a new plan to get started!
-            </p>
-            <Link
-              to="/create-plan"
-              className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700"
-            >
-              <FaPlus /> Create New Plan
-            </Link>
-          </div>
-        )}
-      </div>
 
       {/* Account Settings Section */}
       <div className="p-8 mx-auto bg-white rounded-lg shadow-md max-w-8xl">

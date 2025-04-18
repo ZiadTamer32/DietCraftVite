@@ -67,7 +67,7 @@ function Recipes() {
   if (isLoading) return <Spinner />;
 
   return (
-    <div className="flex flex-col gap-4 mx-auto md:px-4 max-w-7xl">
+    <div className="flex flex-col gap-4 mx-auto md:px-4">
       <div>
         <h2 className="mb-1 text-3xl font-bold text-center md:text-left">
           Featured Recipes
