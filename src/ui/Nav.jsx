@@ -13,7 +13,7 @@ function Nav() {
       {
         id: 1,
         label: "Dashboard",
-        href: "/",
+        href: "/dashboard",
         icon: <AiOutlineHome size={20} />
       },
       {

@@ -41,8 +41,32 @@ export async function updateUser({
   lastName,
   email,
   password,
+  currentPassword,
   avatar
 }) {
+  const user = await getCurrentUser();
+  if (!user) {
+    throw new Error("User not found.");
+  }
+
+  // 💡 Step 1: If changing password, verify current password
+  if (password) {
+    const { error: passwordError } = await supabase.auth.signInWithPassword({
+      email: user.email,
+      password: currentPassword
+    });
+
+    if (passwordError) {
+      throw new Error("Current password is incorrect.");
+    }
+
+    // Optional: prevent updating with the same password
+    if (password === currentPassword) {
+      throw new Error(
+        "New password must be different from the current password."
+      );
+    }
+  }
   let updateData;
   if (password) updateData = { password };
   if (email) updateData = { email };

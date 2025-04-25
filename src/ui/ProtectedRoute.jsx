@@ -8,7 +8,7 @@ function ProtectedRoute({ children }) {
   const { isPending, isAuthenticated } = useUser();
 
   useEffect(() => {
-    if (!isAuthenticated && !isPending) navigate("/login");
+    if (!isAuthenticated && !isPending) navigate("/");
   }, [isAuthenticated, navigate, isPending]);
 
   // Render children only if authenticated

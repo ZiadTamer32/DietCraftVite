@@ -4,7 +4,7 @@ import { RiAccountCircleFill } from "react-icons/ri";
 import { IoMenu } from "react-icons/io5";
 import { RiCloseLargeFill } from "react-icons/ri";
 import { FaUserAlt } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TbLogout2 } from "react-icons/tb";
 import SpinnerMini from "../ui/SpinnerMini";
 import useUser from "../features/auth/useUser";
@@ -16,16 +16,41 @@ function NavBar() {
   const navigate = useNavigate();
   const { isAuthenticated } = useUser();
   const { logout, isPending } = useLogout();
+
   const handleMenuToggle = () => setMenuOpen(!isMenuOpen);
+
   const handleLogout = () => {
-    logout({}, { onSuccess: () => navigate("/login") });
+    logout({}, { onSuccess: () => navigate("/") });
   };
 
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 5) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Run once on mount
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <nav>
-      <div className="flex items-center justify-between w-full p-3 bg-white border-b-2 shadow-lg border-b-gray-200">
+    <nav
+      className={`sticky top-0 z-50 w-full p-3 bg-white border-b-2 border-b-gray-200 ${isScrolled ? "shadow-md" : ""}`}
+    >
+      <div className="flex items-center justify-between">
         <div className="flex items-center justify-center gap-20">
-          <Link rel="preload" to="/">
+          <Link to="/">
             <span className="self-center pl-3 text-2xl font-bold text-black sm:pl-7">
               DietCraft
             </span>

@@ -16,14 +16,14 @@ function useLogin() {
       if (!user?.user) return;
 
       // Ensure emails is an array before using .find()
-      const isEmail = emails?.length
-        ? emails.find((e) => e.email === user.user.email)
-        : null;
+      const isEmail = emails.find((e) => e.email === user.user.email)
+        ? true
+        : false;
       // Update query cache properly
       queryClient.setQueryData(["user"], (prev) => ({ ...prev, ...user.user }));
 
       // Navigate based on whether email exists
-      const destination = isEmail ? "/" : "/getData";
+      const destination = isEmail ? "/dashboard" : "/getData";
       navigate(destination, { replace: true });
     },
 

@@ -61,6 +61,19 @@ function UpdatePassword() {
             <div>
               <input
                 type="password"
+                placeholder="Current Password"
+                className="w-full px-4 py-2 border rounded-lg"
+                {...register("currentPassword", {
+                  required: "This is required"
+                })}
+              />
+              {errors.password && (
+                <p className="mt-1 text-red-500">{errors.password.message}</p>
+              )}
+            </div>
+            <div>
+              <input
+                type="password"
                 placeholder="Password"
                 className="w-full px-4 py-2 border rounded-lg"
                 {...register("password", {

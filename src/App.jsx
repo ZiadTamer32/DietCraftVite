@@ -15,6 +15,7 @@ import Spinner from "./ui/Spinner";
 // Dynamically import pages
 const Account = lazy(() => import("./pages/Account"));
 const BrowseFoods = lazy(() => import("./pages/BrowseFoods"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
 const DietRecommendation = lazy(() => import("./pages/DietRecommendation"));
 const FoodLog = lazy(() => import("./pages/FoodLog"));
 const GetDietForm = lazy(() => import("./pages/GetDietForm"));
@@ -53,6 +54,7 @@ function App() {
         <BrowserRouter>
           <Suspense fallback={<Spinner />}>
             <Routes>
+              <Route index path="/" element={<HomePage />} />
               <Route
                 element={
                   <ProtectedRoute>
@@ -60,11 +62,11 @@ function App() {
                   </ProtectedRoute>
                 }
               >
-                <Route index path="/" element={<HomePage />} />
                 <Route
                   path="/diet-recommendation"
                   element={<DietRecommendation />}
                 />
+                <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/food-log" element={<FoodLog />} />
                 <Route path="/browse-foods" element={<BrowseFoods />} />
                 <Route path="/browse-foods/:id" element={<Recipe />} />
