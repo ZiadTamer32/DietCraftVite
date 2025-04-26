@@ -43,7 +43,7 @@ export default function DietDataForm() {
 
   const handlePrevious = () => setStep((prev) => prev - 1);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const rate = data?.plan?.split(" ");
     dietFn({
       addGuest: { ...data, email, fullName, rate: rate[1], plan: rate[0] },
@@ -58,8 +58,9 @@ export default function DietDataForm() {
       rate: rate[1],
       plan: rate[0]
     };
-    getNutritions(nutrationsGuest);
+    await getNutritions(nutrationsGuest);
   };
+
   useEffect(() => {
     if (res) targetFn({ email, targetData: res });
   }, [res]);

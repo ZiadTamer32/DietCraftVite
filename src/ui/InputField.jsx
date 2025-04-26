@@ -6,7 +6,7 @@ function InputField({
   register,
   validation,
   error,
-  defaultValue,
+  defaultValue
 }) {
   return (
     <div>

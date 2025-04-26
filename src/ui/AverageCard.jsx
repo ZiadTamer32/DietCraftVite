@@ -12,7 +12,7 @@ function AverageName({ AverageName, AverageNumber, icon, isPending }) {
       <div className="p-6 pt-0">
         <p className="mb-2 text-2xl font-bold">
           {isPending ? (
-            <div className="spinner-mini-black"></div>
+            <span className="block spinner-mini-black"></span>
           ) : (
             AverageNumber
           )}

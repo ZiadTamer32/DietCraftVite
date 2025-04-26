@@ -106,7 +106,7 @@ function Recipes() {
         <button
           type="button"
           onClick={toggleSearchBy}
-          className={`px-5 py-3 font-semibold w-full md:w-1/4 rounded-lg transition-all shadow-md ${
+          className={`px-5 py-3 font-semibold w-full md:w-1/4 rounded-lg transition-colors shadow-sm ${
             searchBy === "ingredient"
               ? "bg-green-600 hover:bg-green-700 text-white"
               : "bg-blue-600 hover:bg-blue-700 text-white"

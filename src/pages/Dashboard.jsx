@@ -157,7 +157,7 @@ function Dashboard() {
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-3">
-        <div className="p-6 bg-white rounded-lg shadow-md">
+        <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
           <h3 className="text-lg font-semibold text-gray-700">
             Calories Consumed
           </h3>
@@ -165,7 +165,7 @@ function Dashboard() {
             {stats.caloriesConsumed} kcal
           </p>
         </div>
-        <div className="p-6 bg-white rounded-lg shadow-md">
+        <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
           <h3 className="text-lg font-semibold text-gray-700">
             Workouts Completed
           </h3>
@@ -173,7 +173,7 @@ function Dashboard() {
             {stats.workoutsCompleted}
           </p>
         </div>
-        <div className="p-6 bg-white rounded-lg shadow-md">
+        <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
           <h3 className="text-lg font-semibold text-gray-700">
             Goals Achieved
           </h3>
@@ -189,7 +189,7 @@ function Dashboard() {
           Weekly Summary
         </h2>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <div className="p-6 bg-white rounded-lg shadow-md">
+          <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
             <h3 className="text-lg font-semibold text-gray-700">
               Total Calories
             </h3>
@@ -197,7 +197,7 @@ function Dashboard() {
               {weeklySummary.totalCalories} kcal
             </p>
           </div>
-          <div className="p-6 bg-white rounded-lg shadow-md">
+          <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
             <h3 className="text-lg font-semibold text-gray-700">
               Total Workouts
             </h3>
@@ -205,7 +205,7 @@ function Dashboard() {
               {weeklySummary.totalWorkouts}
             </p>
           </div>
-          <div className="p-6 bg-white rounded-lg shadow-md">
+          <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
             <h3 className="text-lg font-semibold text-gray-700">
               Avg. Water Intake
             </h3>
@@ -213,7 +213,7 @@ function Dashboard() {
               {weeklySummary.averageWaterIntake}L/day
             </p>
           </div>
-          <div className="p-6 bg-white rounded-lg shadow-md">
+          <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
             <h3 className="text-lg font-semibold text-gray-700">
               Weight Change
             </h3>
@@ -233,7 +233,7 @@ function Dashboard() {
           {recentActivities.map((activity) => (
             <div
               key={activity.id}
-              className="p-4 bg-white rounded-lg shadow-md"
+              className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm"
             >
               <p className="text-gray-700">{activity.description}</p>
             </div>
@@ -251,7 +251,7 @@ function Dashboard() {
       {/* Goals and Progress */}
       <div className="mb-8">
         <h2 className="mb-4 text-2xl font-bold text-gray-800">Your Progress</h2>
-        <div className="p-6 bg-white rounded-lg shadow-md">
+        <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
           <h3 className="text-lg font-semibold text-gray-700">
             Monthly Goal: {progress.current}% Complete
           </h3>
@@ -288,7 +288,7 @@ function Dashboard() {
           <Link
             rel="preload"
             to="/food-log"
-            className="flex items-center justify-center gap-2 p-6 transition-all bg-white rounded-lg shadow-md hover:bg-green-50"
+            className="flex items-center justify-center gap-2 p-6 transition-all bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-green-50"
           >
             <FaUtensils className="text-green-600" size={24} />
             <span className="text-lg font-semibold text-gray-700">
@@ -298,7 +298,7 @@ function Dashboard() {
           <Link
             rel="preload"
             to="/diet-recommendation"
-            className="flex items-center justify-center gap-2 p-6 transition-all bg-white rounded-lg shadow-md hover:bg-blue-50"
+            className="flex items-center justify-center gap-2 p-6 transition-all bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-blue-50"
           >
             <FaCalculator className="text-blue-600" size={24} />
             <span className="text-lg font-semibold text-gray-700">
@@ -308,7 +308,7 @@ function Dashboard() {
           <Link
             rel="preload"
             to="/browse-foods"
-            className="flex items-center justify-center gap-2 p-6 transition-all bg-white rounded-lg shadow-md hover:bg-orange-50"
+            className="flex items-center justify-center gap-2 p-6 transition-all bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-orange-50"
           >
             <FiSearch className="text-orange-600" size={24} />
             <span className="text-lg font-semibold text-gray-700">
@@ -332,7 +332,7 @@ function Dashboard() {
           </Link>
         </div>
         <div className="space-y-4">
-          <div className="p-4 rounded-lg shadow-md bg-[#F9FAFB]">
+          <div className="p-4 rounded-lg shadow-sm border border-gray-200 bg-[#F9FAFB]">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="text-gray-400">
@@ -363,7 +363,7 @@ function Dashboard() {
             </div>
           </div>
 
-          <div className="p-4 rounded-lg shadow-md bg-[#F9FAFB]">
+          <div className="p-4 rounded-lg shadow-sm border border-gray-200 bg-[#F9FAFB]">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="text-gray-400">
@@ -394,7 +394,7 @@ function Dashboard() {
             </div>
           </div>
 
-          <div className="p-4 rounded-lg shadow-md bg-[#F9FAFB]">
+          <div className="p-4 rounded-lg shadow-sm border border-gray-200 bg-[#F9FAFB]">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="text-gray-400">

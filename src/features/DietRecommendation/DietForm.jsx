@@ -11,6 +11,10 @@ import SpinnerMini from "../../ui/SpinnerMini";
 import useCreateTarget from "./useCreateTarget";
 import useGetTarget from "./useGetTarget";
 
+// 👉 Import your custom fields
+import InputField from "../../ui/InputField";
+import SelectField from "../../ui/SelectField";
+
 function DietForm() {
   const { user } = useUser();
   const { plan: plans, isPending: isPlanning } = usePlan(user?.email);
@@ -61,7 +65,7 @@ function DietForm() {
         rate: rate[1],
         plan: rate[0]
       };
-      await dietFn({
+      dietFn({
         addGuest: { ...data, email, fullName, rate: rate[1], plan: rate[0] },
         email
       });
@@ -87,147 +91,103 @@ function DietForm() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-6 mb-6 md:grid-cols-2">
           {/* Age */}
-          <div>
-            <label
-              htmlFor="age"
-              className="block mb-2 text-sm font-medium text-gray-900"
-            >
-              Age
-            </label>
-            <input
-              type="number"
-              id="age"
-              {...register("age", {
-                required: "Age is required",
-                min: { value: 13, message: "Age must be at least 13" },
-                max: { value: 110, message: "Age must not exceed 110" }
-              })}
-              onChange={(e) => {
-                if (e.target.value < 0) e.target.value = 0;
-              }}
-              className={`w-full p-3 border rounded-lg outline-none ${
-                errors.age ? "border-red-500" : "border-gray-300"
-              }`}
-            />
-            {errors.age && (
-              <p className="text-sm text-red-500">{errors.age.message}</p>
-            )}
-          </div>
+          <InputField
+            id="age"
+            label="Age"
+            type="number"
+            register={register}
+            validation={{
+              required: "Age is required",
+              min: { value: 13, message: "Age must be at least 13" },
+              max: { value: 110, message: "Age must not exceed 110" }
+            }}
+            error={errors.age}
+          />
 
           {/* Height */}
-          <div>
-            <label
-              htmlFor="height"
-              className="block mb-2 text-sm font-medium text-gray-900"
-            >
-              Height (cm)
-            </label>
-            <input
-              type="number"
-              id="height"
-              {...register("height", {
-                required: "Height is required",
-                min: { value: 100, message: "Height must be at least 100 cm" },
-                max: { value: 250, message: "Height must not exceed 250 cm" }
-              })}
-              onChange={(e) => {
-                if (e.target.value < 0) e.target.value = 0;
-              }}
-              className={`w-full p-3 border rounded-lg outline-none ${
-                errors.height ? "border-red-500" : "border-gray-300"
-              }`}
-            />
-            {errors.height && (
-              <p className="text-sm text-red-500">{errors.height.message}</p>
-            )}
-          </div>
+          <InputField
+            id="height"
+            label="Height (cm)"
+            type="number"
+            register={register}
+            validation={{
+              required: "Height is required",
+              min: { value: 100, message: "Height must be at least 100 cm" },
+              max: { value: 250, message: "Height must not exceed 250 cm" }
+            }}
+            error={errors.height}
+          />
 
-          {/* Weight */}
-          <div>
-            <label
-              htmlFor="weight"
-              className="block mb-2 text-sm font-medium text-gray-900"
-            >
-              Weight (kg)
-            </label>
-            <input
-              type="number"
-              id="weight"
-              {...register("weight", {
-                required: "Weight is required",
-                min: { value: 60, message: "Weight must be at least 60 kg" },
-                max: { value: 300, message: "Weight must not exceed 300 kg" }
-              })}
-              onChange={(e) => {
-                if (e.target.value < 0) e.target.value = 0;
-              }}
-              className={`w-full p-3 border rounded-lg outline-none ${
-                errors.weight ? "border-red-500" : "border-gray-300"
-              }`}
-            />
-            {errors.weight && (
-              <p className="text-sm text-red-500">{errors.weight.message}</p>
-            )}
-          </div>
+          {/* Weight 👉 Using your custom InputField */}
+          <InputField
+            id="weight"
+            label="Weight (kg)"
+            type="number"
+            register={register}
+            validation={{
+              required: "Weight is required",
+              min: {
+                value: 60,
+                message: "Weight should be greater than 60"
+              },
+              max: {
+                value: 300,
+                message: "Weight should be less than 300"
+              }
+            }}
+            error={errors.weight}
+          />
 
-          {/* Gender */}
-          <div>
-            <label
-              htmlFor="gender"
-              className="block mb-2 text-sm font-medium text-gray-900"
-            >
-              Gender
-            </label>
-            <select
-              id="gender"
-              {...register("gender")}
-              className="w-full p-3 border rounded-lg outline-none"
-            >
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
-          </div>
+          {/* Gender 👉 Using your custom SelectField */}
+          <SelectField
+            id="gender"
+            label="Gender"
+            register={register}
+            validation={{ required: "Gender is required" }}
+            error={errors.gender}
+            options={[
+              { value: "male", label: "Male" },
+              { value: "female", label: "Female" }
+            ]}
+          />
         </div>
 
         {/* Plan & Activity */}
         <div className="grid gap-6 md:grid-cols-2">
           <div>
-            <label
-              htmlFor="plan"
-              className="block mb-2 text-sm font-medium text-gray-900"
-            >
-              Choose your weight loss plan:
-            </label>
-            <select
+            <SelectField
               id="plan"
-              {...register("plan")}
-              className="w-full p-3 border rounded-lg outline-none"
-            >
-              <option value="gain 0.5">Gain Weight</option>
-              <option value="gain 1">Extreme Gain Weight</option>
-              <option value="maintain 0">Maintain</option>
-              <option value="loss 0.5">Weight Loss</option>
-              <option value="loss 1">Extreme Weight Loss</option>
-            </select>
+              label="Choose your weight loss plan:"
+              register={register}
+              validation={{ required: "Plan is required" }}
+              error={errors.plan}
+              options={[
+                { value: "gain 0.5", label: "Gain Weight" },
+                { value: "gain 1", label: "Extreme Gain Weight" },
+                { value: "maintain 0", label: "Maintain" },
+                { value: "loss 0.5", label: "Weight Loss" },
+                { value: "loss 1", label: "Extreme Weight Loss" }
+              ]}
+            />
           </div>
           <div>
-            <label
-              htmlFor="activity"
-              className="block mb-2 text-sm font-medium text-gray-900"
-            >
-              Activity
-            </label>
-            <select
+            <SelectField
               id="activity"
-              {...register("activity")}
-              className="w-full p-3 border rounded-lg outline-none"
-            >
-              <option value="sedentary">Little/no exercise</option>
-              <option value="lightlyActive">Light exercise</option>
-              <option value="moderateActivity">Moderate exercise</option>
-              <option value="active">Active</option>
-              <option value="veryActive">Very Active & Physical Job</option>
-            </select>
+              label="Activity Level"
+              register={register}
+              validation={{ required: "Activity is required" }}
+              error={errors.activity}
+              options={[
+                { value: "sedentary", label: "Little/no exercise" },
+                { value: "lightlyActive", label: "Light exercise" },
+                { value: "moderateActivity", label: "Moderate exercise" },
+                { value: "active", label: "Active" },
+                {
+                  value: "veryActive",
+                  label: "Very Active & Physical Job"
+                }
+              ]}
+            />
           </div>
         </div>
 

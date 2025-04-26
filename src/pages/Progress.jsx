@@ -19,6 +19,7 @@ import useGetFakeData from "../features/Progress/useGetFakeData";
 import AverageCard from "../ui/AverageCard";
 import FilterCharts from "../ui/FilterCharts";
 import CaloriesByMealChart from "../ui/CaloriesByMealChart";
+import DropdownMenu from "../ui/DropdownMenu";
 
 function Progress() {
   function getMonthName(monthNumber) {
@@ -126,7 +127,7 @@ function Progress() {
   return (
     <div className="p-4 transition-all duration-300 rounded-lg md:p-7 dark:bg-gray-900 dark:text-white">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+        <h1 className="text-2xl font-bold text-gray-800 md:text-3xl dark:text-white">
           DietCraft Progress
         </h1>
         <button
@@ -167,7 +168,7 @@ function Progress() {
 
       {/* Filter List */}
       <div className="pb-5">
-        <ul className="flex flex-wrap bg-[#f5f5f5] dark:bg-gray-800 gap-5 rounded-lg w-fit max-md:justify-between max-md:w-full p-1 text-gray-500 dark:text-gray-300">
+        <ul className="hidden md:flex flex-wrap bg-[#f5f5f5] dark:bg-gray-800 gap-5 rounded-lg w-fit max-md:justify-between max-md:w-full p-1 text-gray-500 dark:text-gray-300">
           {filterList.map((item, index) => {
             const isActive = item === filterData;
             return (
@@ -185,6 +186,11 @@ function Progress() {
             );
           })}
         </ul>
+        <DropdownMenu
+          filterData={filterData}
+          filterList={filterList}
+          setSearchParams={setSearchParams}
+        />
       </div>
 
       {/* Charts Grid */}

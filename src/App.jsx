@@ -10,6 +10,7 @@ import { IngredientsProvider } from "./context/IngredientsContext";
 import { Suspense, lazy } from "react";
 import AppLayout from "./ui/AppLayout";
 import ProtectedRoute from "./ui/ProtectedRoute";
+import PublicRoute from "./ui/PublicRoute";
 import Spinner from "./ui/Spinner";
 
 // Dynamically import pages
@@ -54,7 +55,15 @@ function App() {
         <BrowserRouter>
           <Suspense fallback={<Spinner />}>
             <Routes>
-              <Route index path="/" element={<HomePage />} />
+              <Route
+                index
+                path="/"
+                element={
+                  <PublicRoute>
+                    <HomePage />
+                  </PublicRoute>
+                }
+              />
               <Route
                 element={
                   <ProtectedRoute>
