@@ -14,8 +14,10 @@ import useGetTarget from "./useGetTarget";
 // 👉 Import your custom fields
 import InputField from "../../ui/InputField";
 import SelectField from "../../ui/SelectField";
+import { useRecipes } from "../../context/RecipesContext";
 
 function DietForm() {
+  const { handleSubmitForm } = useRecipes();
   const { user } = useUser();
   const { plan: plans, isPending: isPlanning } = usePlan(user?.email);
   const { getNutritions, isLoading, data: res } = useTarget();
@@ -32,7 +34,7 @@ function DietForm() {
     register,
     formState: { errors },
     handleSubmit,
-    reset
+    reset,
   } = useForm();
 
   useEffect(() => {
@@ -44,7 +46,7 @@ function DietForm() {
         age: initialValues.age,
         plan: initialValues.plan + " " + initialValues.rate,
         gender: initialValues.gender,
-        activity: initialValues.activity
+        activity: initialValues.activity,
       });
     }
   }, [initialValues, reset]);
@@ -63,13 +65,14 @@ function DietForm() {
         bodyFat: Number(data.bodyFat),
         age: Number(data.age),
         rate: rate[1],
-        plan: rate[0]
+        plan: rate[0],
       };
       dietFn({
         addGuest: { ...data, email, fullName, rate: rate[1], plan: rate[0] },
-        email
+        email,
       });
       await getNutritions(nutrationsGuest);
+      await handleSubmitForm(nutrationsGuest);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -92,6 +95,7 @@ function DietForm() {
         <div className="grid gap-6 mb-6 md:grid-cols-2">
           {/* Age */}
           <InputField
+            value={initialValues?.age}
             id="age"
             label="Age"
             type="number"
@@ -99,13 +103,14 @@ function DietForm() {
             validation={{
               required: "Age is required",
               min: { value: 13, message: "Age must be at least 13" },
-              max: { value: 110, message: "Age must not exceed 110" }
+              max: { value: 110, message: "Age must not exceed 110" },
             }}
             error={errors.age}
           />
 
           {/* Height */}
           <InputField
+            value={initialValues?.height}
             id="height"
             label="Height (cm)"
             type="number"
@@ -113,13 +118,14 @@ function DietForm() {
             validation={{
               required: "Height is required",
               min: { value: 100, message: "Height must be at least 100 cm" },
-              max: { value: 250, message: "Height must not exceed 250 cm" }
+              max: { value: 250, message: "Height must not exceed 250 cm" },
             }}
             error={errors.height}
           />
 
           {/* Weight 👉 Using your custom InputField */}
           <InputField
+            value={initialValues?.weight}
             id="weight"
             label="Weight (kg)"
             type="number"
@@ -128,18 +134,19 @@ function DietForm() {
               required: "Weight is required",
               min: {
                 value: 60,
-                message: "Weight should be greater than 60"
+                message: "Weight should be greater than 60",
               },
               max: {
                 value: 300,
-                message: "Weight should be less than 300"
-              }
+                message: "Weight should be less than 300",
+              },
             }}
             error={errors.weight}
           />
 
           {/* Gender 👉 Using your custom SelectField */}
           <SelectField
+            value={initialValues?.gender}
             id="gender"
             label="Gender"
             register={register}
@@ -147,7 +154,7 @@ function DietForm() {
             error={errors.gender}
             options={[
               { value: "male", label: "Male" },
-              { value: "female", label: "Female" }
+              { value: "female", label: "Female" },
             ]}
           />
         </div>
@@ -156,6 +163,7 @@ function DietForm() {
         <div className="grid gap-6 md:grid-cols-2">
           <div>
             <SelectField
+              value={initialValues?.plan}
               id="plan"
               label="Choose your weight loss plan:"
               register={register}
@@ -166,12 +174,13 @@ function DietForm() {
                 { value: "gain 1", label: "Extreme Gain Weight" },
                 { value: "maintain 0", label: "Maintain" },
                 { value: "loss 0.5", label: "Weight Loss" },
-                { value: "loss 1", label: "Extreme Weight Loss" }
+                { value: "loss 1", label: "Extreme Weight Loss" },
               ]}
             />
           </div>
           <div>
             <SelectField
+              value={initialValues?.activity}
               id="activity"
               label="Activity Level"
               register={register}
@@ -184,8 +193,8 @@ function DietForm() {
                 { value: "active", label: "Active" },
                 {
                   value: "veryActive",
-                  label: "Very Active & Physical Job"
-                }
+                  label: "Very Active & Physical Job",
+                },
               ]}
             />
           </div>

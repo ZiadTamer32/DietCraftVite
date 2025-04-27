@@ -6,6 +6,7 @@ import Spinner from "../../ui/Spinner";
 import useAddMeal from "../foodLog/useAddMeal";
 import useUser from "../auth/useUser";
 import SpinnerMini from "../../ui/SpinnerMini";
+import { convertArray } from "../../services/functions";
 
 function RecipeDetails() {
   const { id } = useParams();
@@ -35,7 +36,7 @@ function RecipeDetails() {
     SodiumContent,
     FiberContent,
     RecipeInstructions = [],
-    RecipeIngredientParts = []
+    RecipeIngredientParts = [],
   } = dessert;
 
   function handleAddToFoodLog() {
@@ -52,7 +53,7 @@ function RecipeDetails() {
       sugar: SugarContent,
       sodium: SodiumContent,
       fiber: FiberContent,
-      fromRecipes: true
+      fromRecipes: true,
     };
     addMealFn(totalNutrition);
   }
@@ -64,7 +65,7 @@ function RecipeDetails() {
         {/* Image */}
         <div className="relative w-full h-48 overflow-hidden rounded-lg sm:h-72 md:h-80">
           <img
-            src={Images?.[0] || "/15.15.37_4f397ebf.jpg"}
+            src={convertArray(Images)?.[0] || "/15.15.37_4f397ebf.jpg"}
             alt={Name || "Dessert"}
             loading="lazy"
             className="object-cover w-full h-full"
@@ -146,7 +147,7 @@ function RecipeDetails() {
             Ingredients:
           </h2>
           <ul className="mt-2 space-y-2 text-gray-700 overflow-y-auto max-h-[50vh]">
-            {RecipeIngredientParts?.map((item, index) => (
+            {convertArray(RecipeIngredientParts)?.map((item, index) => (
               <li key={index} className="flex items-center gap-2">
                 <FaCheck className="text-green-500" />
                 {item.charAt(0).toUpperCase() + item.slice(1)}
@@ -161,7 +162,7 @@ function RecipeDetails() {
             Instructions:
           </h2>
           <ol className="mt-2 space-y-2 text-gray-700 overflow-y-auto max-h-[40vh]">
-            {RecipeInstructions?.map((item, index) => (
+            {convertArray(RecipeInstructions)?.map((item, index) => (
               <li key={index} className="flex gap-2">
                 <span className="font-semibold">{index + 1}.</span>
                 {item.charAt(0).toUpperCase() + item.slice(1)}

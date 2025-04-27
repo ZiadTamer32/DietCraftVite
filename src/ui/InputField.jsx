@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 function InputField({
+  value,
   id,
   label,
   type,
   register,
   validation,
   error,
-  defaultValue
+  defaultValue,
 }) {
   return (
     <div>
@@ -17,6 +18,7 @@ function InputField({
         {label}
       </label>
       <input
+        value={value}
         id={id}
         defaultValue={defaultValue}
         type={type}

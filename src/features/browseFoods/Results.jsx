@@ -1,9 +1,14 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 import { FaFire, FaCubes, FaDrumstickBite } from "react-icons/fa";
+import { convertArray } from "../../services/functions";
 
 function Results({ dessert }) {
   // Limit the name to 4 words
+  const isImg =
+    convertArray(dessert?.Images)[0] === "empty"
+      ? false
+      : convertArray(dessert?.Images)[0];
   const Name =
     dessert.Name.split(" ").length > 3
       ? dessert.Name.split(" ").slice(0, 3).join(" ") + "..."
@@ -14,7 +19,7 @@ function Results({ dessert }) {
       <div className="block shadow-xs shadow-green-200">
         <img
           alt={dessert?.Name || "Dessert image"}
-          src={dessert?.Images[0] || "/15.15.37_4f397ebf.jpg"}
+          src={isImg || "/15.15.37_4f397ebf.jpg"}
           loading="lazy"
           className="object-cover w-full h-56 rounded-t-lg rounded-b-none"
         />

@@ -10,14 +10,16 @@ import SpinnerMini from "../../ui/SpinnerMini";
 import InputField from "../../ui/InputField";
 import SelectField from "../../ui/SelectField";
 import useCreateTarget from "./useCreateTarget";
+import { useRecipes } from "../../context/RecipesContext";
 
 export default function DietDataForm() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    trigger
+    trigger,
   } = useForm();
+  const { handleSubmitForm } = useRecipes();
   const { dietFn, isPending } = useDiet();
   const { user } = useUser();
   const { getNutritions, data: res } = useTarget();
@@ -33,7 +35,7 @@ export default function DietDataForm() {
   const fieldsByStep = {
     1: ["weight", "height", "bodyFat"],
     2: ["age", "gender"],
-    3: ["activity", "plan"]
+    3: ["activity", "plan"],
   };
 
   const handleNext = async () => {
@@ -47,7 +49,7 @@ export default function DietDataForm() {
     const rate = data?.plan?.split(" ");
     dietFn({
       addGuest: { ...data, email, fullName, rate: rate[1], plan: rate[0] },
-      email
+      email,
     });
     const nutrationsGuest = {
       ...data,
@@ -56,9 +58,10 @@ export default function DietDataForm() {
       bodyFat: Number(data.bodyFat),
       age: Number(data.age),
       rate: rate[1],
-      plan: rate[0]
+      plan: rate[0],
     };
     await getNutritions(nutrationsGuest);
+    await handleSubmitForm(nutrationsGuest);
   };
 
   useEffect(() => {
@@ -89,12 +92,12 @@ export default function DietDataForm() {
                       required: "Weight is required",
                       min: {
                         value: 60,
-                        message: "Weight should be greater than 60"
+                        message: "Weight should be greater than 60",
                       },
                       max: {
                         value: 300,
-                        message: "Weight should be less than 300"
-                      }
+                        message: "Weight should be less than 300",
+                      },
                     }}
                     error={errors.weight}
                   />
@@ -107,12 +110,12 @@ export default function DietDataForm() {
                       required: "Height is required",
                       min: {
                         value: 100,
-                        message: "Height should be greater than 100"
+                        message: "Height should be greater than 100",
                       },
                       max: {
                         value: 250,
-                        message: "Height should be less than 250"
-                      }
+                        message: "Height should be less than 250",
+                      },
                     }}
                     error={errors.height}
                   />
@@ -130,12 +133,12 @@ export default function DietDataForm() {
                       required: "Age is required",
                       min: {
                         value: 13,
-                        message: "Age should be greater than 13"
+                        message: "Age should be greater than 13",
                       },
                       max: {
                         value: 110,
-                        message: "Age should be less than 110"
-                      }
+                        message: "Age should be less than 110",
+                      },
                     }}
                     error={errors.age}
                   />
@@ -147,7 +150,7 @@ export default function DietDataForm() {
                     error={errors.gender}
                     options={[
                       { value: "male", label: "Male" },
-                      { value: "female", label: "Female" }
+                      { value: "female", label: "Female" },
                     ]}
                   />
                 </>
@@ -168,8 +171,8 @@ export default function DietDataForm() {
                       { value: "active", label: "Active" },
                       {
                         value: "veryActive",
-                        label: "Very Active & Physical Job"
-                      }
+                        label: "Very Active & Physical Job",
+                      },
                     ]}
                   />
                   <SelectField
@@ -183,7 +186,7 @@ export default function DietDataForm() {
                       { value: "gain 1", label: "Extreme Weight gain" },
                       { value: "maintain 0", label: "Maintain Weight" },
                       { value: "loss 0.5", label: "Weight Loss" },
-                      { value: "loss 1", label: "Extreme Weight loss" }
+                      { value: "loss 1", label: "Extreme Weight loss" },
                     ]}
                   />
                 </>
