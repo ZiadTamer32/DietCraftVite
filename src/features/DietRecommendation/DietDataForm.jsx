@@ -1,7 +1,7 @@
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { useForm } from "react-hook-form";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useTarget } from "../../context/TargetContext";
 import Progress from "../../ui/Progress";
 import useDiet from "./useDiet";
@@ -20,7 +20,7 @@ export default function DietDataForm() {
   } = useForm();
   const { dietFn, isPending } = useDiet();
   const { user } = useUser();
-  const { getNutritions, data: res } = useTarget();
+  const { getNutritions } = useTarget();
   const [step, setStep] = useState(1);
   const email = useMemo(() => user?.email || "", [user]);
   const fullName = useMemo(
@@ -58,12 +58,11 @@ export default function DietDataForm() {
       rate: rate[1],
       plan: rate[0]
     };
-    await getNutritions(nutrationsGuest);
+    const nutrations = await getNutritions(nutrationsGuest);
+    if (nutrations) {
+      targetFn({ email, targetData: nutrations });
+    }
   };
-
-  useEffect(() => {
-    if (res) targetFn({ email, targetData: res });
-  }, [res]);
 
   return (
     <section>

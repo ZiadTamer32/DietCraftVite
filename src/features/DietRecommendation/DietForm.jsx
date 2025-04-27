@@ -1,9 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useForm } from "react-hook-form";
 import { useTarget } from "../../context/TargetContext";
-import { useEffect } from "react";
 import useUser from "../auth/useUser";
-import usePlan from "./usePlan";
 import useDiet from "./useDiet";
 import Target from "../DietRecommendation/Target";
 import Spinner from "../../ui/Spinner";
@@ -17,39 +14,18 @@ import SelectField from "../../ui/SelectField";
 
 function DietForm() {
   const { user } = useUser();
-  const { plan: plans, isPending: isPlanning } = usePlan(user?.email);
-  const { getNutritions, isLoading, data: res } = useTarget();
+  const email = user?.email || "";
+  const { getNutritions, isLoading } = useTarget();
   const { dietFn } = useDiet();
   const { targetFn } = useCreateTarget();
-  const { isPending: isGetting } = useGetTarget(user?.email);
-
-  const isAnyLoading = isGetting || isPlanning;
-
-  const details = Array.isArray(plans) ? plans : [];
-  const initialValues = details.length > 0 ? details[0] : null;
+  const { isPending: isGetting } = useGetTarget(email);
 
   const {
     register,
     formState: { errors },
-    handleSubmit,
-    reset
+    handleSubmit
   } = useForm();
 
-  useEffect(() => {
-    if (initialValues) {
-      reset({
-        height: initialValues.height,
-        weight: initialValues.weight,
-        bodyFat: initialValues.bodyFat,
-        age: initialValues.age,
-        plan: initialValues.plan + " " + initialValues.rate,
-        gender: initialValues.gender,
-        activity: initialValues.activity
-      });
-    }
-  }, [initialValues, reset]);
-
-  const email = user?.email || "";
   const fullName =
     `${user?.user_metadata?.firstName || ""} ${user?.user_metadata?.lastName || ""}`.trim();
 
@@ -69,17 +45,16 @@ function DietForm() {
         addGuest: { ...data, email, fullName, rate: rate[1], plan: rate[0] },
         email
       });
-      await getNutritions(nutrationsGuest);
+      const nutrations = await getNutritions(nutrationsGuest);
+      if (nutrations) {
+        targetFn({ email, targetData: nutrations });
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
 
-  useEffect(() => {
-    if (res) targetFn({ email, targetData: res });
-  }, [res]);
-
-  if (isAnyLoading) {
+  if (isGetting) {
     return <Spinner />;
   }
 
@@ -118,7 +93,7 @@ function DietForm() {
             error={errors.height}
           />
 
-          {/* Weight 👉 Using your custom InputField */}
+          {/* Weight */}
           <InputField
             id="weight"
             label="Weight (kg)"
@@ -138,7 +113,7 @@ function DietForm() {
             error={errors.weight}
           />
 
-          {/* Gender 👉 Using your custom SelectField */}
+          {/* Gender */}
           <SelectField
             id="gender"
             label="Gender"
@@ -157,7 +132,7 @@ function DietForm() {
           <div>
             <SelectField
               id="plan"
-              label="Choose your weight loss plan:"
+              label="Your weight loss plan:"
               register={register}
               validation={{ required: "Plan is required" }}
               error={errors.plan}
