@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { useTarget } from "../../context/TargetContext";
 import { useEffect } from "react";
 import useUser from "../auth/useUser";
-import usePlan from "./usePlan";
 import useDiet from "./useDiet";
 import Target from "../DietRecommendation/Target";
 import Spinner from "../../ui/Spinner";
@@ -14,44 +13,23 @@ import useGetTarget from "./useGetTarget";
 // 👉 Import your custom fields
 import InputField from "../../ui/InputField";
 import SelectField from "../../ui/SelectField";
-import { useRecipes } from "../../context/RecipesContext";
 
 function DietForm() {
-  const { handleSubmitForm } = useRecipes();
   const { user } = useUser();
-  const { plan: plans, isPending: isPlanning } = usePlan(user?.email);
+  const email = user?.email || "";
   const { getNutritions, isLoading, data: res } = useTarget();
   const { dietFn } = useDiet();
   const { targetFn } = useCreateTarget();
-  const { isPending: isGetting } = useGetTarget(user?.email);
+  const { isPending: isGetting } = useGetTarget(email);
 
-  const isAnyLoading = isGetting || isPlanning;
-
-  const details = Array.isArray(plans) ? plans : [];
-  const initialValues = details.length > 0 ? details[0] : null;
+  const isAnyLoading = isGetting;
 
   const {
     register,
     formState: { errors },
     handleSubmit,
-    reset,
   } = useForm();
 
-  useEffect(() => {
-    if (initialValues) {
-      reset({
-        height: initialValues.height,
-        weight: initialValues.weight,
-        bodyFat: initialValues.bodyFat,
-        age: initialValues.age,
-        plan: initialValues.plan + " " + initialValues.rate,
-        gender: initialValues.gender,
-        activity: initialValues.activity,
-      });
-    }
-  }, [initialValues, reset]);
-
-  const email = user?.email || "";
   const fullName =
     `${user?.user_metadata?.firstName || ""} ${user?.user_metadata?.lastName || ""}`.trim();
 
@@ -72,7 +50,6 @@ function DietForm() {
         email,
       });
       await getNutritions(nutrationsGuest);
-      await handleSubmitForm(nutrationsGuest);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -95,7 +72,6 @@ function DietForm() {
         <div className="grid gap-6 mb-6 md:grid-cols-2">
           {/* Age */}
           <InputField
-            value={initialValues?.age}
             id="age"
             label="Age"
             type="number"
@@ -110,7 +86,6 @@ function DietForm() {
 
           {/* Height */}
           <InputField
-            value={initialValues?.height}
             id="height"
             label="Height (cm)"
             type="number"
@@ -125,7 +100,6 @@ function DietForm() {
 
           {/* Weight 👉 Using your custom InputField */}
           <InputField
-            value={initialValues?.weight}
             id="weight"
             label="Weight (kg)"
             type="number"
@@ -146,7 +120,6 @@ function DietForm() {
 
           {/* Gender 👉 Using your custom SelectField */}
           <SelectField
-            value={initialValues?.gender}
             id="gender"
             label="Gender"
             register={register}
@@ -163,7 +136,6 @@ function DietForm() {
         <div className="grid gap-6 md:grid-cols-2">
           <div>
             <SelectField
-              value={initialValues?.plan}
               id="plan"
               label="Choose your weight loss plan:"
               register={register}
@@ -180,7 +152,6 @@ function DietForm() {
           </div>
           <div>
             <SelectField
-              value={initialValues?.activity}
               id="activity"
               label="Activity Level"
               register={register}

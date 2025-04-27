@@ -65,7 +65,11 @@ function RecipeDetails() {
         {/* Image */}
         <div className="relative w-full h-48 overflow-hidden rounded-lg sm:h-72 md:h-80">
           <img
-            src={convertArray(Images)?.[0] || "/15.15.37_4f397ebf.jpg"}
+            src={
+              convertArray(Images)?.[0] === "empty"
+                ? "/15.15.37_4f397ebf.jpg"
+                : convertArray(Images)?.[0]
+            }
             alt={Name || "Dessert"}
             loading="lazy"
             className="object-cover w-full h-full"

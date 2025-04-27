@@ -7,6 +7,7 @@ function Target() {
   const { user } = useUser();
   const email = user?.email;
   const { getTarget } = useGetTarget(email);
+  console.log(getTarget);
 
   const dota = getTarget ? getTarget[0] : 0;
   const displayData = data || dota;

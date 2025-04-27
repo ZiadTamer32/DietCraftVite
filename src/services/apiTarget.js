@@ -52,7 +52,7 @@ export async function addTarget(email, targetData) {
 export async function getTargetData(email) {
   const { data, error } = await supabase
     .from("Target")
-    .select("Bmi, Bmr")
+    .select("Bmi, Bmr,Cluster")
     .eq("email", email);
 
   if (error) {

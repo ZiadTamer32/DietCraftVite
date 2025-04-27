@@ -5,9 +5,14 @@ import { CiSearch, CiCircleRemove } from "react-icons/ci";
 import Result from "./Results";
 import Spinner from "../../ui/Spinner";
 import Pagination from "../../ui/Pagination";
+import useGetTarget from "../DietRecommendation/useGetTarget";
+import useUser from "../auth/useUser";
+import { convertArray } from "../../services/functions";
 
 function Recipes() {
   const { data = [], isLoading } = useRecipes();
+  const { user } = useUser(); // Assuming you have a custom hook to get the user
+  const { isPending } = useGetTarget(user?.email);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const pageFromParams = Number(searchParams.get("page")) || 1;
@@ -30,7 +35,7 @@ function Recipes() {
     );
   } else if (searchBy === "ingredient") {
     filterData = data?.filter((recipe) =>
-      recipe.RecipeIngredientParts?.some((part) =>
+      convertArray(recipe.RecipeIngredientParts)?.some((part) =>
         part.toLowerCase().includes(searchTerm.toLowerCase())
       )
     );
@@ -64,7 +69,9 @@ function Recipes() {
     setCurrentPage(1);
   };
 
-  if (isLoading) return <Spinner />;
+  const isAnyLoading = isLoading || isPending;
+
+  if (isAnyLoading) return <Spinner />;
 
   return (
     <div className="flex flex-col gap-4 mx-auto md:px-4">

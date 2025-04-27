@@ -1,74 +1,48 @@
 /* eslint-disable react/prop-types */
-import { useContext, useState, createContext } from "react";
+import { useContext, useEffect, useState, createContext } from "react";
 import axios from "axios";
+import useGetTarget from "../features/DietRecommendation/useGetTarget";
+import useUser from "../features/auth/useUser"; // Adjust the import path as necessary
 
 const RecipesContext = createContext();
 
 function RecipesProvider({ children }) {
+  const { user } = useUser(); // Assuming you have a custom hook to get the user
+  const { getTarget } = useGetTarget(user?.email);
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Log the cluster data for debugging
 
-  async function getNutritions(targetDataPayload) {
+  const getData = () => {
+    if (!getTarget?.[0]?.Cluster) return; // Check if cluster exists before making the API call
+
     setIsLoading(true);
-    try {
-      const res = await fetch("http://127.0.0.1:344/diet_recommendation", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(targetDataPayload),
+    axios
+      .get(
+        `http://127.0.0.1:344/recommended_meals/?cluster=${getTarget?.[0]?.Cluster}`
+      )
+      .then((res) => {
+        setData(Object.values(res?.data)[0]); // Extract the data you need
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error(err.message);
+        setIsLoading(false);
       });
+  };
 
-      if (!res.ok) {
-        throw new Error("Failed to fetch nutritions");
-      }
-
-      const nutritions = await res.json();
-      console.log("Nutritions:", nutritions);
-
-      return nutritions;
-    } catch (err) {
-      console.error(err.message);
-
-      return null;
-    } finally {
-      setIsLoading(false);
+  useEffect(() => {
+    if (getTarget?.[0]?.Cluster) {
+      getData(); // Call the function when cluster is available
     }
-  }
-
-  async function getData(cluster) {
-    setIsLoading(true);
-    try {
-      const res = await axios.get(
-        `http://127.0.0.1:344/recommended_meals/?cluster=${cluster}`
-      );
-      setData(Object.values(res?.data)[0]);
-      console.log("Fetching data for cluster:", cluster);
-    } catch (err) {
-      console.error(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  // 👇 This is the public function you call after user submits the form
-  async function handleSubmitForm(formData) {
-    const nutritions = await getNutritions(formData);
-
-    if (nutritions?.Cluster) {
-      await getData(nutritions.Cluster);
-    }
-  }
+  }, [getTarget?.[0]?.Cluster]); // Re-run this effect when 'cluster' changes
 
   // Function to get a recipe by ID
   const getRecipeById = (id) => {
-    return data?.find((recipe) => recipe?.RecipeId === Number(id)) || null;
+    return data?.find((recipe) => recipe?.RecipeId === Number(id) || null);
   };
 
   return (
-    <RecipesContext.Provider
-      value={{ data, getRecipeById, handleSubmitForm, isLoading }}
-    >
+    <RecipesContext.Provider value={{ data, getRecipeById, isLoading }}>
       {children}
     </RecipesContext.Provider>
   );
