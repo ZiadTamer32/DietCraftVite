@@ -7,8 +7,6 @@ import Spinner from "../../ui/Spinner";
 import SpinnerMini from "../../ui/SpinnerMini";
 import useCreateTarget from "./useCreateTarget";
 import useGetTarget from "./useGetTarget";
-
-// 👉 Import your custom fields
 import InputField from "../../ui/InputField";
 import SelectField from "../../ui/SelectField";
 
@@ -23,7 +21,7 @@ function DietForm() {
   const {
     register,
     formState: { errors },
-    handleSubmit
+    handleSubmit,
   } = useForm();
 
   const fullName =
@@ -39,11 +37,11 @@ function DietForm() {
         bodyFat: Number(data.bodyFat),
         age: Number(data.age),
         rate: rate[1],
-        plan: rate[0]
+        plan: rate[0],
       };
       dietFn({
         addGuest: { ...data, email, fullName, rate: rate[1], plan: rate[0] },
-        email
+        email,
       });
       const nutrations = await getNutritions(nutrationsGuest);
       if (nutrations) {
@@ -74,7 +72,7 @@ function DietForm() {
             validation={{
               required: "Age is required",
               min: { value: 13, message: "Age must be at least 13" },
-              max: { value: 110, message: "Age must not exceed 110" }
+              max: { value: 110, message: "Age must not exceed 110" },
             }}
             error={errors.age}
           />
@@ -88,7 +86,7 @@ function DietForm() {
             validation={{
               required: "Height is required",
               min: { value: 100, message: "Height must be at least 100 cm" },
-              max: { value: 250, message: "Height must not exceed 250 cm" }
+              max: { value: 250, message: "Height must not exceed 250 cm" },
             }}
             error={errors.height}
           />
@@ -103,12 +101,12 @@ function DietForm() {
               required: "Weight is required",
               min: {
                 value: 60,
-                message: "Weight should be greater than 60"
+                message: "Weight should be greater than 60",
               },
               max: {
                 value: 300,
-                message: "Weight should be less than 300"
-              }
+                message: "Weight should be less than 300",
+              },
             }}
             error={errors.weight}
           />
@@ -122,7 +120,7 @@ function DietForm() {
             error={errors.gender}
             options={[
               { value: "male", label: "Male" },
-              { value: "female", label: "Female" }
+              { value: "female", label: "Female" },
             ]}
           />
         </div>
@@ -141,7 +139,7 @@ function DietForm() {
                 { value: "gain 1", label: "Extreme Gain Weight" },
                 { value: "maintain 0", label: "Maintain" },
                 { value: "loss 0.5", label: "Weight Loss" },
-                { value: "loss 1", label: "Extreme Weight Loss" }
+                { value: "loss 1", label: "Extreme Weight Loss" },
               ]}
             />
           </div>
@@ -159,8 +157,8 @@ function DietForm() {
                 { value: "active", label: "Active" },
                 {
                   value: "veryActive",
-                  label: "Very Active & Physical Job"
-                }
+                  label: "Very Active & Physical Job",
+                },
               ]}
             />
           </div>

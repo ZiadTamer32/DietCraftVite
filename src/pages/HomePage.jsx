@@ -8,7 +8,7 @@ const HeroSection = () => {
   const { isAuthenticated } = useUser();
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col items-center justify-center px-6 py-16 bg-gradient-to-b from-green-50 to-white md:py-24 lg:py-52">
+    <div className="flex flex-col items-center justify-center px-6 py-16 mt-16 bg-gradient-to-b from-green-50 to-white md:py-24 lg:py-52">
       <h1 className="mb-6 text-3xl font-bold text-center md:text-5xl lg:text-6xl">
         Welcome to <span className="text-[#16a34a]">DietCraft</span>
       </h1>
