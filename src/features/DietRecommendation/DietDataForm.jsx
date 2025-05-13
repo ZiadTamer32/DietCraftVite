@@ -3,7 +3,7 @@ import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { useForm } from "react-hook-form";
 import { useState, useMemo } from "react";
 import { useTarget } from "../../context/TargetContext";
-import Progress from "../../ui/Progress";
+import ProgressForm from "../../ui/ProgressForm";
 import useDiet from "./useDiet";
 import useUser from "../auth/useUser";
 import SpinnerMini from "../../ui/SpinnerMini";
@@ -68,7 +68,7 @@ export default function DietDataForm() {
     <section>
       <div className="max-w-[25rem] mx-auto max-sm:px-5">
         <div className="w-full bg-white rounded-lg shadow-lg">
-          <Progress maxSteps={3} step={step} />
+          <ProgressForm maxSteps={3} step={step} />
           <div className="flex flex-col justify-between h-full gap-4 px-8 py-8 max-md:px-4 max-md:py-6">
             <h1 className="text-2xl font-bold text-center text-gray-700">
               Set your important details

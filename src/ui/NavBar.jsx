@@ -7,7 +7,7 @@ import {
   FaChartBar,
   FaCalendarAlt,
   FaBook,
-  FaComments,
+  FaComments
 } from "react-icons/fa";
 import { PiCalculatorFill } from "react-icons/pi";
 import { RiAccountCircleFill } from "react-icons/ri";
@@ -16,7 +16,7 @@ import Button from "./Button";
 import useUser from "../features/auth/useUser";
 import useLogout from "../features/auth/useLogout";
 
-const Navbar = () => {
+function Navbar() {
   const { isAuthenticated } = useUser();
   const { logout, isPending } = useLogout();
   const navigate = useNavigate();
@@ -32,21 +32,21 @@ const Navbar = () => {
     {
       name: "Calculator",
       path: "/diet-recommendation",
-      icon: <PiCalculatorFill size={18} />,
+      icon: <PiCalculatorFill size={18} />
     },
     { name: "Food Log", path: "/food-log", icon: <FaCalendarAlt size={18} /> },
     { name: "Recipes", path: "/browse-foods", icon: <FaBook size={18} /> },
     { name: "Progress", path: "/progress", icon: <FaChartBar size={18} /> },
-    { name: "Assistant", path: "/assistant", icon: <FaComments size={18} /> },
+    { name: "Assistant", path: "/assistant", icon: <FaComments size={18} /> }
   ];
 
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-100 z-50 fixed w-full top-0">
+    <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-100 shadow-sm">
       <div className="px-4 sm:px-6">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0 flex items-center">
-              <span className="text-dietcraft-600 font-bold text-xl">
+            <Link to="/" className="flex items-center flex-shrink-0">
+              <span className="text-xl font-bold text-dietcraft-600">
                 Diet<span className="text-dietcraft-500">Craft</span>
               </span>
             </Link>
@@ -70,7 +70,7 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Buttons */}
-          <div className="hidden lg:flex lg:items-center space-x-2">
+          <div className="hidden space-x-2 lg:flex lg:items-center">
             {isAuthenticated ? (
               <>
                 <Button
@@ -120,16 +120,16 @@ const Navbar = () => {
           <div className="flex items-center lg:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-dietcraft-500"
+              className="inline-flex items-center justify-center p-2 text-gray-500 rounded-md hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-dietcraft-500"
               aria-expanded={isOpen}
             >
               <span className="sr-only">
                 {isOpen ? "Close main menu" : "Open main menu"}
               </span>
               {isOpen ? (
-                <FaTimes className="block h-6 w-6" />
+                <FaTimes className="block w-6 h-6" />
               ) : (
-                <FaBars className="block h-6 w-6" />
+                <FaBars className="block w-6 h-6" />
               )}
             </button>
           </div>
@@ -138,12 +138,12 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       <div className={`lg:hidden ${isOpen ? "block" : "hidden"}`}>
-        <div className="pt-2 pb-3 space-y-1 px-2">
+        <div className="px-2 pt-2 pb-3 space-y-1">
           {navItems.map((item) => (
             <Link
               key={item.name}
               to={item.path}
-              className="text-gray-600 hover:text-dietcraft-500 hover:bg-dietcraft-50 block px-3 py-2 rounded-md text-base font-medium flex items-center"
+              className="flex items-center px-3 py-2 text-base font-medium text-gray-600 rounded-md hover:text-dietcraft-500 hover:bg-dietcraft-50"
               onClick={() => setIsOpen(false)}
             >
               <span className="mr-3">{item.icon}</span>
@@ -158,7 +158,7 @@ const Navbar = () => {
                   handleLogout();
                   setIsOpen(false);
                 }}
-                className="w-full text-left text-gray-600 hover:text-dietcraft-500 hover:bg-dietcraft-50 block px-3 py-2 rounded-md text-base font-medium flex items-center"
+                className="flex items-center w-full px-3 py-2 text-base font-medium text-left text-gray-600 rounded-md hover:text-dietcraft-500 hover:bg-dietcraft-50"
               >
                 <span className="mr-3">
                   <LuLogIn size={18} />
@@ -167,7 +167,7 @@ const Navbar = () => {
               </button>
               <Link
                 to="/account"
-                className="text-gray-600 hover:text-dietcraft-500 hover:bg-dietcraft-50 block px-3 py-2 rounded-md text-base font-medium flex items-center"
+                className="flex items-center px-3 py-2 text-base font-medium text-gray-600 rounded-md hover:text-dietcraft-500 hover:bg-dietcraft-50"
                 onClick={() => setIsOpen(false)}
               >
                 <span className="mr-3">
@@ -180,7 +180,7 @@ const Navbar = () => {
             <>
               <Link
                 to="/login"
-                className="text-gray-600 hover:text-dietcraft-500 hover:bg-dietcraft-50 block px-3 py-2 rounded-md text-base font-medium flex items-center"
+                className="flex items-center px-3 py-2 text-base font-medium text-gray-600 rounded-md hover:text-dietcraft-500 hover:bg-dietcraft-50"
                 onClick={() => setIsOpen(false)}
               >
                 <span className="mr-3">
@@ -190,7 +190,7 @@ const Navbar = () => {
               </Link>
               <Link
                 to="/signup"
-                className="text-gray-600 hover:text-dietcraft-500 hover:bg-dietcraft-50 block px-3 py-2 rounded-md text-base font-medium flex items-center"
+                className="flex items-center px-3 py-2 text-base font-medium text-gray-600 rounded-md hover:text-dietcraft-500 hover:bg-dietcraft-50"
                 onClick={() => setIsOpen(false)}
               >
                 <span className="mr-3">
@@ -204,6 +204,6 @@ const Navbar = () => {
       </div>
     </nav>
   );
-};
+}
 
 export default Navbar;

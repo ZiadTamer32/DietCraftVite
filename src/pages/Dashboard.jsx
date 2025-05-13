@@ -12,21 +12,14 @@ import {
   ResponsiveContainer
 } from "recharts";
 import { FiSearch } from "react-icons/fi";
+import WaterTracker from "../ui/WaterTracker";
+import Card from "../ui/Card";
+import ProgressBar from "../ui/ProgressBar";
 
 function Dashboard() {
   const { user, isAuthenticated } = useUser();
   const Name =
     user?.user_metadata?.firstName + " " + user?.user_metadata?.lastName;
-  const stats = {
-    caloriesConsumed: 1200,
-    workoutsCompleted: 3,
-    goalsAchieved: 2
-  };
-  const recentActivities = [
-    { id: 1, type: "Meal", description: "Logged breakfast: 400 kcal" },
-    { id: 2, type: "Workout", description: "Completed 30-minute run" },
-    { id: 3, type: "Goal", description: "Reached 50% of monthly goal" }
-  ];
   const progress = { current: 50, target: 100 };
   const weeklySummary = {
     totalCalories: 8400,
@@ -59,83 +52,7 @@ function Dashboard() {
     "Choose lean protein sources like fish, chicken, and plant-based proteins.",
     "Snack on nuts and seeds for a boost of healthy fats and energy.",
     "Get fresh air and natural sunlight daily to improve mood and vitamin D levels.",
-    "Prioritize mental health by practicing gratitude and positive thinking.",
-    "Reduce sugar intake by checking food labels for hidden sugars.",
-    "Incorporate strength training exercises at least twice a week.",
-    "Use stairs instead of elevators whenever possible.",
-    "Avoid eating late at night to support better digestion and sleep.",
-    "Hydrate properly—aim for at least 8 cups of water daily.",
-    "Try meal prepping to ensure balanced meals and avoid unhealthy snacking.",
-    "Take a 5-minute break for stretching or walking every hour at work.",
-    "Experiment with different physical activities to find what you enjoy most.",
-    "Limit caffeine intake in the afternoon to improve sleep quality.",
-    "Eat fiber-rich foods like beans, whole grains, and vegetables for digestion.",
-    "Reduce salt intake by seasoning food with herbs and spices instead.",
-    "Practice portion control even with healthy foods.",
-    "Listen to your body's hunger and fullness cues before eating.",
-    "Add fermented foods like yogurt, kimchi, and sauerkraut for gut health.",
-    "Cook more meals at home to control ingredients and portion sizes.",
-    "Avoid skipping meals, as it can lead to overeating later in the day.",
-    "Keep healthy snacks like fruits and nuts on hand to curb cravings.",
-    "Limit alcohol consumption to maintain energy and health.",
-    "Eat a variety of protein sources to get all essential amino acids.",
-    "Stretch in the morning and before bed to stay flexible and relaxed.",
-    "Make sleep a priority—stick to a consistent bedtime routine.",
-    "Replace soda with sparkling water or herbal tea.",
-    "Practice meditation or mindfulness daily for mental clarity.",
-    "Laugh often—it reduces stress and boosts mood.",
-    "Swap fried foods for baked or grilled options to reduce unhealthy fats.",
-    "Eat dark leafy greens like spinach and kale for essential nutrients.",
-    "Chew your food thoroughly to aid digestion and prevent overeating.",
-    "Take a short walk after meals to help digestion and lower blood sugar.",
-    "Keep a food journal to identify eating patterns and improve habits.",
-    "Set realistic fitness goals to stay consistent and motivated.",
-    "Try a new physical activity, like dancing or hiking, for variety.",
-    "Reduce stress with hobbies and activities you enjoy.",
-    "Avoid processed snacks—choose whole foods like fruit and nuts instead.",
-    "Use a standing desk or take standing breaks if you work at a desk.",
-    "Replace refined sugar with natural sweeteners like honey or dates.",
-    "Limit fast food consumption—prepare homemade versions instead.",
-    "Consume more omega-3 fatty acids from fish, flaxseeds, and walnuts.",
-    "Get enough vitamin C from citrus fruits, bell peppers, and strawberries.",
-    "Avoid distractions like TV or phone while eating to be more mindful.",
-    "Take deep breaths throughout the day to reduce stress.",
-    "Try a digital detox by taking breaks from social media.",
-    "Incorporate stretching or yoga into your morning routine.",
-    "Eat foods rich in iron, like lentils, spinach, and red meat.",
-    "Choose whole fruit over fruit juices to get more fiber and nutrients.",
-    "Cook meals with healthy fats like olive oil and avocado oil.",
-    "Keep a reusable water bottle with you to stay hydrated.",
-    "Swap white bread and pasta for whole grain alternatives.",
-    "Choose dark chocolate over milk chocolate for antioxidants.",
-    "Listen to music that relaxes you to lower stress levels.",
-    "Schedule regular health checkups and screenings.",
-    "Try intermittent fasting if it aligns with your health goals.",
-    "Add chia or flaxseeds to smoothies for extra fiber and nutrients.",
-    "Eat probiotic-rich foods like yogurt and kefir for gut health.",
-    "Limit screen time before bed to improve melatonin production.",
-    "Start your day with a glass of warm lemon water.",
-    "Use the 80/20 rule—eat healthy 80% of the time and indulge 20%.",
-    "Choose high-fiber breakfast options like oats and whole grains.",
-    "Eat more plant-based meals for a balanced diet.",
-    "Practice self-care by taking time to relax and unwind.",
-    "Get outside for at least 15 minutes daily for fresh air and sunlight.",
-    "Drink green tea for antioxidants and metabolism support.",
-    "Eat seasonal produce for maximum flavor and nutrition.",
-    "Use resistance bands or bodyweight exercises for strength training.",
-    "Set a sleep schedule and stick to it, even on weekends.",
-    "Replace sugary cereals with protein-rich breakfasts.",
-    "Limit red meat intake and opt for leaner protein sources.",
-    "Challenge yourself to try a new healthy recipe each week.",
-    "Stay socially active—connecting with loved ones improves well-being.",
-    "Reduce refined carbs and opt for complex carbs instead.",
-    "Try meditative breathing techniques to calm your mind.",
-    "Keep your kitchen stocked with healthy ingredients for easy meals.",
-    "Use smaller bowls and plates to prevent overeating.",
-    "Try dry brushing to boost circulation and exfoliate skin.",
-    "Switch to natural cleaning and personal care products.",
-    "Take a daily multivitamin if needed to fill nutritional gaps.",
-    "Focus on progress, not perfection, in your health journey."
+    "Prioritize mental health by practicing gratitude and positive thinking."
   ];
 
   const randomTip = dailyTips[Math.floor(Math.random() * dailyTips.length)];
@@ -155,32 +72,39 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-3">
-        <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-700">
-            Calories Consumed
-          </h3>
-          <p className="text-2xl font-bold text-green-600">
-            {stats.caloriesConsumed} kcal
-          </p>
-        </div>
-        <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-700">
-            Workouts Completed
-          </h3>
-          <p className="text-2xl font-bold text-blue-600">
-            {stats.workoutsCompleted}
-          </p>
-        </div>
-        <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-700">
-            Goals Achieved
-          </h3>
-          <p className="text-2xl font-bold text-purple-600">
-            {stats.goalsAchieved}
-          </p>
-        </div>
+      <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2">
+        {/* Today Calories */}
+        <Card className="col-span-1">
+          <h2 className="mb-4 text-lg font-semibold text-gray-800">
+            Today&apos;s Calories
+          </h2>
+          <div className="flex items-center justify-between">
+            <span className="text-gray-600">Consumed</span>
+            <span className="font-medium">1,200 / 2,000</span>
+          </div>
+          <ProgressBar progress={60} height="h-3" />
+          <div className="mt-3 space-y-2">
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-600">Protein</span>
+              <span>45g / 120g</span>
+            </div>
+            <ProgressBar progress={37.5} height="h-2" color="bg-blue-500" />
+
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-600">Carbs</span>
+              <span>120g / 200g</span>
+            </div>
+            <ProgressBar progress={60} height="h-2" color="bg-yellow-500" />
+
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-600">Fat</span>
+              <span>30g / 65g</span>
+            </div>
+            <ProgressBar progress={46.2} height="h-2" color="bg-red-400" />
+          </div>
+        </Card>
+        {/* Water Tracker */}
+        <WaterTracker />
       </div>
 
       {/* Weekly Summary */}
@@ -222,30 +146,6 @@ function Dashboard() {
             </p>
           </div>
         </div>
-      </div>
-
-      {/* Recent Activity */}
-      <div className="mb-8">
-        <h2 className="mb-4 text-2xl font-bold text-gray-800">
-          Recent Activity
-        </h2>
-        <div className="space-y-4">
-          {recentActivities.map((activity) => (
-            <div
-              key={activity.id}
-              className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm"
-            >
-              <p className="text-gray-700">{activity.description}</p>
-            </div>
-          ))}
-        </div>
-        <Link
-          rel="preload"
-          to="/activity"
-          className="block mt-4 text-sm text-blue-600 hover:underline"
-        >
-          View All Activity →
-        </Link>
       </div>
 
       {/* Goals and Progress */}
@@ -319,17 +219,11 @@ function Dashboard() {
       </div>
 
       {/* Recent Nutrition Log */}
-      <div className="mb-8">
+      <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-bold text-gray-800">
             Recent Nutrition Log
           </h2>
-          <Link
-            to="/nutrition-log"
-            className="text-sm text-blue-600 hover:underline"
-          >
-            View All
-          </Link>
         </div>
         <div className="space-y-4">
           <div className="p-4 rounded-lg shadow-sm border border-gray-200 bg-[#F9FAFB]">
