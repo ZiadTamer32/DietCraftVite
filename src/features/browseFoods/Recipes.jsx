@@ -120,9 +120,9 @@ function Recipes() {
 
       {/* Recipes List */}
       {currentPosts.length > 0 ? (
-        <ul className="grid grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {currentPosts.map((dessert) => (
-            <Result key={dessert.RecipeId} dessert={dessert} />
+        <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {currentPosts.map((recipe) => (
+            <Result key={recipe.RecipeId} recipe={recipe} />
           ))}
         </ul>
       ) : (
