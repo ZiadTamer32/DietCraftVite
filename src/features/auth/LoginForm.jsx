@@ -23,9 +23,9 @@ function LoginForm() {
   return (
     <section>
       <div className="flex flex-col items-center justify-center min-h-screen max-w-[25rem] mx-auto max-sm:px-5">
-        <div className=" bg-white rounded-lg shadow-lg w-full">
+        <div className="w-full bg-white rounded-lg shadow-lg ">
           <div className="px-8 py-8">
-            <h1 className="text-2xl font-bold text-gray-700 text-center">
+            <h1 className="text-2xl font-bold text-center text-gray-700">
               Login
             </h1>
             <form onSubmit={handleSubmit(Submit)} className="space-y-4">
@@ -88,7 +88,7 @@ function LoginForm() {
                 {isPending ? <SpinnerMini /> : "Login"}
               </button>
 
-              <div className="text-sm font-light text-gray-600 text-center">
+              <div className="text-sm font-light text-center text-gray-600">
                 You don&apos;t have an account?{" "}
                 <Link
                   to="/signup"

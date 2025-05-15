@@ -22,7 +22,7 @@ function Results({ dessert }) {
 
       <div className="px-3 py-3">
         {/* Render the truncated name */}
-        <p className="overflow-hidden text-xl font-medium text-center text-ellipsis">
+        <p className="overflow-hidden text-xl font-medium text-center text-ellipsiszzz text-nowrap">
           {Name}
         </p>
       </div>
