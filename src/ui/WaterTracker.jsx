@@ -3,9 +3,21 @@ import { useState } from "react";
 import { FaTint, FaPlus, FaMinus } from "react-icons/fa";
 
 // Placeholder for Button component
-const Button = ({ variant, size, onClick, disabled, icon, children, className }) => {
-  const baseStyles = "flex items-center justify-center font-medium rounded-lg transition-colors";
-  const variantStyles = variant === "primary" ? "bg-blue-600 text-white hover:bg-blue-700" : "bg-white text-blue-600 border border-blue-600 hover:bg-gray-100";
+const Button = ({
+  variant,
+  size,
+  onClick,
+  disabled,
+  icon,
+  children,
+  className,
+}) => {
+  const baseStyles =
+    "flex items-center justify-center font-medium rounded-lg transition-colors";
+  const variantStyles =
+    variant === "primary"
+      ? "bg-blue-600 text-white hover:bg-blue-700"
+      : "bg-white text-blue-600 border border-blue-600 hover:bg-gray-100";
   const sizeStyles = size === "sm" ? "px-3 py-1.5 text-sm" : "px-4 py-2";
   const disabledStyles = disabled ? "opacity-50 cursor-not-allowed" : "";
 
@@ -23,25 +35,38 @@ const Button = ({ variant, size, onClick, disabled, icon, children, className })
 
 // Placeholder for Card component
 const Card = ({ className, children }) => {
-  return <div className={`bg-white shadow-md rounded-lg p-4 ${className || ""}`}>{children}</div>;
+  return (
+    <div className={`bg-white shadow-md rounded-lg p-4 ${className || ""}`}>
+      {children}
+    </div>
+  );
 };
 
 // Placeholder for ProgressBar component
-const ProgressBar = ({ progress, height, color, background, showLabel, className }) => {
+const ProgressBar = ({
+  progress,
+  height,
+  color,
+  background,
+  showLabel,
+  className,
+}) => {
   return (
     <div className={`w-full ${background} ${className}`}>
       <div
         className={`${height} ${color} transition-all duration-300 rounded-xl`}
         style={{ width: `${progress}%` }}
       />
-      {showLabel && <span className="text-sm">{`${Math.round(progress)}%`}</span>}
+      {showLabel && (
+        <span className="text-sm">{`${Math.round(progress)}%`}</span>
+      )}
     </div>
   );
 };
 
-const WaterTracker = ({ className }) => {
+const WaterTracker = ({ glassess }) => {
   const [glasses, setGlasses] = useState(0);
-  const targetGlasses = 8; // Default target: 8 glasses of water
+  const targetGlasses = glassess; // Default target: 8 glasses of water
 
   const addWater = (amount = 1) => {
     setGlasses((prev) => Math.min(prev + amount, targetGlasses * 1.5)); // Allow up to 150% of target
@@ -54,7 +79,7 @@ const WaterTracker = ({ className }) => {
   const progress = Math.min((glasses / targetGlasses) * 100, 100);
 
   return (
-    <Card className={className}>
+    <Card>
       <div className="flex items-center justify-between mb-4">
         <h2 className="flex items-center text-lg font-semibold text-gray-800">
           <FaTint size={20} className="mr-2 text-blue-400" /> Water Tracker
@@ -76,10 +101,10 @@ const WaterTracker = ({ className }) => {
       </div>
 
       <div className="flex items-center justify-center mb-4 space-x-4">
-        {[1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
+        {Array.from({ length: targetGlasses }, (_, i) => i + 1).map((index) => (
           <div
             key={index}
-            className={`w-8 h-12 border-2 border-gray-800 rounded-b-lg flex items-end justify-center transition-all cursor-pointer hover:opacity-80 ${
+            className={`w-8 h-12 border-2 border-gray-800 ease-in-out rounded-b-lg flex items-end justify-center transition-all cursor-pointer hover:opacity-80 ${
               index <= glasses ? "bg-blue-400" : "bg-gray-200"
             }`}
             onClick={() => setGlasses(index)}
@@ -105,7 +130,7 @@ const WaterTracker = ({ className }) => {
           variant="primary"
           size="sm"
           onClick={() => addWater()}
-          disabled={glasses === 8}
+          disabled={glasses === targetGlasses}
           icon={<FaPlus size={16} />}
         >
           Add Water

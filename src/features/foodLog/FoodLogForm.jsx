@@ -13,16 +13,16 @@ function FoodLogForm({ setOverlay, email }) {
     handleSubmit,
     reset,
     setValue,
-    formState: { errors }
+    formState: { errors },
   } = useForm({
     defaultValues: {
-      food: "",
+      mealName: "",
       mealType: "Breakfast",
       calories: 0,
-      carbs: 0,
+      carb: 0,
       protein: 0,
-      fat: 0
-    }
+      fat: 0,
+    },
   });
 
   const handleNumberChange = useCallback(
@@ -47,7 +47,7 @@ function FoodLogForm({ setOverlay, email }) {
     >
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <InputField
-          id="food"
+          id="mealName"
           label="Food Name"
           type="text"
           placeholder="Enter food name"
@@ -56,8 +56,8 @@ function FoodLogForm({ setOverlay, email }) {
             required: "Food name is required",
             pattern: {
               value: /^[a-zA-Z\s]+$/,
-              message: "Only letters and spaces are allowed"
-            }
+              message: "Only letters and spaces are allowed",
+            },
           }}
           error={errors.food}
         />
@@ -71,7 +71,7 @@ function FoodLogForm({ setOverlay, email }) {
               { value: "Breakfast", label: "Breakfast" },
               { value: "Lunch", label: "Lunch" },
               { value: "Dinner", label: "Dinner" },
-              { value: "Snack", label: "Snack" }
+              { value: "Snack", label: "Snack" },
             ]}
             register={register}
             validation={{ required: "Meal type is required" }}
@@ -79,7 +79,7 @@ function FoodLogForm({ setOverlay, email }) {
           />
         </div>
         {/* Nutrients */}
-        {["calories", "carbs", "protein", "fat"].map((field) => (
+        {["calories", "carb", "protein", "fat"].map((field) => (
           <div key={field}>
             <InputField
               id={field}
@@ -90,8 +90,8 @@ function FoodLogForm({ setOverlay, email }) {
                 valueAsNumber: true,
                 min: {
                   value: 0,
-                  message: `${field} cannot be negative`
-                }
+                  message: `${field} cannot be negative`,
+                },
               }}
               onChange={handleNumberChange(field)}
             />
