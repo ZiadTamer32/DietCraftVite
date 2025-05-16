@@ -9,14 +9,13 @@ function useSignUp() {
   const { mutate: signup, isPending } = useMutation({
     mutationFn: ({ email, password, firstName, lastName }) =>
       signUpApi({ email, password, firstName, lastName }),
-    onSuccess: (data) => {
-      if (data.error) {
-        toast.error(data.error);
-        return;
-      }
+    onSuccess: () => {
       toast.success("Account created successfully!");
       navigate("/login");
-    }
+    },
+    onError: (error) => {
+      toast.error(error.message || "An error occurred during sign up.");
+    },
   });
 
   return { signup, isPending };

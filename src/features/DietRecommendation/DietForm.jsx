@@ -1,7 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useForm } from "react-hook-form";
 import { useTarget } from "../../context/TargetContext";
-import { useEffect } from "react";
 import useUser from "../auth/useUser";
 import useDiet from "./useDiet";
 import Target from "../DietRecommendation/Target";
@@ -17,12 +15,10 @@ import SelectField from "../../ui/SelectField";
 function DietForm() {
   const { user } = useUser();
   const email = user?.email || "";
-  const { getNutritions, isLoading, data: res } = useTarget();
+  const { getNutritions, isLoading } = useTarget();
   const { dietFn } = useDiet();
   const { targetFn } = useCreateTarget();
   const { isPending: isGetting } = useGetTarget(email);
-
-  const isAnyLoading = isGetting;
 
   const {
     register,
@@ -49,17 +45,16 @@ function DietForm() {
         addGuest: { ...data, email, fullName, rate: rate[1], plan: rate[0] },
         email,
       });
-      await getNutritions(nutrationsGuest);
+      const nutrations = await getNutritions(nutrationsGuest);
+      if (nutrations) {
+        targetFn({ email, targetData: nutrations });
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
 
-  useEffect(() => {
-    if (res) targetFn({ email, targetData: res });
-  }, [res]);
-
-  if (isAnyLoading) {
+  if (isGetting) {
     return <Spinner />;
   }
 
@@ -98,7 +93,7 @@ function DietForm() {
             error={errors.height}
           />
 
-          {/* Weight 👉 Using your custom InputField */}
+          {/* Weight */}
           <InputField
             id="weight"
             label="Weight (kg)"
@@ -118,7 +113,7 @@ function DietForm() {
             error={errors.weight}
           />
 
-          {/* Gender 👉 Using your custom SelectField */}
+          {/* Gender */}
           <SelectField
             id="gender"
             label="Gender"
@@ -137,7 +132,7 @@ function DietForm() {
           <div>
             <SelectField
               id="plan"
-              label="Choose your weight loss plan:"
+              label="Your weight loss plan:"
               register={register}
               validation={{ required: "Plan is required" }}
               error={errors.plan}

@@ -1,10 +1,25 @@
-import { data } from "react-router-dom";
+/* eslint-disable no-unused-vars */
 import supabase, { supabaseUrl } from "./supabase";
 
 export async function login({ email, password }) {
+  // Check if the user already exists
+  const { data: existingUser, error: existingUserError } = await supabase
+    .from("guests")
+    .select("email")
+    .eq("email", email)
+    .single();
+
+  if (existingUserError && existingUserError.code !== "PGRST116") {
+    throw new Error(
+      `Error checking existing user: ${existingUserError.message}`
+    );
+  }
+  if (existingUser) {
+    throw new Error("User already exists with this email.");
+  }
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
-    password
+    password,
   });
   if (error) {
     throw new Error(error.message);
@@ -22,27 +37,52 @@ export async function getCurrentUser() {
   return data?.user;
 }
 
-// eslint-disable-next-line no-unused-vars
-export async function signUp({ email, password, firstName, lastName, avatar }) {
-  const { error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: { data: { firstName, lastName, avatar: "" } }
-  });
-  if (error) {
-    console.error("Sign up failed:", error.message);
-    return { error: error.message };
+export async function signUp({
+  email,
+  password,
+  firstName,
+  lastName,
+  avatar = "",
+}) {
+  // Check if the user already exists
+  const { data: existingUser, error: existingUserError } = await supabase
+    .from("guests")
+    .select("email")
+    .eq("email", email)
+    .single();
+
+  if (existingUserError && existingUserError.code !== "PGRST116") {
+    throw new Error(
+      `Error checking existing user: ${existingUserError.message}`
+    );
+  }
+  if (existingUser) {
+    throw new Error("User already exists with this email.");
   }
 
-  return { data, error: null };
+  // Sign up the new user
+  const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { firstName, lastName, avatar },
+    },
+  });
+
+  if (signUpError) {
+    throw new Error(`Sign up failed: ${signUpError.message}`);
+  }
+
+  return { data: signUpData, error: null };
 }
+
 export async function updateUser({
   firstName,
   lastName,
   email,
   password,
   currentPassword,
-  avatar
+  avatar,
 }) {
   const user = await getCurrentUser();
   if (!user) {
@@ -53,7 +93,7 @@ export async function updateUser({
   if (password) {
     const { error: passwordError } = await supabase.auth.signInWithPassword({
       email: user.email,
-      password: currentPassword
+      password: currentPassword,
     });
 
     if (passwordError) {

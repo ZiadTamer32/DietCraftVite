@@ -1,7 +1,7 @@
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { useForm } from "react-hook-form";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useTarget } from "../../context/TargetContext";
 import Progress from "../../ui/Progress";
 import useDiet from "./useDiet";
@@ -10,7 +10,6 @@ import SpinnerMini from "../../ui/SpinnerMini";
 import InputField from "../../ui/InputField";
 import SelectField from "../../ui/SelectField";
 import useCreateTarget from "./useCreateTarget";
-import { useRecipes } from "../../context/RecipesContext";
 
 export default function DietDataForm() {
   const {
@@ -19,10 +18,9 @@ export default function DietDataForm() {
     formState: { errors },
     trigger,
   } = useForm();
-  const { handleSubmitForm } = useRecipes();
   const { dietFn, isPending } = useDiet();
   const { user } = useUser();
-  const { getNutritions, data: res } = useTarget();
+  const { getNutritions } = useTarget();
   const [step, setStep] = useState(1);
   const email = useMemo(() => user?.email || "", [user]);
   const fullName = useMemo(
@@ -60,13 +58,11 @@ export default function DietDataForm() {
       rate: rate[1],
       plan: rate[0],
     };
-    await getNutritions(nutrationsGuest);
-    await handleSubmitForm(nutrationsGuest);
+    const nutrations = await getNutritions(nutrationsGuest);
+    if (nutrations) {
+      targetFn({ email, targetData: nutrations });
+    }
   };
-
-  useEffect(() => {
-    if (res) targetFn({ email, targetData: res });
-  }, [res]);
 
   return (
     <section>
