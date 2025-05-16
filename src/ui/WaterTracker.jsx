@@ -1,9 +1,43 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { FaTint, FaPlus, FaMinus } from "react-icons/fa";
-import Button from "./Button";
-import Card from "./Card";
-import ProgressBar from "./ProgressBar";
+
+// Placeholder for Button component
+const Button = ({ variant, size, onClick, disabled, icon, children, className }) => {
+  const baseStyles = "flex items-center justify-center font-medium rounded-lg transition-colors";
+  const variantStyles = variant === "primary" ? "bg-blue-600 text-white hover:bg-blue-700" : "bg-white text-blue-600 border border-blue-600 hover:bg-gray-100";
+  const sizeStyles = size === "sm" ? "px-3 py-1.5 text-sm" : "px-4 py-2";
+  const disabledStyles = disabled ? "opacity-50 cursor-not-allowed" : "";
+
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`${baseStyles} ${variantStyles} ${sizeStyles} ${disabledStyles} ${className || ""}`}
+    >
+      {icon && <span className="mr-2">{icon}</span>}
+      {children}
+    </button>
+  );
+};
+
+// Placeholder for Card component
+const Card = ({ className, children }) => {
+  return <div className={`bg-white shadow-md rounded-lg p-4 ${className || ""}`}>{children}</div>;
+};
+
+// Placeholder for ProgressBar component
+const ProgressBar = ({ progress, height, color, background, showLabel, className }) => {
+  return (
+    <div className={`w-full ${background} ${className}`}>
+      <div
+        className={`${height} ${color} transition-all duration-300 rounded-xl`}
+        style={{ width: `${progress}%` }}
+      />
+      {showLabel && <span className="text-sm">{`${Math.round(progress)}%`}</span>}
+    </div>
+  );
+};
 
 const WaterTracker = ({ className }) => {
   const [glasses, setGlasses] = useState(0);
@@ -33,9 +67,11 @@ const WaterTracker = ({ className }) => {
       <div className="mb-6">
         <ProgressBar
           progress={progress}
-          height="h-3"
+          height="h-3" // Thin height to match the photo
           color="bg-blue-400"
+          background="bg-gray-200"
           showLabel={false}
+          className="rounded-full w-full" // Rounded ends and full width
         />
       </div>
 
@@ -43,13 +79,13 @@ const WaterTracker = ({ className }) => {
         {[1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
           <div
             key={index}
-            className={`w-6 h-10 rounded-full flex items-end justify-center transition-all cursor-pointer hover:opacity-80 ${
+            className={`w-8 h-12 border-2 border-gray-800 rounded-b-lg flex items-end justify-center transition-all cursor-pointer hover:opacity-80 ${
               index <= glasses ? "bg-blue-400" : "bg-gray-200"
             }`}
             onClick={() => setGlasses(index)}
             title={`Set to ${index} glasses`}
           >
-            <div className="w-full bg-white rounded-b-full h-1/3 bg-opacity-20" />
+            <div className="w-full bg-white rounded-b-lg h-1/4 bg-opacity-20" />
           </div>
         ))}
       </div>
