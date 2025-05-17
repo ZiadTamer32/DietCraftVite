@@ -1,12 +1,13 @@
-import { FiTrash2 } from "react-icons/fi";
-import SpinnerMini from "./SpinnerMini";
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { FiTrash2 } from "react-icons/fi";
+import SpinnerMini from "./SpinnerMini";
 
-/* eslint-disable react/prop-types */
 function NutritionLogItem({
   id,
   name,
+  date,
   mealType,
   calories,
   carbs,
@@ -57,7 +58,8 @@ function NutritionLogItem({
             )}{" "}
             <span className="text-sm font-normal text-gray-600">
               ({mealType})
-            </span>
+            </span>{" "}
+            <span className="text-sm font-normal text-gray-600">({date})</span>
           </p>
         </div>
         {/* Nutrition Details */}
@@ -70,7 +72,7 @@ function NutritionLogItem({
         {showDetailsButton && (
           <button
             onClick={toggleDetails}
-            className="px-4 py-2 text-sm text-white transition-colors bg-blue-500 rounded-lg hover:bg-blue-700"
+            className="px-4 py-2 text-sm text-white transition-colors bg-blue-500 rounded-lg focus:outline-none hover:bg-blue-700"
           >
             {showDetails ? "Show Less" : "Show More"}
           </button>
@@ -79,7 +81,7 @@ function NutritionLogItem({
         {/* Delete Button */}
         <button
           onClick={() => onDelete(id)}
-          className="flex items-center justify-center w-24 gap-1 px-4 py-2 text-sm text-white transition-colors bg-red-500 rounded-lg hover:bg-red-700"
+          className="flex items-center justify-center w-24 gap-1 px-4 py-2 text-sm text-white transition-colors bg-red-500 rounded-lg hover:bg-red-700 focus:outline-none"
           disabled={isDeleting}
         >
           {isDeleting ? (

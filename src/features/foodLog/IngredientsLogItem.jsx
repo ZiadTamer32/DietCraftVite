@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import useDeleteIngredients from "./useDeleteIngredients";
 import NutritionLogItem from "../../ui/NutritionLogItem";
+import formatDateToYYYYMMDD from "../../ui/DateFormat";
 
 function IngredientsLogItem({ progress }) {
   const { deleteIngredients, isPending: isDeleting } = useDeleteIngredients();
@@ -13,6 +14,7 @@ function IngredientsLogItem({ progress }) {
       mealType={progress.mealType}
       calories={progress.calories}
       carbs={progress.carb}
+      date={formatDateToYYYYMMDD(progress.created_at)}
       protein={progress.protein}
       fat={progress.fat}
       sugar={progress.sugar}

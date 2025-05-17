@@ -14,25 +14,77 @@ import {
 import { FiSearch } from "react-icons/fi";
 import WaterTracker from "../ui/WaterTracker";
 import Card from "../ui/Card";
-import ProgressBar from "../ui/ProgressBar";
+import useGetTarget from "../features/DietRecommendation/useGetTarget";
+import Spinner from "../ui/Spinner";
+import useGetFood from "../features/foodLog/useGetFood";
+import RecentLog from "../ui/RecentLog";
+import useGetProgress from "../features/foodLog/useGetProgress";
+
+function getRecentMeals(meals, count = 3) {
+  if (!Array.isArray(meals)) return [];
+
+  return meals
+    .slice()
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    .slice(0, count);
+}
+
+function summarizeTodaysMeals(meals) {
+  const today = new Date().toISOString().split("T")[0];
+
+  const todaysMeals = meals?.filter((meal) => {
+    const mealDate = new Date(meal.created_at).toISOString().split("T")[0];
+    return mealDate === today;
+  });
+
+  const totals = todaysMeals?.reduce(
+    (acc, meal) => {
+      acc.calories += meal.calories || 0;
+      acc.carb += meal.carb || 0;
+      acc.fat += meal.fat || 0;
+      acc.protein += meal.protein || 0;
+      return acc;
+    },
+    { calories: 0, carb: 0, fat: 0, protein: 0 }
+  );
+
+  return { totals, todaysMeals };
+}
 
 function Dashboard() {
   const { user, isAuthenticated } = useUser();
+  const { getTarget, isPending } = useGetTarget(user?.email);
+  const { foodData, isPending: isFoodPending } = useGetFood(user?.email);
+  const { progressData, isPending: isProgressPending } = useGetProgress(
+    user?.email
+  );
+  const meals = [
+    ...(Array.isArray(foodData) ? foodData : []),
+    ...(Array.isArray(progressData) ? progressData : [])
+  ];
+
+  const { totals, todaysMeals } = summarizeTodaysMeals(meals);
+  const recentMeals = getRecentMeals(todaysMeals, 3);
+
   const Name =
     user?.user_metadata?.firstName + " " + user?.user_metadata?.lastName;
+
   const progress = { current: 50, target: 100 };
+
   const weeklySummary = {
     totalCalories: 8400,
     totalWorkouts: 5,
     averageWaterIntake: 2.5,
     weightChange: -1.2
   };
-  const progressData = [
+
+  const PlaceHolderprogressData = [
     { week: "Week 1", progress: 20 },
     { week: "Week 2", progress: 40 },
     { week: "Week 3", progress: 60 },
     { week: "Week 4", progress: 80 }
   ];
+
   const dailyTips = [
     "Drink a glass of water before every meal to help control portion sizes.",
     "Aim for at least 30 minutes of physical activity every day.",
@@ -54,8 +106,10 @@ function Dashboard() {
     "Get fresh air and natural sunlight daily to improve mood and vitamin D levels.",
     "Prioritize mental health by practicing gratitude and positive thinking."
   ];
-
   const randomTip = dailyTips[Math.floor(Math.random() * dailyTips.length)];
+
+  // Loading State
+  if (isPending || isFoodPending || isProgressPending) return <Spinner />;
 
   return (
     <main className="w-full min-h-screen p-6 rounded-lg bg-[#feffff]">
@@ -76,31 +130,48 @@ function Dashboard() {
         {/* Today Calories */}
         <Card className="col-span-1">
           <h2 className="mb-4 text-lg font-semibold text-gray-800">
-            Today&apos;s Calories
+            Today&apos;s Nutritions
           </h2>
           <div className="flex items-center justify-between">
-            <span className="text-gray-600">Consumed</span>
-            <span className="font-medium">1,200 / 2,000</span>
+            <span className="text-gray-600">Calories</span>
+            <span className="font-medium">
+              {Math.ceil(totals.calories)}{" "}
+              {getTarget[0]?.Bmr?.totalDailyCaloricNeeds?.unit} /{" "}
+              {Math.ceil(getTarget[0]?.Bmr?.totalDailyCaloricNeeds?.value)}{" "}
+              {getTarget[0]?.Bmr?.totalDailyCaloricNeeds?.unit}
+            </span>
           </div>
-          <ProgressBar progress={60} height="h-3" />
+
           <div className="mt-3 space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Protein</span>
-              <span>45g / 120g</span>
+              <span>
+                {Math.ceil(totals.protein)}
+                {getTarget[0]?.Bmr?.protein?.unit} /{" "}
+                {Math.ceil(getTarget[0]?.Bmr?.protein?.preferred)}
+                {getTarget[0]?.Bmr?.protein?.unit}
+              </span>
             </div>
-            <ProgressBar progress={37.5} height="h-2" color="bg-blue-500" />
 
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Carbs</span>
-              <span>120g / 200g</span>
+              <span>
+                {Math.ceil(totals.carb)}
+                {getTarget[0]?.Bmr?.carbohydrates?.unit} /{" "}
+                {Math.ceil(getTarget[0]?.Bmr?.carbohydrates?.preferred)}
+                {getTarget[0]?.Bmr?.carbohydrates?.unit}
+              </span>
             </div>
-            <ProgressBar progress={60} height="h-2" color="bg-yellow-500" />
 
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Fat</span>
-              <span>30g / 65g</span>
+              <span>
+                {Math.ceil(totals.fat)}
+                {getTarget[0]?.Bmr?.fat?.unit} /{" "}
+                {Math.ceil(getTarget[0]?.Bmr?.fat?.preferred)}
+                {getTarget[0]?.Bmr?.fat?.unit}
+              </span>
             </div>
-            <ProgressBar progress={46.2} height="h-2" color="bg-red-400" />
           </div>
         </Card>
         {/* Water Tracker */}
@@ -163,7 +234,7 @@ function Dashboard() {
           </div>
           <div className="mt-6">
             <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={progressData}>
+              <LineChart data={PlaceHolderprogressData}>
                 <XAxis dataKey="week" />
                 <YAxis />
                 <CartesianGrid strokeDasharray="3 3" />
@@ -182,11 +253,10 @@ function Dashboard() {
       </div>
 
       {/* Quick Actions */}
-      <div className="mb-8">
+      <div className={`${recentMeals.length > 0 ? "mb-8" : ""}`}>
         <h2 className="mb-4 text-2xl font-bold text-gray-800">Quick Actions</h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <Link
-            rel="preload"
             to="/food-log"
             className="flex items-center justify-center gap-2 p-6 transition-all bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-green-50"
           >
@@ -196,7 +266,6 @@ function Dashboard() {
             </span>
           </Link>
           <Link
-            rel="preload"
             to="/diet-recommendation"
             className="flex items-center justify-center gap-2 p-6 transition-all bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-blue-50"
           >
@@ -206,7 +275,6 @@ function Dashboard() {
             </span>
           </Link>
           <Link
-            rel="preload"
             to="/browse-foods"
             className="flex items-center justify-center gap-2 p-6 transition-all bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-orange-50"
           >
@@ -219,107 +287,21 @@ function Dashboard() {
       </div>
 
       {/* Recent Nutrition Log */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold text-gray-800">
-            Recent Nutrition Log
-          </h2>
-        </div>
-        <div className="space-y-4">
-          <div className="p-4 rounded-lg shadow-sm border border-gray-200 bg-[#F9FAFB]">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="text-gray-400">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-800">Lunch</h3>
-                  <p className="text-gray-600">Grilled Chicken Salad, Quinoa</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-gray-500">12:30 PM</p>
-                <p className="font-semibold">550 cal</p>
-              </div>
-            </div>
+      {recentMeals.length > 0 && (
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-bold text-gray-800">
+              Recent Nutrition Log
+            </h2>
           </div>
 
-          <div className="p-4 rounded-lg shadow-sm border border-gray-200 bg-[#F9FAFB]">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="text-gray-400">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-800">Snack</h3>
-                  <p className="text-gray-600">Apple, Almonds</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-gray-500">10:00 AM</p>
-                <p className="font-semibold">120 cal</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-4 rounded-lg shadow-sm border border-gray-200 bg-[#F9FAFB]">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="text-gray-400">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-800">Breakfast</h3>
-                  <p className="text-gray-600">Oatmeal with Berries</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-gray-500">8:00 AM</p>
-                <p className="font-semibold">420 cal</p>
-              </div>
-            </div>
+          <div className="space-y-4">
+            {recentMeals?.map((meal) => (
+              <RecentLog key={meal.id} meal={meal} />
+            ))}
           </div>
         </div>
-      </div>
+      )}
     </main>
   );
 }

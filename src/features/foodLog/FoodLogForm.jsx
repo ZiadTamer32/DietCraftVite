@@ -16,10 +16,10 @@ function FoodLogForm({ setOverlay, email }) {
     formState: { errors }
   } = useForm({
     defaultValues: {
-      food: "",
+      mealName: "",
       mealType: "Breakfast",
       calories: 0,
-      carbs: 0,
+      carb: 0,
       protein: 0,
       fat: 0
     }
@@ -47,7 +47,7 @@ function FoodLogForm({ setOverlay, email }) {
     >
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <InputField
-          id="food"
+          id="mealName"
           label="Food Name"
           type="text"
           placeholder="Enter food name"
@@ -79,7 +79,7 @@ function FoodLogForm({ setOverlay, email }) {
           />
         </div>
         {/* Nutrients */}
-        {["calories", "carbs", "protein", "fat"].map((field) => (
+        {["calories", "carb", "protein", "fat"].map((field) => (
           <div key={field}>
             <InputField
               id={field}
