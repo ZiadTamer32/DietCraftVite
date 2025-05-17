@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { FaTint, FaPlus, FaMinus } from "react-icons/fa";
-import Card from "./Card";
-import Button from "./Button";
-import ProgressBar from "./ProgressBar";
+import Card from "../../ui/Card";
+import Button from "../../ui/Button";
+import ProgressBar from "../../ui/ProgressBar";
 
 const WaterTracker = () => {
   function getInitialGlasses() {

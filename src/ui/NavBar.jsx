@@ -53,7 +53,9 @@ function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex lg:items-center lg:space-x-4">
+          <div
+            className={`${isAuthenticated ? "lg:flex hidden" : "hidden"}  lg:items-center lg:space-x-4`}
+          >
             {navItems.map((item) => {
               const isActive = item.path === location.pathname;
               return (
@@ -143,7 +145,7 @@ function Navbar() {
             <Link
               key={item.name}
               to={item.path}
-              className="flex items-center px-3 py-2 text-base font-medium text-gray-600 rounded-md hover:text-dietcraft-500 hover:bg-dietcraft-50"
+              className={`${isAuthenticated ? "flex" : "hidden"} items-center px-3 py-2 text-base font-medium text-gray-600 rounded-md hover:text-dietcraft-500 hover:bg-dietcraft-50`}
               onClick={() => setIsOpen(false)}
             >
               <span className="mr-3">{item.icon}</span>

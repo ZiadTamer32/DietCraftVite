@@ -59,7 +59,7 @@ function FoodLogForm({ setOverlay, email }) {
               message: "Only letters and spaces are allowed"
             }
           }}
-          error={errors.food}
+          error={errors.mealName}
         />
 
         {/* Meal Type */}

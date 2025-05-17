@@ -43,6 +43,7 @@ const Dropdown = ({ filterData, filterList, setSearchParams }) => {
                   key={index}
                   onClick={() => {
                     setSearchParams({ filterBy: item });
+                    setIsOpen(false);
                   }}
                   className={`block px-4 py-2 cursor-pointer rounded-lg text-sm ${
                     isActive ? "text-black bg-white" : "text-[#4b5563] "

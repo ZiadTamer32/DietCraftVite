@@ -15,10 +15,10 @@ import { MdOutlineLocalFireDepartment } from "react-icons/md";
 import { IoBarbellOutline } from "react-icons/io5";
 import { LiaCookieSolid } from "react-icons/lia";
 
+import CaloriesByMealChart from "../features/Progress/CaloriesByMealChart";
+import AverageCard from "../features/Progress/AverageCard";
 import useGetFakeData from "../features/Progress/useGetFakeData";
-import AverageCard from "../ui/AverageCard";
 import FilterCharts from "../ui/FilterCharts";
-import CaloriesByMealChart from "../ui/CaloriesByMealChart";
 import DropdownMenu from "../ui/DropdownMenu";
 
 function Progress() {

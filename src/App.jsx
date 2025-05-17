@@ -15,6 +15,7 @@ import Spinner from "./ui/Spinner";
 
 // Dynamically import pages
 const Account = lazy(() => import("./pages/Account"));
+const AiAssistant = lazy(() => import("./pages/AiAssistant"));
 const BrowseFoods = lazy(() => import("./pages/BrowseFoods"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const DietRecommendation = lazy(() => import("./pages/DietRecommendation"));
@@ -81,6 +82,7 @@ function App() {
                 <Route path="/browse-foods/:id" element={<Recipe />} />
                 <Route path="/progress" element={<Progress />} />
                 <Route path="/account" element={<Account />} />
+                <Route path="/assistant" element={<AiAssistant />} />
               </Route>
               <Route path="/login" element={<Login />} />
               <Route path="/getData" element={<GetDietForm />} />
