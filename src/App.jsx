@@ -7,6 +7,7 @@ import { RecipesProvider } from "./context/RecipesContext";
 import { TargetProvider } from "./context/TargetContext";
 import { DateContextProvider } from "./context/DateContext";
 import { IngredientsProvider } from "./context/IngredientsContext";
+import { ChatProvider } from "./context/ChatContext";
 import { Suspense, lazy } from "react";
 import AppLayout from "./ui/AppLayout";
 import ProtectedRoute from "./ui/ProtectedRoute";
@@ -40,13 +41,15 @@ function App() {
   });
 
   const AppProviders = ({ children }) => (
-    <DateContextProvider>
-      <IngredientsProvider>
-        <TargetProvider>
-          <RecipesProvider>{children}</RecipesProvider>
-        </TargetProvider>
-      </IngredientsProvider>
-    </DateContextProvider>
+    <ChatProvider>
+      <DateContextProvider>
+        <IngredientsProvider>
+          <TargetProvider>
+            <RecipesProvider>{children}</RecipesProvider>
+          </TargetProvider>
+        </IngredientsProvider>
+      </DateContextProvider>
+    </ChatProvider>
   );
 
   return (

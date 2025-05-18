@@ -1,9 +1,8 @@
-import React, { createContext, useContext, useState } from "react";
+/* eslint-disable react/prop-types */
+import { createContext, useContext, useState } from "react";
 import { generateId } from "../utils/helpers";
 
-const ChatContext = createContext(undefined);
-
-const initialModel = "llama3";
+const ChatContext = createContext();
 
 const createEmptyChat = () => ({
   id: generateId(),
@@ -12,7 +11,7 @@ const createEmptyChat = () => ({
   timestamp: new Date()
 });
 
-export function ChatProvider({ children }) {
+function ChatProvider({ children }) {
   const [chats, setChats] = useState([]);
   const [activeChat, setActiveChat] = useState(null);
   const [isTyping, setIsTyping] = useState(false);
@@ -120,10 +119,12 @@ export function ChatProvider({ children }) {
   );
 }
 
-export function useChat() {
+function useChat() {
   const context = useContext(ChatContext);
   if (context === undefined) {
     throw new Error("useChat must be used within a ChatProvider");
   }
   return context;
 }
+
+export { ChatProvider, useChat };

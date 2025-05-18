@@ -88,7 +88,7 @@ function Dashboard() {
     <main className="p-5">
       {/* Welcome Section */}
       <div className="mb-8 text-center md:text-left">
-        <h1 className="mb-3 text-2xl font-bold text-gray-800 sm:text-3xl">
+        <h1 className="mb-3 text-xl font-bold text-gray-800 sm:text-3xl">
           Welcome back, {isAuthenticated ? Name : "User"}!
         </h1>
         <p className="text-sm text-gray-600 md:text-base">
