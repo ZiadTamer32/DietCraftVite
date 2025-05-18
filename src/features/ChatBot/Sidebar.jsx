@@ -97,7 +97,7 @@ function Sidebar({ isOpen, onOpen, toggleSidebar }) {
       {!isOpen && (
         <button
           onClick={onOpen}
-          className="absolute left-0 z-20 items-center justify-center hidden w-6 h-10 -translate-y-1/2 bg-white rounded-r-lg shadow md:flex top-1/2"
+          className="absolute left-0 z-20 items-center justify-center hidden w-6 h-10 -translate-y-1/2 bg-white shadow md:flex top-1/2"
           aria-label="Open sidebar"
         >
           <span className="text-gray-700">Back</span>

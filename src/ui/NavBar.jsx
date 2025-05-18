@@ -155,6 +155,16 @@ function Navbar() {
 
           {isAuthenticated ? (
             <>
+              <Link
+                to="/account"
+                className="flex items-center px-3 py-2 text-base font-medium text-gray-600 rounded-md hover:text-dietcraft-500 hover:bg-dietcraft-50"
+                onClick={() => setIsOpen(false)}
+              >
+                <span className="mr-3">
+                  <RiAccountCircleFill size={18} />
+                </span>
+                Profile
+              </Link>
               <button
                 onClick={() => {
                   handleLogout();
@@ -167,16 +177,6 @@ function Navbar() {
                 </span>
                 Logout
               </button>
-              <Link
-                to="/account"
-                className="flex items-center px-3 py-2 text-base font-medium text-gray-600 rounded-md hover:text-dietcraft-500 hover:bg-dietcraft-50"
-                onClick={() => setIsOpen(false)}
-              >
-                <span className="mr-3">
-                  <RiAccountCircleFill size={18} />
-                </span>
-                Profile
-              </Link>
             </>
           ) : (
             <>

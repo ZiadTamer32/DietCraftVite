@@ -49,9 +49,9 @@ function MessageInput() {
   };
 
   return (
-    <div className="sticky left-0 right-0 px-4 bottom-0 bg-white pb-2">
+    <div className="sticky left-0 right-0 px-4 bottom-0 bg-white pb-4">
       <form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
-        <div className="relative flex items-end gap-2 p-2 bg-white border-2 border-gray-200 shadow-lg backdrop-blur-lg rounded-2xl">
+        <div className="relative flex items-end gap-2 p-2 bg-white border-2 border-gray-200 shadow-sm backdrop-blur-lg rounded-2xl">
           <div className="relative flex-1">
             <textarea
               ref={textareaRef}

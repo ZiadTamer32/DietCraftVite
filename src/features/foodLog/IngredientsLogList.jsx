@@ -7,7 +7,7 @@ function IngredientsLogList({ progressData }) {
   const { selectedDate } = useDate();
   const sortedFoodLog = useFilteredAndSortedLogs(progressData, selectedDate);
   return (
-    <div className="w-full px-2 mx-auto bg-white rounded-lg max-w-8xl">
+    <div className="w-full px-2 mx-auto rounded-lg max-w-8xl">
       <ul className="space-y-4">
         {sortedFoodLog.map((progress, index) => (
           <IngredientsLogItem key={index} progress={progress} />

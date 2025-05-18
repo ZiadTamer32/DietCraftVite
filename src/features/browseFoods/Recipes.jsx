@@ -67,11 +67,11 @@ function Recipes() {
   if (isLoading) return <Spinner />;
 
   return (
-    <div className="flex flex-col gap-4 mx-auto md:px-4">
+    <div className="flex flex-col gap-4 mx-auto md:p-5 p-3">
       <div>
-        <h2 className="mb-1 text-3xl font-bold text-center md:text-left">
+        <h1 className="mb-3 font-bold text-gray-800 text-3xl text-center md:text-left">
           Featured Recipes
-        </h2>
+        </h1>
         <p className="text-sm text-center text-gray-600 md:text-left">
           Discover delicious and healthy recipes tailored to your needs.
         </p>

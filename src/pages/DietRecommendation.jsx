@@ -2,7 +2,7 @@ import DietForm from "../features/DietRecommendation/DietForm";
 
 function DietRecommendation() {
   return (
-    <div className="p-6">
+    <div className="md:p-5 p-3">
       <DietForm />
     </div>
   );
