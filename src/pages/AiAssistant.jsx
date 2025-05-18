@@ -15,8 +15,8 @@ function AiAssistant() {
     setIsSidebarOpen(false);
   };
   return (
-    <div className="relative flex flex-col h-screen transition-colors">
-      <div className="flex flex-1 pt-16 overflow-hidden">
+    <div className="relative flex flex-col h-[calc(100vh-6.5rem)] transition-colors">
+      <div className="flex flex-1 overflow-hidden">
         {isSidebarOpen && (
           <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         )}
@@ -32,7 +32,7 @@ function AiAssistant() {
         )}
 
         <main
-          className={`flex flex-col flex-1 ${
+          className={`flex flex-col flex-1 overflow-y-scroll ${
             isSidebarOpen ? "ml-80" : ""
           } relative`}
         >

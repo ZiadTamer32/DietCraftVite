@@ -6,10 +6,10 @@ function StartChatPrompt() {
   return (
     <div className="flex-1 flex flex-col items-center justify-center p-4">
       <div className="text-center max-w-md animate-fadeIn">
-        <h2 className="text-3xl font-semibold text-gray-800 mb-4">
+        <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-4">
           Welcome to DietCraft Chat
         </h2>
-        <p className="text-gray-600 mb-8 text-lg">
+        <p className="text-gray-600 mb-8 text-md md:text-lg">
           Your AI-powered assistant for coding, learning, and creative
           exploration
         </p>

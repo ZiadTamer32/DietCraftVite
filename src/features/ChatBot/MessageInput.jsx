@@ -15,8 +15,17 @@ function MessageInput() {
   }, [message]);
 
   useEffect(() => {
-    if (!isTyping && textareaRef.current) {
+    if (textareaRef.current && !isTyping) {
       textareaRef.current.focus();
+    }
+  }, [isTyping]);
+
+  useEffect(() => {
+    if (textareaRef.current && isTyping) {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+      });
     }
   }, [isTyping]);
 
@@ -40,7 +49,7 @@ function MessageInput() {
   };
 
   return (
-    <div className="sticky left-0 right-0 px-4 bottom-4">
+    <div className="sticky left-0 right-0 px-4 bottom-0 bg-white pb-2">
       <form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
         <div className="relative flex items-end gap-2 p-2 bg-white border-2 border-gray-200 shadow-lg backdrop-blur-lg rounded-2xl">
           <div className="relative flex-1">

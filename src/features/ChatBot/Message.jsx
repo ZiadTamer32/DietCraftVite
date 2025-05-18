@@ -18,7 +18,7 @@ function Message({ message }) {
 
   return (
     <div
-      className={`animate-fadeIn flex ${isUser ? "justify-end" : "justify-start"}`}
+      className={`flex ${isUser ? "justify-end" : "justify-start"}`}
       style={{ animationDelay: "0.1s" }}
     >
       <div
@@ -27,7 +27,11 @@ function Message({ message }) {
           ${isUser ? "bg-[#3a86ff] text-white" : "bg-[#e9ecef] text-gray-800"}
         `}
       >
-        <p className={`${isUser ? "font-medium" : ""}`}>{message.content}</p>
+        <p
+          className={`${isUser ? "font-medium" : ""} break-words whitespace-pre-wrap`}
+        >
+          {message.content}
+        </p>
 
         <div className="flex items-center justify-between mt-2 text-xs">
           <span className={`${isUser ? "text-white" : "text-gray-500"}`}>
