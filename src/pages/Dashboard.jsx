@@ -85,7 +85,7 @@ function Dashboard() {
   if (isPending || isFoodPending || isProgressPending) return <Spinner />;
 
   return (
-    <main className="w-full min-h-screen p-6 rounded-lg bg-[#feffff]">
+    <main className="p-5">
       {/* Welcome Section */}
       <div className="mb-8 text-center md:text-left">
         <h1 className="mb-3 text-2xl font-bold text-gray-800 sm:text-3xl">

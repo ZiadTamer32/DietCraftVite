@@ -40,17 +40,17 @@ function MessageInput() {
   };
 
   return (
-    <div className="sticky bottom-4 left-0 right-0 px-4">
+    <div className="sticky left-0 right-0 px-4 bottom-4">
       <form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
-        <div className="relative flex items-end gap-2 bg-white border-gray-200 border-2 backdrop-blur-lg rounded-2xl p-2 shadow-lg">
+        <div className="relative flex items-end gap-2 p-2 bg-white border-2 border-gray-200 shadow-lg backdrop-blur-lg rounded-2xl">
           <div className="relative flex-1">
             <textarea
               ref={textareaRef}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Message Ollama..."
-              className="w-full rounded-xl bg-transparent px-4 py-2 text-gray-900 placeholder:text-gray-500 focus:outline-none resize-none"
+              placeholder="Message DietCraft..."
+              className="w-full px-4 py-2 text-gray-900 bg-transparent resize-none rounded-xl placeholder:text-gray-500 focus:outline-none"
               rows={1}
               disabled={isTyping}
               autoFocus

@@ -41,7 +41,7 @@ function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-100 shadow-sm">
+    <nav className="absolute top-0 z-50 w-full bg-white border-b border-gray-100 shadow-sm">
       <div className="px-4 sm:px-6">
         <div className="flex justify-between h-16">
           <div className="flex items-center">

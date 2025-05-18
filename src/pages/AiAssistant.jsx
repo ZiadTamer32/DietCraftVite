@@ -7,7 +7,7 @@ import ChatArea from "../features/ChatBot/ChatArea";
 import MessageInput from "../features/ChatBot/MessageInput";
 
 function AiAssistant() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -19,7 +19,7 @@ function AiAssistant() {
   return (
     <ThemeProvider>
       <ChatProvider>
-        <div className="flex flex-col h-screen transition-colors relative">
+        <div className="relative flex flex-col h-screen transition-colors">
           <div className="flex flex-1 pt-16 overflow-hidden">
             {isSidebarOpen && (
               <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
@@ -27,7 +27,7 @@ function AiAssistant() {
 
             {!isSidebarOpen && (
               <button
-                className="absolute block  top-[50%] left-5 z-30 bg-blue-50 rounded-full shadow-md transition-all duration-300 ease-in-out"
+                className="absolute block top-5 sm:top-[50%] left-5 z-30 bg-blue-50 rounded-full shadow-md transition-all duration-300 ease-in-out"
                 onClick={toggleSidebar}
                 aria-label="Open sidebar"
               >
@@ -42,7 +42,7 @@ function AiAssistant() {
             >
               {isSidebarOpen && (
                 <div
-                  className="fixed inset-0 bg-black bg-opacity-50 z-10 md:hidden"
+                  className="fixed inset-0 z-10 bg-black bg-opacity-50 md:hidden"
                   onClick={closeSidebar}
                   aria-hidden="true"
                 />

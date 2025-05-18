@@ -31,7 +31,7 @@ function FoodLogs() {
   if (isProgressPending || isFoodPending) return <Spinner />;
 
   return (
-    <div className="flex flex-col gap-6 bg-[#f9fafb]">
+    <div className="flex flex-col gap-6 bg-gray-100 rounded-xl">
       {/* Split Layout for Form and Calendar */}
       <div className="flex flex-col-reverse gap-4 lg:flex-row">
         {/* Food Entry Form */}
