@@ -15,7 +15,7 @@ function StartChatPrompt() {
         </p>
         <button
           onClick={createNewChat}
-          className="px-6 py-3 rounded-full bg-[#3a86ff] hover:bg-blue-600 text-white transition-all transform hover:scale-105 font-medium"
+          className="px-6 py-3 rounded-full bg-dietcraft-500 text-white hover:bg-dietcraft-600 border border-transparent transition-all transform hover:scale-105 font-medium"
         >
           Start a new chat
         </button>

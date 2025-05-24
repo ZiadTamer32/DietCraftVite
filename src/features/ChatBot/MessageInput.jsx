@@ -73,7 +73,7 @@ function MessageInput() {
               p-2 rounded-full transition-all
               ${
                 message.trim() && !isTyping
-                  ? "bg-[#3a86ff] hover:bg-blue-600 text-white"
+                  ? "bg-dietcraft-500 text-white hover:bg-dietcraft-600 border border-transparent"
                   : "bg-gray-200 text-gray-500 cursor-not-allowed"
               }
             `}

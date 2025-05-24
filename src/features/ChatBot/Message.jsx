@@ -24,7 +24,7 @@ function Message({ message }) {
       <div
         className={`
           relative max-w-[85%] md:max-w-[75%] rounded-lg p-3
-          ${isUser ? "bg-[#3a86ff] text-white" : "bg-[#e9ecef] text-gray-800"}
+          ${isUser ? "bg-dietcraft-500 text-white border border-transparent" : "bg-[#e9ecef] text-gray-900"}
         `}
       >
         <p

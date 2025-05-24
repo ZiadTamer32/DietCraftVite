@@ -23,11 +23,11 @@ function AiAssistant() {
 
         {!isSidebarOpen && (
           <button
-            className="absolute block top-5 sm:top-[50%] left-5 z-30 bg-blue-50 rounded-full shadow-md transition-all duration-300 ease-in-out"
+            className="absolute block top-5 sm:top-[50%] left-5 z-30 rounded-full shadow-md transition-all duration-300 ease-in-out"
             onClick={toggleSidebar}
             aria-label="Open sidebar"
           >
-            <HiChevronRight className="text-gray-700" size={18} />
+            <HiChevronRight className="text-gray-700" size={20} />
           </button>
         )}
 
