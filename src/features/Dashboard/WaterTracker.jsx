@@ -1,6 +1,6 @@
-/* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaTint, FaPlus, FaMinus } from "react-icons/fa";
+<<<<<<< HEAD:src/ui/WaterTracker.jsx
 
 // Placeholder for Button component
 const Button = ({
@@ -67,6 +67,40 @@ const ProgressBar = ({
 const WaterTracker = ({ glassess }) => {
   const [glasses, setGlasses] = useState(0);
   const targetGlasses = glassess; // Default target: 8 glasses of water
+=======
+import Card from "../../ui/Card";
+import Button from "../../ui/Button";
+import ProgressBar from "../../ui/ProgressBar";
+
+const WaterTracker = () => {
+  function getInitialGlasses() {
+    const today = new Date().toISOString().split("T")[0];
+    const storedData = localStorage.getItem("waterGlasses");
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      if (parsedData.date === today) {
+        return parsedData.glassesCount;
+      }
+    }
+
+    localStorage.setItem(
+      "waterGlasses",
+      JSON.stringify({ date: today, glassesCount: 0 })
+    );
+    return 0;
+  }
+
+  const [glasses, setGlasses] = useState(getInitialGlasses);
+  const targetGlasses = 8; // Default target: 8 glasses of water
+>>>>>>> b304d44ff5504ff597f6badd5b398fe3de01574d:src/features/Dashboard/WaterTracker.jsx
+
+  useEffect(() => {
+    const today = new Date().toISOString().split("T")[0];
+    localStorage.setItem(
+      "waterGlasses",
+      JSON.stringify({ date: today, glassesCount: glasses })
+    );
+  }, [glasses]);
 
   const addWater = (amount = 1) => {
     setGlasses((prev) => Math.min(prev + amount, targetGlasses * 1.5)); // Allow up to 150% of target
@@ -96,7 +130,11 @@ const WaterTracker = ({ glassess }) => {
           color="bg-blue-400"
           background="bg-gray-200"
           showLabel={false}
+<<<<<<< HEAD:src/ui/WaterTracker.jsx
           className="rounded-full w-full" // Rounded ends and full width
+=======
+          className="w-full rounded-full"
+>>>>>>> b304d44ff5504ff597f6badd5b398fe3de01574d:src/features/Dashboard/WaterTracker.jsx
         />
       </div>
 
@@ -117,7 +155,7 @@ const WaterTracker = ({ glassess }) => {
 
       <div className="flex justify-center mt-4">
         <Button
-          variant="outline"
+          variant="outlineForWater"
           size="sm"
           onClick={() => removeWater()}
           disabled={glasses === 0}
@@ -127,7 +165,7 @@ const WaterTracker = ({ glassess }) => {
           Remove
         </Button>
         <Button
-          variant="primary"
+          variant="water"
           size="sm"
           onClick={() => addWater()}
           disabled={glasses === targetGlasses}
@@ -139,7 +177,7 @@ const WaterTracker = ({ glassess }) => {
 
       <div className="mt-4 text-xs text-center text-gray-500">
         {glasses >= targetGlasses ? (
-          <p className="text-green-600">
+          <p className="text-blue-600">
             Great job! You&apos;ve reached your daily water goal.
           </p>
         ) : (

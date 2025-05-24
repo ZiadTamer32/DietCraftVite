@@ -41,7 +41,7 @@ function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-100 shadow-sm">
+    <nav className="absolute top-0 z-50 w-full bg-white border-b border-gray-100 shadow-sm">
       <div className="px-4 sm:px-6">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -53,7 +53,9 @@ function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex lg:items-center lg:space-x-4">
+          <div
+            className={`${isAuthenticated ? "lg:flex hidden" : "hidden"}  lg:items-center lg:space-x-4`}
+          >
             {navItems.map((item) => {
               const isActive = item.path === location.pathname;
               return (
@@ -143,7 +145,7 @@ function Navbar() {
             <Link
               key={item.name}
               to={item.path}
-              className="flex items-center px-3 py-2 text-base font-medium text-gray-600 rounded-md hover:text-dietcraft-500 hover:bg-dietcraft-50"
+              className={`${isAuthenticated ? "flex" : "hidden"} items-center px-3 py-2 text-base font-medium text-gray-600 rounded-md hover:text-dietcraft-500 hover:bg-dietcraft-50`}
               onClick={() => setIsOpen(false)}
             >
               <span className="mr-3">{item.icon}</span>
@@ -153,6 +155,16 @@ function Navbar() {
 
           {isAuthenticated ? (
             <>
+              <Link
+                to="/account"
+                className="flex items-center px-3 py-2 text-base font-medium text-gray-600 rounded-md hover:text-dietcraft-500 hover:bg-dietcraft-50"
+                onClick={() => setIsOpen(false)}
+              >
+                <span className="mr-3">
+                  <RiAccountCircleFill size={18} />
+                </span>
+                Profile
+              </Link>
               <button
                 onClick={() => {
                   handleLogout();
@@ -165,16 +177,6 @@ function Navbar() {
                 </span>
                 Logout
               </button>
-              <Link
-                to="/account"
-                className="flex items-center px-3 py-2 text-base font-medium text-gray-600 rounded-md hover:text-dietcraft-500 hover:bg-dietcraft-50"
-                onClick={() => setIsOpen(false)}
-              >
-                <span className="mr-3">
-                  <RiAccountCircleFill size={18} />
-                </span>
-                Profile
-              </Link>
             </>
           ) : (
             <>

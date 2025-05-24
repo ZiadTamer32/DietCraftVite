@@ -58,9 +58,9 @@ function DietForm() {
 
   return (
     <div>
-      <h2 className="mb-4 text-2xl font-bold text-gray-800">
+      <h1 className="mb-3 text-xl font-bold text-gray-800 sm:text-3xl">
         Calculate Your Diet Plan
-      </h2>
+      </h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-6 mb-6 md:grid-cols-2">
           {/* Age */}
