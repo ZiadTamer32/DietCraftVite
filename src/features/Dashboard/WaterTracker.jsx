@@ -1,73 +1,5 @@
 import { useEffect, useState } from "react";
 import { FaTint, FaPlus, FaMinus } from "react-icons/fa";
-<<<<<<< HEAD:src/ui/WaterTracker.jsx
-
-// Placeholder for Button component
-const Button = ({
-  variant,
-  size,
-  onClick,
-  disabled,
-  icon,
-  children,
-  className,
-}) => {
-  const baseStyles =
-    "flex items-center justify-center font-medium rounded-lg transition-colors";
-  const variantStyles =
-    variant === "primary"
-      ? "bg-blue-600 text-white hover:bg-blue-700"
-      : "bg-white text-blue-600 border border-blue-600 hover:bg-gray-100";
-  const sizeStyles = size === "sm" ? "px-3 py-1.5 text-sm" : "px-4 py-2";
-  const disabledStyles = disabled ? "opacity-50 cursor-not-allowed" : "";
-
-  return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className={`${baseStyles} ${variantStyles} ${sizeStyles} ${disabledStyles} ${className || ""}`}
-    >
-      {icon && <span className="mr-2">{icon}</span>}
-      {children}
-    </button>
-  );
-};
-
-// Placeholder for Card component
-const Card = ({ className, children }) => {
-  return (
-    <div className={`bg-white shadow-md rounded-lg p-4 ${className || ""}`}>
-      {children}
-    </div>
-  );
-};
-
-// Placeholder for ProgressBar component
-const ProgressBar = ({
-  progress,
-  height,
-  color,
-  background,
-  showLabel,
-  className,
-}) => {
-  return (
-    <div className={`w-full ${background} ${className}`}>
-      <div
-        className={`${height} ${color} transition-all duration-300 rounded-xl`}
-        style={{ width: `${progress}%` }}
-      />
-      {showLabel && (
-        <span className="text-sm">{`${Math.round(progress)}%`}</span>
-      )}
-    </div>
-  );
-};
-
-const WaterTracker = ({ glassess }) => {
-  const [glasses, setGlasses] = useState(0);
-  const targetGlasses = glassess; // Default target: 8 glasses of water
-=======
 import Card from "../../ui/Card";
 import Button from "../../ui/Button";
 import ProgressBar from "../../ui/ProgressBar";
@@ -92,7 +24,6 @@ const WaterTracker = () => {
 
   const [glasses, setGlasses] = useState(getInitialGlasses);
   const targetGlasses = 8; // Default target: 8 glasses of water
->>>>>>> b304d44ff5504ff597f6badd5b398fe3de01574d:src/features/Dashboard/WaterTracker.jsx
 
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
@@ -126,15 +57,11 @@ const WaterTracker = () => {
       <div className="mb-6">
         <ProgressBar
           progress={progress}
-          height="h-3" // Thin height to match the photo
+          height="h-3"
           color="bg-blue-400"
           background="bg-gray-200"
           showLabel={false}
-<<<<<<< HEAD:src/ui/WaterTracker.jsx
-          className="rounded-full w-full" // Rounded ends and full width
-=======
           className="w-full rounded-full"
->>>>>>> b304d44ff5504ff597f6badd5b398fe3de01574d:src/features/Dashboard/WaterTracker.jsx
         />
       </div>
 
