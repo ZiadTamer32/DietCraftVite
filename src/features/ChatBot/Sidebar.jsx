@@ -36,14 +36,14 @@ function Sidebar({ isOpen, onOpen, toggleSidebar }) {
             <div className="flex items-center gap-2">
               <button
                 onClick={createNewChat}
-                className="p-2 text-blue-600 transition-all rounded-full bg-blue-50 hover:bg-blue-100"
+                className="p-2 transition-all rounded-full  text-gray-600 hover:bg-gray-200 border border-transparent"
                 aria-label="New chat"
               >
                 <FiPlus size={18} />
               </button>
               <button
                 onClick={toggleSidebar}
-                className="p-2 transition-all rounded-full hover:bg-gray-100"
+                className="p-2 transition-all rounded-full hover:bg-gray-200"
                 aria-label="Close sidebar"
               >
                 <FiX size={18} className="text-gray-600" />
@@ -63,7 +63,7 @@ function Sidebar({ isOpen, onOpen, toggleSidebar }) {
                   className={`group flex items-center justify-between p-3 rounded-lg transition-all
                     ${
                       chat.id === activeChat?.id
-                        ? "bg-blue-50 text-blue-800"
+                        ? " text-gray-900 bg-gray-100 border hover:bg-gray-200 border-transparent"
                         : "hover:bg-gray-100 text-gray-800"
                     }
                   `}
@@ -84,7 +84,7 @@ function Sidebar({ isOpen, onOpen, toggleSidebar }) {
                     className="p-1.5 rounded-full bg-gray-200 hover:bg-gray-300 transition-all"
                     aria-label="Remove chat"
                   >
-                    <FiTrash2 size={16} className="text-gray-500" />
+                    <FiTrash2 size={16} className="text-gray-600" />
                   </button>
                 </div>
               ))}
