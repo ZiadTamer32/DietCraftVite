@@ -7,7 +7,7 @@ import {
   FaChartBar,
   FaCalendarAlt,
   FaBook,
-  FaComments
+  FaComments,
 } from "react-icons/fa";
 import { PiCalculatorFill } from "react-icons/pi";
 import { RiAccountCircleFill } from "react-icons/ri";
@@ -32,12 +32,12 @@ function Navbar() {
     {
       name: "Calculator",
       path: "/diet-recommendation",
-      icon: <PiCalculatorFill size={18} />
+      icon: <PiCalculatorFill size={18} />,
     },
     { name: "Food Log", path: "/food-log", icon: <FaCalendarAlt size={18} /> },
     { name: "Recipes", path: "/browse-foods", icon: <FaBook size={18} /> },
     { name: "Progress", path: "/progress", icon: <FaChartBar size={18} /> },
-    { name: "Assistant", path: "/assistant", icon: <FaComments size={18} /> }
+    { name: "Assistant", path: "/assistant", icon: <FaComments size={18} /> },
   ];
 
   return (
@@ -75,15 +75,6 @@ function Navbar() {
           <div className="hidden space-x-2 lg:flex lg:items-center">
             {isAuthenticated ? (
               <>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  icon={<LuLogIn size={16} />}
-                  onClick={handleLogout}
-                  isPending={isPending}
-                >
-                  Logout
-                </Button>
                 <Link to="/account">
                   <Button
                     variant="primary"
@@ -93,6 +84,15 @@ function Navbar() {
                     Profile
                   </Button>
                 </Link>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  icon={<LuLogIn size={16} />}
+                  onClick={handleLogout}
+                  isPending={isPending}
+                >
+                  Logout
+                </Button>
               </>
             ) : (
               <>

@@ -9,7 +9,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer
+  ResponsiveContainer,
 } from "recharts";
 import { FiSearch } from "react-icons/fi";
 import Card from "../ui/Card";
@@ -21,7 +21,7 @@ import WaterTracker from "../features/Dashboard/WaterTracker";
 import useGetProgress from "../features/foodLog/useGetProgress";
 import {
   getRecentMeals,
-  summarizeTodaysMeals
+  summarizeTodaysMeals,
 } from "../features/Dashboard/RecentCalc";
 
 function Dashboard() {
@@ -33,7 +33,7 @@ function Dashboard() {
   );
   const meals = [
     ...(Array.isArray(foodData) ? foodData : []),
-    ...(Array.isArray(progressData) ? progressData : [])
+    ...(Array.isArray(progressData) ? progressData : []),
   ];
 
   const { totals, todaysMeals } = summarizeTodaysMeals(meals);
@@ -48,14 +48,14 @@ function Dashboard() {
     totalCalories: 8400,
     totalWorkouts: 5,
     averageWaterIntake: 2.5,
-    weightChange: -1.2
+    weightChange: -1.2,
   };
 
   const PlaceHolderprogressData = [
     { week: "Week 1", progress: 20 },
     { week: "Week 2", progress: 40 },
     { week: "Week 3", progress: 60 },
-    { week: "Week 4", progress: 80 }
+    { week: "Week 4", progress: 80 },
   ];
 
   const dailyTips = [
@@ -77,7 +77,7 @@ function Dashboard() {
     "Choose lean protein sources like fish, chicken, and plant-based proteins.",
     "Snack on nuts and seeds for a boost of healthy fats and energy.",
     "Get fresh air and natural sunlight daily to improve mood and vitamin D levels.",
-    "Prioritize mental health by practicing gratitude and positive thinking."
+    "Prioritize mental health by practicing gratitude and positive thinking.",
   ];
   const randomTip = dailyTips[Math.floor(Math.random() * dailyTips.length)];
 
@@ -103,15 +103,15 @@ function Dashboard() {
         {/* Today Calories */}
         <Card className="col-span-1">
           <h2 className="mb-4 text-lg font-semibold text-gray-800">
-            Today&apos;s Nutritions
+            Today&apos;s Nutrition
           </h2>
           <div className="flex items-center justify-between">
             <span className="text-gray-600">Calories</span>
             <span className="font-medium">
               {Math.ceil(totals.calories)}{" "}
-              {getTarget[0]?.Bmr?.totalDailyCaloricNeeds?.unit} /{" "}
-              {Math.ceil(getTarget[0]?.Bmr?.totalDailyCaloricNeeds?.value)}{" "}
-              {getTarget[0]?.Bmr?.totalDailyCaloricNeeds?.unit}
+              {getTarget[0]?.Bmr?.totalDailyCaloricNeeds?.unit ?? "kcal"} /{" "}
+              {Math.ceil(getTarget[0]?.Bmr?.totalDailyCaloricNeeds?.value ?? 0)}{" "}
+              {getTarget[0]?.Bmr?.totalDailyCaloricNeeds?.unit ?? "kcal"}
             </span>
           </div>
 
@@ -120,9 +120,9 @@ function Dashboard() {
               <span className="text-gray-600">Protein</span>
               <span>
                 {Math.ceil(totals.protein)}
-                {getTarget[0]?.Bmr?.protein?.unit} /{" "}
-                {Math.ceil(getTarget[0]?.Bmr?.protein?.preferred)}
-                {getTarget[0]?.Bmr?.protein?.unit}
+                {getTarget[0]?.Bmr?.protein?.unit ?? "g"} /{" "}
+                {Math.ceil(getTarget[0]?.Bmr?.protein?.preferred ?? 0)}
+                {getTarget[0]?.Bmr?.protein?.unit ?? "g"}
               </span>
             </div>
 
@@ -130,9 +130,9 @@ function Dashboard() {
               <span className="text-gray-600">Carbs</span>
               <span>
                 {Math.ceil(totals.carb)}
-                {getTarget[0]?.Bmr?.carbohydrates?.unit} /{" "}
-                {Math.ceil(getTarget[0]?.Bmr?.carbohydrates?.preferred)}
-                {getTarget[0]?.Bmr?.carbohydrates?.unit}
+                {getTarget[0]?.Bmr?.carbohydrates?.unit ?? "g"} /{" "}
+                {Math.ceil(getTarget[0]?.Bmr?.carbohydrates?.preferred ?? 0)}
+                {getTarget[0]?.Bmr?.carbohydrates?.unit ?? "g"}
               </span>
             </div>
 
@@ -140,13 +140,14 @@ function Dashboard() {
               <span className="text-gray-600">Fat</span>
               <span>
                 {Math.ceil(totals.fat)}
-                {getTarget[0]?.Bmr?.fat?.unit} /{" "}
-                {Math.ceil(getTarget[0]?.Bmr?.fat?.preferred)}
-                {getTarget[0]?.Bmr?.fat?.unit}
+                {getTarget[0]?.Bmr?.fat?.unit ?? "g"} /{" "}
+                {Math.ceil(getTarget[0]?.Bmr?.fat?.preferred ?? 0)}
+                {getTarget[0]?.Bmr?.fat?.unit ?? "g"}
               </span>
             </div>
           </div>
         </Card>
+
         {/* Water Tracker */}
         <WaterTracker />
       </div>

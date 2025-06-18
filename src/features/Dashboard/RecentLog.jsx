@@ -3,11 +3,13 @@ import { FaRegClock } from "react-icons/fa";
 function RecentLog({ meal }) {
   function getHourMinute(timestamp) {
     const date = new Date(timestamp);
-    const hours = String(date.getHours()).padStart(2, "0");
+    let hours = date.getHours();
     const minutes = String(date.getMinutes()).padStart(2, "0");
     const isPM = hours >= 12;
-    const adjustedHours = isPM ? hours - 12 : hours;
-    return `${adjustedHours}:${minutes} ${isPM ? "PM" : "AM"}`;
+    // Convert to 12-hour format
+    hours = hours % 12;
+    hours = hours === 0 ? 12 : hours; // 0 becomes 12
+    return `${hours}:${minutes} ${isPM ? "PM" : "AM"}`;
   }
   return (
     <div className="p-4 rounded-lg shadow-sm border border-gray-200 bg-[#F9FAFB]">

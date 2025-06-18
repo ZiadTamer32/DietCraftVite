@@ -17,23 +17,23 @@ const Button = ({
 
   const variantStyles = {
     primary:
-      "bg-dietcraft-500 text-white hover:bg-dietcraft-600 border border-transparent",
+      "bg-dietcraft-500 text-white hover:bg-dietcraft-600 border border-transparent max-w-28",
     secondary:
       "bg-dietcraft-50 text-dietcraft-700 hover:bg-dietcraft-100 border border-transparent",
     outline:
-      "bg-transparent text-dietcraft-700 hover:bg-dietcraft-50 border border-dietcraft-300",
+      "bg-transparent text-dietcraft-700 hover:bg-dietcraft-50 border border-dietcraft-300 w-24",
     ghost:
       "bg-transparent text-dietcraft-700 hover:bg-dietcraft-50 border border-transparent",
     link: "bg-transparent text-dietcraft-700 hover:underline p-0 h-auto border-none shadow-none",
     outlineForWater:
       "bg-transparent text-blue-700 hover:bg-blue-50 border border-blue-300",
-    water: "bg-blue-600 text-white hover:bg-blue-700"
+    water: "bg-blue-600 text-white hover:bg-blue-700",
   };
 
   const sizeStyles = {
     sm: "text-sm px-3 py-2",
     md: "text-base px-4 py-2.5",
-    lg: "text-lg px-6 py-3"
+    lg: "text-lg px-6 py-3",
   };
 
   const disabledStyles = disabled ? "opacity-50 cursor-not-allowed" : "";
