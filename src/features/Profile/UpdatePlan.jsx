@@ -3,11 +3,16 @@ import { useForm } from "react-hook-form";
 import usePlan from "../DietRecommendation/usePlan";
 import useUser from "../auth/useUser";
 import useEditPlan from "../DietRecommendation/useEditPlan";
+import useCreateTarget from "../DietRecommendation/useCreateTarget";
+import { useTarget } from "../../context/TargetContext";
 
 function UpdatePlan() {
   const { user } = useUser();
-  const { editPlan, isEditing } = useEditPlan(user?.email);
-  const { plan } = usePlan(user?.email);
+  const email = user?.email || "";
+  const { editPlan, isEditing } = useEditPlan(email);
+  const { getNutritions } = useTarget();
+  const { plan } = usePlan(email);
+  const { targetFn } = useCreateTarget(email);
   const {
     register,
     handleSubmit,
@@ -27,6 +32,24 @@ function UpdatePlan() {
       });
     }
   }, [plan, reset]);
+
+  const onSubmit = async (data) => {
+    editPlan(data);
+    const rate = data?.plan?.split(" ");
+    const nutrationsGuest = {
+      ...data,
+      height: Number(data.height),
+      weight: Number(data.weight),
+      bodyFat: Number(data.bodyFat),
+      age: Number(data.age),
+      rate: rate[1],
+      plan: rate[0],
+    };
+    const nutrations = await getNutritions(nutrationsGuest);
+    if (nutrations) {
+      targetFn({ email, targetData: nutrations });
+    }
+  };
   return (
     <div className="p-4 sm:p-8 mx-auto bg-white rounded-lg shadow-md max-w-8xl mb-8">
       <h2 className="text-2xl font-bold text-gray-800 mb-4">
@@ -37,7 +60,7 @@ function UpdatePlan() {
         recommendations.
       </p>
 
-      <form className="space-y-4" onSubmit={handleSubmit(editPlan)}>
+      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         {/* Weight */}
         <div>
           <label className="block text-gray-700 mb-1">Weight (kg)</label>

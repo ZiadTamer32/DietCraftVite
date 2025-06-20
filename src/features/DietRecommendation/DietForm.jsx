@@ -1,31 +1,20 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTarget } from "../../context/TargetContext";
-import useUser from "../auth/useUser";
-import useDiet from "./useDiet";
 import Target from "../DietRecommendation/Target";
-import Spinner from "../../ui/Spinner";
 import SpinnerMini from "../../ui/SpinnerMini";
-import useCreateTarget from "./useCreateTarget";
-import useGetTarget from "./useGetTarget";
 import InputField from "../../ui/InputField";
 import SelectField from "../../ui/SelectField";
 
 function DietForm() {
-  const { user } = useUser();
-  const email = user?.email || "";
+  const [response, setResponse] = useState(null);
   const { getNutritions, isLoading } = useTarget();
-  const { dietFn } = useDiet();
-  const { targetFn } = useCreateTarget();
-  const { isPending: isGetting } = useGetTarget(email);
 
   const {
     register,
     formState: { errors },
-    handleSubmit
+    handleSubmit,
   } = useForm();
-
-  const fullName =
-    `${user?.user_metadata?.firstName || ""} ${user?.user_metadata?.lastName || ""}`.trim();
 
   const onSubmit = async (data) => {
     try {
@@ -37,24 +26,16 @@ function DietForm() {
         bodyFat: Number(data.bodyFat),
         age: Number(data.age),
         rate: rate[1],
-        plan: rate[0]
+        plan: rate[0],
       };
-      dietFn({
-        addGuest: { ...data, email, fullName, rate: rate[1], plan: rate[0] },
-        email
-      });
       const nutrations = await getNutritions(nutrationsGuest);
       if (nutrations) {
-        targetFn({ email, targetData: nutrations });
+        setResponse(nutrations);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
-
-  if (isGetting) {
-    return <Spinner />;
-  }
 
   return (
     <div>
@@ -72,7 +53,7 @@ function DietForm() {
             validation={{
               required: "Age is required",
               min: { value: 13, message: "Age must be at least 13" },
-              max: { value: 110, message: "Age must not exceed 110" }
+              max: { value: 110, message: "Age must not exceed 110" },
             }}
             defaultValue={0}
             error={errors.age}
@@ -87,7 +68,7 @@ function DietForm() {
             validation={{
               required: "Height is required",
               min: { value: 100, message: "Height must be at least 100 cm" },
-              max: { value: 250, message: "Height must not exceed 250 cm" }
+              max: { value: 250, message: "Height must not exceed 250 cm" },
             }}
             defaultValue={0}
             error={errors.height}
@@ -103,12 +84,12 @@ function DietForm() {
               required: "Weight is required",
               min: {
                 value: 60,
-                message: "Weight should be greater than 60"
+                message: "Weight should be greater than 60",
               },
               max: {
                 value: 300,
-                message: "Weight should be less than 300"
-              }
+                message: "Weight should be less than 300",
+              },
             }}
             defaultValue={0}
             error={errors.weight}
@@ -123,7 +104,7 @@ function DietForm() {
             error={errors.gender}
             options={[
               { value: "male", label: "Male" },
-              { value: "female", label: "Female" }
+              { value: "female", label: "Female" },
             ]}
           />
         </div>
@@ -142,7 +123,7 @@ function DietForm() {
                 { value: "gain 1", label: "Extreme Gain Weight" },
                 { value: "maintain 0", label: "Maintain" },
                 { value: "loss 0.5", label: "Weight Loss" },
-                { value: "loss 1", label: "Extreme Weight Loss" }
+                { value: "loss 1", label: "Extreme Weight Loss" },
               ]}
             />
           </div>
@@ -160,8 +141,8 @@ function DietForm() {
                 { value: "active", label: "Active" },
                 {
                   value: "veryActive",
-                  label: "Very Active & Physical Job"
-                }
+                  label: "Very Active & Physical Job",
+                },
               ]}
             />
           </div>
@@ -184,7 +165,7 @@ function DietForm() {
           </button>
         </div>
       </form>
-      <Target />
+      <Target nutrations={response} />
     </div>
   );
 }

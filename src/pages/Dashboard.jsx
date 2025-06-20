@@ -1,17 +1,7 @@
 import { FaUtensils, FaCalculator } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import useUser from "../features/auth/useUser";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
 import { FiSearch } from "react-icons/fi";
+import useUser from "../features/auth/useUser";
 import Card from "../ui/Card";
 import useGetTarget from "../features/DietRecommendation/useGetTarget";
 import Spinner from "../ui/Spinner";
@@ -41,22 +31,6 @@ function Dashboard() {
 
   const Name =
     user?.user_metadata?.firstName + " " + user?.user_metadata?.lastName;
-
-  const progress = { current: 50, target: 100 };
-
-  const weeklySummary = {
-    totalCalories: 8400,
-    totalWorkouts: 5,
-    averageWaterIntake: 2.5,
-    weightChange: -1.2,
-  };
-
-  const PlaceHolderprogressData = [
-    { week: "Week 1", progress: 20 },
-    { week: "Week 2", progress: 40 },
-    { week: "Week 3", progress: 60 },
-    { week: "Week 4", progress: 80 },
-  ];
 
   const dailyTips = [
     "Drink a glass of water before every meal to help control portion sizes.",
@@ -152,76 +126,28 @@ function Dashboard() {
         <WaterTracker />
       </div>
 
-      {/* Weekly Summary */}
+      {/* BMI And BMR Summary */}
       <div className="mb-8">
         <h2 className="mb-4 text-2xl font-bold text-gray-800">
-          Weekly Summary
+          BMI and BMR Summary
         </h2>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-700">
-              Total Calories
-            </h3>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="p-5 border border-gray-200 rounded-lg shadow-sm">
+            <h3 className="text-lg font-semibold text-gray-700">BMI</h3>
+            <div className="flex items-center justify-between">
+              <p className="text-2xl font-bold text-green-600">
+                {getTarget[0]?.Bmi.bmi ?? 0} {getTarget[0].Bmi.unit ?? "kg/m²"}
+              </p>
+              <p className="text-gray-500 mt-1">
+                {getTarget[0]?.Bmi.bmiStatus ?? ""}
+              </p>
+            </div>
+          </div>
+          <div className="p-5 border border-gray-200 rounded-lg shadow-sm">
+            <h3 className="text-lg font-semibold text-gray-700">BMR</h3>
             <p className="text-2xl font-bold text-green-600">
-              {weeklySummary.totalCalories} kcal
+              {getTarget[0].Bmr.BMR.value} {getTarget[0].Bmr.BMR.unit}
             </p>
-          </div>
-          <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-700">
-              Total Workouts
-            </h3>
-            <p className="text-2xl font-bold text-blue-600">
-              {weeklySummary.totalWorkouts}
-            </p>
-          </div>
-          <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-700">
-              Avg. Water Intake
-            </h3>
-            <p className="text-2xl font-bold text-purple-600">
-              {weeklySummary.averageWaterIntake}L/day
-            </p>
-          </div>
-          <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-700">
-              Weight Change
-            </h3>
-            <p className="text-2xl font-bold text-yellow-600">
-              {weeklySummary.weightChange} kg
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Goals and Progress */}
-      <div className="mb-8">
-        <h2 className="mb-4 text-2xl font-bold text-gray-800">Your Progress</h2>
-        <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-700">
-            Monthly Goal: {progress.current}% Complete
-          </h3>
-          <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
-            <div
-              className="bg-green-600 h-2.5 rounded-full"
-              style={{ width: `${progress.current}%` }}
-            ></div>
-          </div>
-          <div className="mt-6">
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={PlaceHolderprogressData}>
-                <XAxis dataKey="week" />
-                <YAxis />
-                <CartesianGrid strokeDasharray="3 3" />
-                <Tooltip />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="progress"
-                  stroke="#3B82F6"
-                  strokeWidth={2}
-                />
-              </LineChart>
-            </ResponsiveContainer>
           </div>
         </div>
       </div>

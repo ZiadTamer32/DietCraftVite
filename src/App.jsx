@@ -35,9 +35,9 @@ function App() {
       queries: {
         staleTime: 60 * 1000, // Cache data for 1 minute instead of 0
         refetchOnWindowFocus: false, // Reduce unnecessary refetches
-        retry: 1 // Reduce retry attempts
-      }
-    }
+        retry: 1, // Reduce retry attempts
+      },
+    },
   });
 
   const AppProviders = ({ children }) => (
@@ -107,8 +107,8 @@ function App() {
               maxWidth: "500px",
               padding: "18px 24px",
               backgroundColor: "#ffffff",
-              color: "#000000"
-            }
+              color: "#000000",
+            },
           }}
         />
       </QueryClientProvider>
