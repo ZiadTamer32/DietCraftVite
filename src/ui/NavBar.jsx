@@ -47,9 +47,15 @@ function Navbar() {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex items-center flex-shrink-0">
-              <span className="text-xl font-bold text-dietcraft-600">
+              {/* <span className="text-xl font-bold text-dietcraft-600">
                 Diet<span className="text-dietcraft-500">Craft</span>
-              </span>
+              </span> */}
+              <img
+                src="/logo_text.svg"
+                alt="DietCraft Logo"
+                className="h-8 w-auto"
+                loading="lazy"
+              />
             </Link>
           </div>
 
@@ -91,6 +97,7 @@ function Navbar() {
                   icon={<LuLogIn size={16} />}
                   onClick={handleLogout}
                   isPending={isPending}
+                  className="w-24"
                 >
                   Logout
                 </Button>

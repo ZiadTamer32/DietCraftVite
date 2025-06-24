@@ -17,7 +17,7 @@ import { useSearchParams } from "react-router-dom";
 import { MdOutlineLocalFireDepartment } from "react-icons/md";
 import { IoBarbellOutline } from "react-icons/io5";
 import { LiaCookieSolid } from "react-icons/lia";
-
+import { subDays, subMonths, subQuarters, isWithinInterval } from "date-fns";
 import AverageCard from "../features/Progress/AverageCard";
 import FilterCharts from "../ui/FilterCharts";
 import DropdownMenu from "../ui/DropdownMenu";
@@ -31,8 +31,10 @@ const COLORS = ["#4CAF50", "#F59E0B", "#3B82F6", "#EF4444"];
 
 function Progress() {
   const filterList = ["overview", "calories", "macronutrients", "meals"];
+  const filterDuration = ["week", "month", "quarter"];
   const [searchParams, setSearchParams] = useSearchParams();
   const filterData = searchParams.get("filterBy") || "overview";
+  const filterTime = searchParams.get("time") || "week";
 
   const { user } = useUser();
   const { foodData, isPending: isFoodPending } = useGetFood(user?.email);
@@ -42,24 +44,53 @@ function Progress() {
   const mergedData = foodData?.concat(progressData);
   const isLoading = isFoodPending || isProgressPending;
 
+  // Function to filter data based on time period
+  const filterDataByTime = (data, timePeriod) => {
+    if (!data) return [];
+
+    const now = new Date();
+    let startDate;
+
+    switch (timePeriod) {
+      case "week":
+        startDate = subDays(now, 7);
+        break;
+      case "month":
+        startDate = subMonths(now, 1);
+        break;
+      case "quarter":
+        startDate = subQuarters(now, 1);
+        break;
+      default:
+        startDate = subDays(now, 7);
+    }
+
+    return data.filter((item) => {
+      const itemDate = new Date(item?.created_at);
+      return isWithinInterval(itemDate, { start: startDate, end: now });
+    });
+  };
+
+  const filteredData = filterDataByTime(mergedData, filterTime);
+
   if (isLoading) {
     return <Spinner />;
   }
 
   function AverageValues(value) {
-    const totalValues = mergedData?.map((log) => log?.[value]);
+    const totalValues = filteredData?.map((log) => log?.[value]);
     const averageValues =
       totalValues?.reduce((acc, current) => acc + current, 0) /
         totalValues?.length || 0;
     return parseFloat(averageValues?.toFixed(2));
   }
 
-  const dateAndCalories = mergedData?.map((item) => ({
+  const dateAndCalories = filteredData?.map((item) => ({
     date: formatDateToYYYYMMDD(item?.created_at),
     calories: item?.calories,
   }));
 
-  const caloriesByMeal = mergedData?.reduce((acc, log) => {
+  const caloriesByMeal = filteredData?.reduce((acc, log) => {
     const meal = log?.mealType;
     const existing = acc.find((m) => m.meal === meal);
     if (existing) existing.calories += log?.calories;
@@ -70,14 +101,14 @@ function Progress() {
     }));
   }, []);
 
-  const dailyMacros = mergedData?.map((log) => ({
+  const dailyMacros = filteredData?.map((log) => ({
     date: formatDateToYYYYMMDD(log?.created_at),
     fat: log?.fat,
     carb: log?.carb,
     protein: log?.protein,
   }));
 
-  const macrosTotal = mergedData?.reduce(
+  const macrosTotal = filteredData?.reduce(
     (acc, log) => {
       acc.fat += log?.fat;
       acc.carb += log?.carb;
@@ -93,7 +124,7 @@ function Progress() {
     { name: "Protein", value: +macrosTotal?.protein?.toFixed(2) },
   ];
 
-  const macrosByMeal = mergedData?.reduce((acc, log) => {
+  const macrosByMeal = filteredData?.reduce((acc, log) => {
     const meal = log?.mealType;
     const existing = acc.find((m) => m.meal === meal);
     if (existing) {
@@ -120,7 +151,7 @@ function Progress() {
     {
       id: "1",
       category: "calories",
-      title: "Daily Calorie Trend",
+      title: `Daily Calorie Trend (${filterTime})`,
       component: (
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={dateAndCalories}>
@@ -143,7 +174,7 @@ function Progress() {
     {
       id: "2",
       category: "calories",
-      title: "Total Calories per Meal Type",
+      title: `Total Calories per Meal Type (${filterTime})`,
       component: (
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={caloriesByMeal}>
@@ -159,7 +190,7 @@ function Progress() {
     {
       id: "3",
       category: "macronutrients",
-      title: "Stacked Bar: Daily Macronutrients",
+      title: `Stacked Bar: Daily Macronutrients (${filterTime})`,
       component: (
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={dailyMacros} stackOffset="sign">
@@ -168,7 +199,7 @@ function Progress() {
             <Tooltip />
             <Legend />
             <Bar dataKey="fat" stackId="a" fill="#EF4444" />
-            <Bar dataKey="carbohydrates" stackId="a" fill="#3B82F6" />
+            <Bar dataKey="carb" stackId="a" fill="#3B82F6" />
             <Bar dataKey="protein" stackId="a" fill="#10B981" />
           </BarChart>
         </ResponsiveContainer>
@@ -177,7 +208,7 @@ function Progress() {
     {
       id: "4",
       category: "macronutrients",
-      title: "Macronutrients % Distribution (Week)",
+      title: `Macronutrients % Distribution (${filterTime})`,
       component: (
         <ResponsiveContainer width="100%" height={300}>
           <PieChart>
@@ -203,7 +234,7 @@ function Progress() {
     {
       id: "5",
       category: "meals",
-      title: "Meal-wise Macronutrients",
+      title: `Meal-wise Macronutrients (${filterTime})`,
       component: (
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={macrosByMeal}>
@@ -212,7 +243,7 @@ function Progress() {
             <Tooltip />
             <Legend />
             <Bar dataKey="fat" stackId="a" fill="#EF4444" />
-            <Bar dataKey="carbohydrates" stackId="a" fill="#3B82F6" />
+            <Bar dataKey="carb" stackId="a" fill="#3B82F6" />
             <Bar dataKey="protein" stackId="a" fill="#10B981" />
           </BarChart>
         </ResponsiveContainer>
@@ -255,30 +286,53 @@ function Progress() {
         />
       </div>
 
-      <div className="pb-5">
-        <ul className="hidden md:flex flex-wrap bg-[#f5f5f5] gap-5 rounded-lg w-fit max-md:justify-between max-md:w-full p-1 text-gray-500">
-          {filterList.map((item, index) => {
-            const isActive = item === filterData;
-            return (
-              <li
-                key={index}
-                onClick={() => setSearchParams({ filterBy: item })}
-                className={`px-4 py-2 cursor-pointer rounded-lg text-sm ${
-                  isActive ? "text-black bg-white" : "text-[#4b5563]"
-                }`}
-              >
-                {item.charAt(0).toUpperCase() + item.slice(1)}
-              </li>
-            );
-          })}
-        </ul>
-        <DropdownMenu
-          filterData={filterData}
-          filterList={filterList}
-          setSearchParams={setSearchParams}
-        />
+      <div className="flex items-center justify-between pb-5 max-md:flex-col max-md:items-stretch">
+        <div className="pb-5">
+          <ul className="hidden md:flex flex-wrap bg-[#f5f5f5] gap-5 rounded-lg w-fit max-md:justify-between max-md:w-full p-1 text-gray-500">
+            {filterList.map((item, index) => {
+              const isActive = item === filterData;
+              return (
+                <li
+                  key={index}
+                  onClick={() =>
+                    setSearchParams({ filterBy: item, time: filterTime })
+                  }
+                  className={`px-4 py-2 cursor-pointer rounded-lg text-sm ${
+                    isActive ? "text-black bg-white" : "text-[#4b5563]"
+                  }`}
+                >
+                  {item.charAt(0).toUpperCase() + item.slice(1)}
+                </li>
+              );
+            })}
+          </ul>
+          <DropdownMenu
+            filterData={filterData}
+            filterList={filterList}
+            setSearchParams={setSearchParams}
+          />
+        </div>
+        <div className="pb-5">
+          <ul className="md:flex max-md:flex max-md:flex-row flex-wrap bg-[#f5f5f5] gap-5 rounded-lg w-fit max-md:justify-between max-md:w-full p-1 text-gray-500">
+            {filterDuration.map((item, index) => {
+              const isActive = item === filterTime;
+              return (
+                <li
+                  key={index}
+                  onClick={() =>
+                    setSearchParams({ filterBy: filterData, time: item })
+                  }
+                  className={`px-4 py-2 cursor-pointer rounded-lg text-sm ${
+                    isActive ? "text-black bg-white" : "text-[#4b5563]"
+                  }`}
+                >
+                  {item.charAt(0).toUpperCase() + item.slice(1)}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
-
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         {chartsConfig.map(
           ({ id, title, category, component }) =>

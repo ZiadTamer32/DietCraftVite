@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Button from "../../ui/Button";
 function Hero() {
   return (
-    <section className="relative bg-gradient-to-br from-[#E8F5E9] to-white py-20 lg:py-32">
+    <section className="relative bg-gradient-to-br from-[#E8F5E9] to-white py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="text-center lg:text-left">
