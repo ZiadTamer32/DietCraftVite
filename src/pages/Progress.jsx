@@ -7,138 +7,277 @@ import {
   Tooltip,
   Legend,
   BarChart,
-  Bar
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
+  ResponsiveContainer,
 } from "recharts";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MdOutlineLocalFireDepartment } from "react-icons/md";
 import { IoBarbellOutline } from "react-icons/io5";
 import { LiaCookieSolid } from "react-icons/lia";
 
+import AverageCard from "../features/Progress/AverageCard";
 import useGetFakeData from "../features/Progress/useGetFakeData";
-import AverageCard from "../ui/AverageCard";
 import FilterCharts from "../ui/FilterCharts";
-import CaloriesByMealChart from "../ui/CaloriesByMealChart";
 import DropdownMenu from "../ui/DropdownMenu";
 
-function Progress() {
-  function getMonthName(monthNumber) {
-    const date = new Date();
-    date.setMonth(monthNumber - 1);
-    return date.toLocaleString("en-US", { month: "long" });
-  }
+const COLORS = ["#4CAF50", "#F59E0B", "#3B82F6", "#EF4444"];
 
+function Progress() {
   function AverageValues(value) {
     const totalValues = fakeData?.map((log) => log[value]);
     const averageValues =
       totalValues?.reduce((acc, current) => acc + current, 0) /
       totalValues?.length;
-    return averageValues.toFixed(2);
+    return parseFloat(averageValues.toFixed(2));
   }
 
   const filterList = ["overview", "calories", "macronutrients", "meals"];
   const [searchParams, setSearchParams] = useSearchParams();
   const { fakeData, isPending } = useGetFakeData();
-  const [darkMode, setDarkMode] = useState(false);
   const filterData = searchParams.get("filterBy") || "overview";
 
   useEffect(() => {
     setSearchParams({ filterBy: filterData });
   }, [filterData, setSearchParams]);
 
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", darkMode);
-  }, [darkMode]);
+  const dateAndCalories = fakeData?.map((item) => ({
+    date: item.date,
+    calories: item.calories,
+  }));
 
-  const dateAndCalories = fakeData?.reduce((acc, log) => {
-    const monthName = getMonthName(log.month);
-    const existingMonth = acc.find((item) => item.month === monthName);
+  const caloriesByMeal = fakeData?.reduce((acc, log) => {
+    const meal = log.meal;
+    const existing = acc.find((m) => m.meal === meal);
+    if (existing) existing.calories += log.calories;
+    else acc.push({ meal, calories: log.calories });
+    const resultCaloriesByMeal = acc.map((item) => ({
+      ...item,
+      calories: +item.calories.toFixed(2),
+    }));
+    return resultCaloriesByMeal;
+  }, []);
 
-    if (existingMonth) {
-      existingMonth.calories += log.calories; // Sum calories
-      // OR: Average (if preferred)
-      // existingMonth.calories = (existingMonth.calories + log.calories) / 2;
+  const macronutrientsRadar = fakeData?.reduce((acc, log) => {
+    const meal = log.meal;
+    const existing = acc.find((m) => m.meal === meal);
+    if (existing) {
+      existing.fat += log.fat;
+      existing.carbohydrates += log.carbohydrates;
+      existing.protein += log.protein;
     } else {
-      acc.push({ month: monthName, calories: log.calories });
+      acc.push({
+        meal,
+        fat: log.fat,
+        carbohydrates: log.carbohydrates,
+        protein: log.protein,
+      });
     }
     return acc;
   }, []);
 
-  const MealAndCalories = fakeData?.map((log) => ({
-    meal: log.meal?.split(" ")[0],
-    calories: log.calories
+  const dailyMacros = fakeData?.map((log) => ({
+    date: log?.date,
+    fat: log?.fat,
+    carbohydrates: log?.carbohydrates,
+    protein: log?.protein,
   }));
 
-  const mealsData = [
-    { day: "Mon", value: 2 },
-    { day: "Tue", value: 2.5 },
-    { day: "Wed", value: 3 },
-    { day: "Thu", value: 2 },
-    { day: "Fri", value: 2.8 },
-    { day: "Sat", value: 3.5 },
-    { day: "Sun", value: 2.2 }
+  const macrosTotal = fakeData?.reduce(
+    (acc, log) => {
+      acc.fat += log?.fat;
+      acc.carbohydrates += log?.carbohydrates;
+      acc.protein += log?.protein;
+      return acc;
+    },
+    { fat: 0, carbohydrates: 0, protein: 0 }
+  );
+
+  const macrosPieData = [
+    { name: "Fat", value: +macrosTotal?.fat.toFixed(2) },
+    { name: "Carbs", value: +macrosTotal?.carbohydrates.toFixed(2) },
+    { name: "Protein", value: +macrosTotal?.protein.toFixed(2) },
   ];
+
+  const macrosByMeal = fakeData?.reduce((acc, log) => {
+    const meal = log.meal;
+    const existing = acc.find((m) => m.meal === meal);
+    if (existing) {
+      existing.fat += +log.fat.toFixed(2);
+      existing.carbohydrates += +log.carbohydrates.toFixed(2);
+      existing.protein += +log.protein.toFixed(2);
+    } else {
+      acc.push({
+        meal,
+        fat: +log.fat.toFixed(2),
+        carbohydrates: +log.carbohydrates.toFixed(2),
+        protein: +log.protein.toFixed(2),
+      });
+    }
+    const result = acc.map((item) => ({
+      ...item,
+      fat: +item.fat.toFixed(2),
+      carbohydrates: +item.carbohydrates.toFixed(2),
+      protein: +item.protein.toFixed(2),
+    }));
+    return result;
+  }, []);
 
   const chartsConfig = [
     {
       id: "1",
       category: "calories",
-      title: "Calories Intake",
+      title: "Daily Calorie Trend",
       component: (
-        <LineChart data={dateAndCalories}>
-          <XAxis dataKey="month" stroke={`${darkMode ? "white" : "black"}`} />
-          <YAxis stroke={`${darkMode ? "white" : "black"}`} />
-          <CartesianGrid strokeDasharray="3 3" />
-          <Tooltip />
-          <Legend />
-          <Line
-            type="monotone"
-            dataKey="calories"
-            stroke="#3B82F6"
-            strokeWidth={2}
-            dot={false}
-          />
-        </LineChart>
-      )
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={dateAndCalories}>
+            <XAxis dataKey="date" stroke="black" />
+            <YAxis stroke="black" />
+            <CartesianGrid strokeDasharray="3 3" />
+            <Tooltip />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="calories"
+              stroke="#4CAF50"
+              strokeWidth={2}
+              dot={false}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      ),
     },
     {
       id: "2",
       category: "calories",
-      title: "Calories by Meal",
-      component: <CaloriesByMealChart data={MealAndCalories} variant="simple" />
+      title: "Total Calories per Meal Type",
+      component: (
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={caloriesByMeal}>
+            <XAxis dataKey="meal" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="calories" fill="#F59E0B" />
+          </BarChart>
+        </ResponsiveContainer>
+      ),
     },
     {
       id: "3",
-      category: "meals",
-      title: "Meal Intake",
+      category: "macronutrients",
+      title: "Radar: Avg Macronutrients per Meal",
       component: (
-        <BarChart data={mealsData}>
-          <XAxis dataKey="day" stroke={`${darkMode ? "white" : "black"}`} />
-          <YAxis stroke={`${darkMode ? "white" : "black"}`} />
-          <CartesianGrid strokeDasharray="3 3" />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="value" fill="#10B981" />
-        </BarChart>
-      )
-    }
+        <ResponsiveContainer width="100%" height={300}>
+          <RadarChart data={macronutrientsRadar}>
+            <PolarGrid />
+            <PolarAngleAxis dataKey="meal" />
+            <PolarRadiusAxis />
+            <Radar
+              name="Fat"
+              dataKey="fat"
+              stroke="#EF4444"
+              fill="#EF4444"
+              fillOpacity={0.6}
+            />
+            <Radar
+              name="Carbs"
+              dataKey="carbohydrates"
+              stroke="#3B82F6"
+              fill="#3B82F6"
+              fillOpacity={0.6}
+            />
+            <Radar
+              name="Protein"
+              dataKey="protein"
+              stroke="#10B981"
+              fill="#10B981"
+              fillOpacity={0.6}
+            />
+          </RadarChart>
+        </ResponsiveContainer>
+      ),
+    },
+    {
+      id: "4",
+      category: "macronutrients",
+      title: "Stacked Bar: Daily Macronutrients",
+      component: (
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={dailyMacros} stackOffset="sign">
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="fat" stackId="a" fill="#EF4444" />
+            <Bar dataKey="carbohydrates" stackId="a" fill="#3B82F6" />
+            <Bar dataKey="protein" stackId="a" fill="#10B981" />
+          </BarChart>
+        </ResponsiveContainer>
+      ),
+    },
+    {
+      id: "5",
+      category: "macronutrients",
+      title: "Macronutrients % Distribution (Week)",
+      component: (
+        <ResponsiveContainer width="100%" height={300}>
+          <PieChart>
+            <Pie
+              data={macrosPieData}
+              dataKey="value"
+              nameKey="name"
+              outerRadius={100}
+              label
+            >
+              {macrosPieData.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Tooltip />
+          </PieChart>
+        </ResponsiveContainer>
+      ),
+    },
+    {
+      id: "6",
+      category: "meals",
+      title: "Meal-wise Macronutrients",
+      component: (
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={macrosByMeal}>
+            <XAxis dataKey="meal" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="fat" stackId="a" fill="#EF4444" />
+            <Bar dataKey="carbohydrates" stackId="a" fill="#3B82F6" />
+            <Bar dataKey="protein" stackId="a" fill="#10B981" />
+          </BarChart>
+        </ResponsiveContainer>
+      ),
+    },
   ];
 
   return (
-    <div className="p-4 transition-all duration-300 rounded-lg md:p-7 dark:bg-gray-900 dark:text-white">
+    <div className="p-4 text-black transition-all duration-300 bg-white rounded-lg md:p-5">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-800 md:text-3xl dark:text-white">
+        <h1 className="text-2xl font-bold text-gray-800 md:text-3xl">
           DietCraft Progress
         </h1>
-        <button
-          onClick={() => setDarkMode(!darkMode)}
-          className="px-4 py-2 text-sm transition-all bg-gray-200 rounded-lg dark:bg-gray-700 dark:text-white"
-        >
-          {darkMode ? "Light Mode" : "Dark Mode"}
-        </button>
       </div>
 
-      {/* Average Cards */}
       <div className="grid grid-cols-1 gap-4 py-5 md:grid-cols-2 lg:grid-cols-4">
         <AverageCard
           AverageName="Average Calories"
@@ -166,9 +305,8 @@ function Progress() {
         />
       </div>
 
-      {/* Filter List */}
       <div className="pb-5">
-        <ul className="hidden md:flex flex-wrap bg-[#f5f5f5] dark:bg-gray-800 gap-5 rounded-lg w-fit max-md:justify-between max-md:w-full p-1 text-gray-500 dark:text-gray-300">
+        <ul className="hidden md:flex flex-wrap bg-[#f5f5f5] gap-5 rounded-lg w-fit max-md:justify-between max-md:w-full p-1 text-gray-500">
           {filterList.map((item, index) => {
             const isActive = item === filterData;
             return (
@@ -176,9 +314,7 @@ function Progress() {
                 key={index}
                 onClick={() => setSearchParams({ filterBy: item })}
                 className={`px-4 py-2 cursor-pointer rounded-lg text-sm ${
-                  isActive
-                    ? "text-black bg-white dark:bg-gray-600 dark:text-white"
-                    : "text-[#4b5563] dark:text-gray-400"
+                  isActive ? "text-black bg-white" : "text-[#4b5563]"
                 }`}
               >
                 {item.charAt(0).toUpperCase() + item.slice(1)}
@@ -193,7 +329,6 @@ function Progress() {
         />
       </div>
 
-      {/* Charts Grid */}
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         {chartsConfig.map(
           ({ id, title, category, component }) =>

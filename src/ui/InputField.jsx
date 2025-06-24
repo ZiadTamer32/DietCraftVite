@@ -1,14 +1,24 @@
 /* eslint-disable react/prop-types */
 function InputField({
-  value,
   id,
   label,
   type,
+  placeholder,
   register,
   validation,
   error,
-  defaultValue,
+  onChange,
+  autoComplete,
+  defaultValue
 }) {
+  // Default handler: prevent negative numbers
+  const defaultHandler = (e) => {
+    if (type === "number") {
+      const value = Number(e.target.value);
+      if (value < 0) e.target.value = 0;
+    }
+  };
+
   return (
     <div>
       <label
@@ -18,15 +28,16 @@ function InputField({
         {label}
       </label>
       <input
-        value={value}
         id={id}
         defaultValue={defaultValue}
         type={type}
+        placeholder={placeholder}
+        autoComplete={autoComplete}
         {...register(id, validation)}
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 shadow-sm focus:ring-green-500 focus:border-green-500"
-        onChange={(e) => {
-          if (e.target.value < 0) e.target.value = 0;
-        }}
+        onChange={onChange || defaultHandler}
+        className={`bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full p-2.5 shadow-sm ${
+          error ? "border-red-500" : "border-gray-300"
+        } focus:ring-green-500 focus:border-green-500`}
       />
       {error && <p className="text-sm text-red-500">{error.message}</p>}
     </div>

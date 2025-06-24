@@ -3,7 +3,7 @@ import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { useForm } from "react-hook-form";
 import { useState, useMemo } from "react";
 import { useTarget } from "../../context/TargetContext";
-import Progress from "../../ui/Progress";
+import ProgressForm from "../../ui/ProgressForm";
 import useDiet from "./useDiet";
 import useUser from "../auth/useUser";
 import SpinnerMini from "../../ui/SpinnerMini";
@@ -68,7 +68,7 @@ export default function DietDataForm() {
     <section>
       <div className="max-w-[25rem] mx-auto max-sm:px-5">
         <div className="w-full bg-white rounded-lg shadow-lg">
-          <Progress maxSteps={3} step={step} />
+          <ProgressForm maxSteps={3} step={step} />
           <div className="flex flex-col justify-between h-full gap-4 px-8 py-8 max-md:px-4 max-md:py-6">
             <h1 className="text-2xl font-bold text-center text-gray-700">
               Set your important details
@@ -202,7 +202,7 @@ export default function DietDataForm() {
               )}
               <button
                 onClick={step === 3 ? handleSubmit(onSubmit) : handleNext}
-                className="text-white bg-green-600 hover:bg-green-700 transition font-medium rounded-lg text-sm px-5 py-2.5 flex gap-2 items-center shadow-md"
+                className="text-white bg-green-600 hover:bg-green-700 transition font-medium justify-center rounded-lg text-sm px-5 py-2.5 flex gap-2 items-center shadow-md w-28"
               >
                 {step === 3 ? isPending ? <SpinnerMini /> : "Submit" : "Next"}
                 {step === 3 ? (

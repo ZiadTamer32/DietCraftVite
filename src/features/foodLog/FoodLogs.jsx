@@ -31,18 +31,18 @@ function FoodLogs() {
   if (isProgressPending || isFoodPending) return <Spinner />;
 
   return (
-    <div className="flex flex-col gap-6 bg-[#f9fafb]">
+    <div className="flex flex-col gap-6 bg-gray-100">
       {/* Split Layout for Form and Calendar */}
       <div className="flex flex-col-reverse gap-4 lg:flex-row">
         {/* Food Entry Form */}
-        <div className="w-full p-6 bg-white rounded-xl shadow-sm border border-gray-100 lg:w-[70%]">
-          <h2 className="mb-4 text-lg font-bold text-gray-800 md:text-xl">
+        <div className="w-full p-3 md:p-5 bg-white shadow-sm border border-gray-100 lg:w-[70%]">
+          <h1 className="mb-3 text-xl font-bold text-gray-800 sm:text-3xl">
             Add Food Entry
-          </h2>
+          </h1>
           <FoodLogForm setOverlay={setOverlay} email={user?.email} />
         </div>
         {/* Calendar */}
-        <div className="w-full bg-white rounded-xl shadow-sm border border-gray-100 lg:w-[30%]">
+        <div className="w-full bg-white shadow-sm border border-gray-100 lg:w-[30%]">
           <DatePicker />
         </div>
       </div>
@@ -50,7 +50,7 @@ function FoodLogs() {
       {/* Overlay for Ingredients */}
       {overlay && <IngredientsModal setOverlay={setOverlay} />}
 
-      <div className="w-full p-4 bg-white rounded-lg shadow-sm">
+      <div className="w-full p-4 bg-white shadow-sm">
         {storedDate(foodData).length === 0 &&
         storedDate(progressData).length === 0 ? (
           <div>

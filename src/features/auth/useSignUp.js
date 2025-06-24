@@ -14,8 +14,8 @@ function useSignUp() {
       navigate("/login");
     },
     onError: (error) => {
-      toast.error(error.message || "An error occurred during sign up.");
-    },
+      toast.error(error.message || "An error occurred during signup.");
+    }
   });
 
   return { signup, isPending };

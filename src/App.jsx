@@ -7,6 +7,7 @@ import { RecipesProvider } from "./context/RecipesContext";
 import { TargetProvider } from "./context/TargetContext";
 import { DateContextProvider } from "./context/DateContext";
 import { IngredientsProvider } from "./context/IngredientsContext";
+import { ChatProvider } from "./context/ChatContext";
 import { Suspense, lazy } from "react";
 import AppLayout from "./ui/AppLayout";
 import ProtectedRoute from "./ui/ProtectedRoute";
@@ -15,6 +16,7 @@ import Spinner from "./ui/Spinner";
 
 // Dynamically import pages
 const Account = lazy(() => import("./pages/Account"));
+const AiAssistant = lazy(() => import("./pages/AiAssistant"));
 const BrowseFoods = lazy(() => import("./pages/BrowseFoods"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const DietRecommendation = lazy(() => import("./pages/DietRecommendation"));
@@ -31,27 +33,29 @@ function App() {
   const reactQuery = new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 60 * 1000, // Cache data for 1 minute instead of 0
-        refetchOnWindowFocus: false, // Reduce unnecessary refetches
-        retry: 1, // Reduce retry attempts
+        staleTime: 60 * 1000,
+        refetchOnWindowFocus: false,
+        retry: 1,
       },
     },
   });
 
   const AppProviders = ({ children }) => (
-    <DateContextProvider>
-      <IngredientsProvider>
-        <TargetProvider>
-          <RecipesProvider>{children}</RecipesProvider>
-        </TargetProvider>
-      </IngredientsProvider>
-    </DateContextProvider>
+    <ChatProvider>
+      <DateContextProvider>
+        <IngredientsProvider>
+          <TargetProvider>
+            <RecipesProvider>{children}</RecipesProvider>
+          </TargetProvider>
+        </IngredientsProvider>
+      </DateContextProvider>
+    </ChatProvider>
   );
 
   return (
     <QueryClientProvider client={reactQuery}>
-      <ReactQueryDevtools initialIsOpen={false} />
       <AppProviders>
+        <ReactQueryDevtools initialIsOpen={false} />
         <BrowserRouter>
           <Suspense fallback={<Spinner />}>
             <Routes>
@@ -81,6 +85,7 @@ function App() {
                 <Route path="/browse-foods/:id" element={<Recipe />} />
                 <Route path="/progress" element={<Progress />} />
                 <Route path="/account" element={<Account />} />
+                <Route path="/assistant" element={<AiAssistant />} />
               </Route>
               <Route path="/login" element={<Login />} />
               <Route path="/getData" element={<GetDietForm />} />

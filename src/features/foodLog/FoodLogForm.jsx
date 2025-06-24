@@ -3,6 +3,9 @@ import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { FiPlusCircle } from "react-icons/fi";
 import useAddFood from "./useAddFood";
+import InputField from "../../ui/InputField";
+import SelectField from "../../ui/SelectField";
+import SpinnerMini from "../../ui/SpinnerMini";
 
 function FoodLogForm({ setOverlay, email }) {
   const {
@@ -10,17 +13,18 @@ function FoodLogForm({ setOverlay, email }) {
     handleSubmit,
     reset,
     setValue,
-    formState: { errors }
+    formState: { errors },
   } = useForm({
     defaultValues: {
-      food: "",
+      mealName: "",
       mealType: "Breakfast",
       calories: 0,
-      carbs: 0,
+      carb: 0,
       protein: 0,
-      fat: 0
-    }
+      fat: 0,
+    },
   });
+
   const handleNumberChange = useCallback(
     (field) => (e) => {
       const value = Math.max(0, Number(e.target.value));
@@ -30,6 +34,7 @@ function FoodLogForm({ setOverlay, email }) {
   );
 
   const { addFoodFn, isPending } = useAddFood();
+
   const onSubmit = (data) => {
     addFoodFn({ ...data, mealId: Date.now().toString(), email });
     reset();
@@ -41,56 +46,53 @@ function FoodLogForm({ setOverlay, email }) {
       className="mx-auto space-y-6 max-w-8xl"
     >
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {/* Food Name */}
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">
-            Food Name
-          </label>
-          <input
-            type="text"
-            className={`w-full p-3 border rounded-lg outline-none ${errors.food ? "border-red-500" : "border-gray-300"}`}
-            placeholder="Enter food name"
-            {...register("food", {
-              required: "Food name is required",
-              pattern: {
-                value: /^[a-zA-Z\s]+$/,
-                message: "Only letters and spaces are allowed"
-              }
-            })}
-          />
-          {errors.food && (
-            <p className="mt-2 text-sm text-red-500">{errors.food.message}</p>
-          )}
-        </div>
+        <InputField
+          id="mealName"
+          label="Food Name"
+          type="text"
+          placeholder="Enter food name"
+          register={register}
+          validation={{
+            required: "Food name is required",
+            pattern: {
+              value: /^[a-zA-Z\s]+$/,
+              message: "Only letters and spaces are allowed",
+            },
+          }}
+          error={errors.mealName}
+        />
 
         {/* Meal Type */}
         <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">
-            Meal Type
-          </label>
-          <select
-            className="w-full p-3 border border-gray-300 rounded-lg outline-none"
-            {...register("mealType")}
-          >
-            <option value="Breakfast">Breakfast</option>
-            <option value="Lunch">Lunch</option>
-            <option value="Dinner">Dinner</option>
-            <option value="Snack">Snack</option>
-          </select>
+          <SelectField
+            id="mealType"
+            label="Meal Type"
+            options={[
+              { value: "Breakfast", label: "Breakfast" },
+              { value: "Lunch", label: "Lunch" },
+              { value: "Dinner", label: "Dinner" },
+              { value: "Snack", label: "Snack" },
+            ]}
+            register={register}
+            validation={{ required: "Meal type is required" }}
+            error={errors.mealType}
+          />
         </div>
-      </div>
-
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {["calories", "carbs", "protein", "fat"].map((field) => (
+        {/* Nutrients */}
+        {["calories", "carb", "protein", "fat"].map((field) => (
           <div key={field}>
-            <label className="block mb-2 text-sm font-medium text-gray-700">
-              {field.charAt(0).toUpperCase() + field.slice(1)} (g)
-            </label>
-            <input
+            <InputField
+              id={field}
+              label={field.charAt(0).toUpperCase() + field.slice(1) + " (g)"}
               type="number"
-              className="w-full p-3 border border-gray-300 rounded-lg outline-none"
-              placeholder={`Enter ${field}`}
-              {...register(field, { valueAsNumber: true })}
+              register={register}
+              validation={{
+                valueAsNumber: true,
+                min: {
+                  value: 0,
+                  message: `${field} cannot be negative`,
+                },
+              }}
               onChange={handleNumberChange(field)}
             />
           </div>
@@ -104,7 +106,7 @@ function FoodLogForm({ setOverlay, email }) {
             className="flex items-center justify-center w-full gap-2 p-3 text-white transition-transform transform bg-green-600 rounded-lg sm:w-48 hover:bg-green-700"
           >
             {isPending ? (
-              "Adding..."
+              <SpinnerMini />
             ) : (
               <>
                 <FiPlusCircle size={18} /> Add Food

@@ -1,11 +1,7 @@
-import FoodLogs from "../features/foodLog/FoodLogs"; // Your form component
+import FoodLogs from "../features/foodLog/FoodLogs";
 
 function FoodLog() {
-  return (
-    <div>
-      <FoodLogs />
-    </div>
-  );
+  return <FoodLogs />;
 }
 
 export default FoodLog;

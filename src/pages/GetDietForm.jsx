@@ -11,7 +11,7 @@ function GetDietForm() {
   // Wait until user data is fully fetched
   if (isUserLoading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen image-login">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-green-50 to-emerald-100">
         <Spinner />
       </div>
     );
@@ -25,14 +25,14 @@ function GetDietForm() {
   // Wait until plan data is fully fetched
   if (isPlanLoading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen image-login">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-green-50 to-emerald-100">
         <Spinner />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen image-login">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-green-50 to-emerald-100">
       {plan.length !== 0 ? (
         <div className="p-5 bg-white rounded-lg">
           <p className="text-gray-600">

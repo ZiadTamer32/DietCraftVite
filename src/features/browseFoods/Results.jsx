@@ -1,82 +1,70 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 import { FaFire, FaCubes, FaDrumstickBite } from "react-icons/fa";
-import { convertArray } from "../../services/functions";
+import Card from "../../ui/Card";
+import { convertArray } from "../../services/helpers";
 
-function Results({ dessert }) {
-  // Limit the name to 4 words
+function Results({ recipe }) {
   const isImg =
-    convertArray(dessert?.Images)[0] === "empty"
+    convertArray(recipe?.Images)[0] === "empty"
       ? false
-      : convertArray(dessert?.Images)[0];
+      : convertArray(recipe?.Images)[0];
   const Name =
-    dessert.Name.split(" ").length > 3
-      ? dessert.Name.split(" ").slice(0, 3).join(" ") + "..."
-      : dessert.Name;
+    recipe?.Name?.split(" ")?.length > 3
+      ? recipe?.Name?.split(" ").slice(0, 3).join(" ") + "..."
+      : recipe?.Name;
 
   return (
-    <li className="flex flex-col justify-between w-full pb-4 mx-auto shadow-lg rounded-2xl">
-      <div className="block shadow-xs shadow-green-200">
+    <Card
+      key={recipe?.RecipeId}
+      className="flex flex-col h-full overflow-hidden"
+    >
+      <div className="w-full h-48 overflow-hidden aspect-[16/9]">
         <img
-          alt={dessert?.Name || "Dessert image"}
           src={isImg || "/15.15.37_4f397ebf.jpg"}
           loading="lazy"
-          className="object-cover w-full h-56 rounded-t-lg rounded-b-none"
+          alt={recipe?.Name || "Recipe image"}
+          className="object-cover w-full h-full"
         />
       </div>
-
-      <div className="px-3 py-3">
-        {/* Render the truncated name */}
-        <p className="overflow-hidden text-xl font-medium text-center text-ellipsis">
+      <div className="flex flex-col flex-grow">
+        <h3 className="mb-2 text-lg font-semibold text-center text-nowrap">
           {Name}
-        </p>
-      </div>
-
-      <div className="flex flex-col flex-wrap justify-between gap-4 px-5 lg:px-2">
-        <div className="flex justify-between w-full gap-4">
-          {/* Calories */}
-          <div className="inline-flex items-center gap-2 shrink-0">
-            <FaFire className="text-green-600 size-5" />
-            <div className="mt-1.5 sm:mt-0">
-              <p className="text-gray-500">Calories</p>
-              <p className="font-medium">
-                {Math.ceil(dessert?.Calories) || "N/A"} kcal
-              </p>
+        </h3>
+        <div className="mt-auto">
+          <div className="flex justify-between mb-4 text-sm">
+            <div className="flex flex-col items-center">
+              <div className="flex items-center gap-1 font-medium">
+                <FaFire className="text-red-500" size={18} />
+                {Math.ceil(recipe?.Calories) || "N/A"}kcal
+              </div>
+              <span className="text-xs text-gray-500">Calories</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="flex items-center gap-1 font-medium">
+                <FaCubes className="text-blue-500" size={18} />
+                {Math.ceil(recipe?.SugarContent) || "N/A"}g
+              </div>
+              <span className="text-xs text-gray-500">Sugar</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="flex items-center gap-1 font-medium">
+                <FaDrumstickBite className="text-green-500" size={18} />
+                {Math.ceil(recipe?.ProteinContent) || "N/A"}g
+              </div>
+              <span className="text-xs text-gray-500">Protein</span>
             </div>
           </div>
 
-          {/* Sugar */}
-          <div className="items-center hidden gap-2 sm:inline-flex shrink-0">
-            <FaCubes className="text-green-600 size-5" />
-            <div className="mt-1.5 sm:mt-0">
-              <p className="text-gray-500">Sugar</p>
-              <p className="font-medium">
-                {Math.ceil(dessert?.SugarContent) || "N/A"} g
-              </p>
-            </div>
-          </div>
-
-          {/* Protein */}
-          <div className="inline-flex items-center gap-2 shrink-0">
-            <FaDrumstickBite className="text-green-600 size-5" />
-            <div className="mt-1.5 sm:mt-0">
-              <p className="text-gray-500">Protein</p>
-              <p className="font-medium">
-                {Math.ceil(dessert?.ProteinContent) || "N/A"} g
-              </p>
-            </div>
-          </div>
+          <Link
+            className="block w-full px-4 py-2 text-center text-white transition-colors duration-200 bg-green-600 rounded-lg hover:bg-green-700"
+            to={`/browse-foods/${recipe?.RecipeId}`}
+          >
+            View Recipe
+          </Link>
         </div>
-
-        {/* Button */}
-        <Link
-          to={dessert?.RecipeId ? `/browse-foods/${dessert.RecipeId}` : "#"}
-          className="flex items-center justify-center w-full gap-2 px-3 py-2 mx-auto text-sm font-medium text-green-600 transition border border-green-700 rounded-lg hover:text-white hover:bg-green-700 hover:border-green-800"
-        >
-          Find out more
-        </Link>
       </div>
-    </li>
+    </Card>
   );
 }
 

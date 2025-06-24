@@ -9,9 +9,10 @@ import {
   isToday,
   subMonths,
   addMonths,
-  isSameDay
+  isSameDay,
 } from "date-fns";
 import { useDate } from "../context/DateContext";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import formatDateToYYYYMMDD from "./DateFormat";
 
 const DatePicker = () => {
@@ -55,7 +56,7 @@ const DatePicker = () => {
           className="p-2 text-black transition bg-gray-200 rounded hover:bg-gray-300"
           onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
         >
-          ◀
+          <FaArrowLeft />
         </button>
         <h2 className="text-lg font-bold">
           {format(currentMonth, "MMMM yyyy")}
@@ -64,7 +65,7 @@ const DatePicker = () => {
           className="p-2 text-black transition bg-gray-200 rounded hover:bg-gray-300"
           onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
         >
-          ▶
+          <FaArrowRight />
         </button>
       </div>
       <div className="grid flex-wrap grid-cols-7 gap-2">

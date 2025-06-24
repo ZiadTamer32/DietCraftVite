@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState, createContext } from "react";
 import axios from "axios";
 import useGetTarget from "../features/DietRecommendation/useGetTarget";
-import useUser from "../features/auth/useUser"; // Adjust the import path as necessary
+import useUser from "../features/auth/useUser";
 
 const RecipesContext = createContext();
 

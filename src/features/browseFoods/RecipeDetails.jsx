@@ -6,7 +6,7 @@ import Spinner from "../../ui/Spinner";
 import useAddMeal from "../foodLog/useAddMeal";
 import useUser from "../auth/useUser";
 import SpinnerMini from "../../ui/SpinnerMini";
-import { convertArray } from "../../services/functions";
+import { convertArray } from "../../services/helpers";
 
 function RecipeDetails() {
   const { id } = useParams();
@@ -57,6 +57,8 @@ function RecipeDetails() {
     };
     addMealFn(totalNutrition);
   }
+  const isImg =
+    convertArray(Images)[0] === "empty" ? false : convertArray(Images)[0];
 
   return (
     <div className="grid grid-cols-1 gap-6 p-4 sm:gap-8 sm:p-6 md:p-8 md:grid-cols-2 lg:gap-10">
@@ -65,11 +67,7 @@ function RecipeDetails() {
         {/* Image */}
         <div className="relative w-full h-48 overflow-hidden rounded-lg sm:h-72 md:h-80">
           <img
-            src={
-              convertArray(Images)?.[0] === "empty"
-                ? "/15.15.37_4f397ebf.jpg"
-                : convertArray(Images)?.[0]
-            }
+            src={isImg || "/15.15.37_4f397ebf.jpg"}
             alt={Name || "Dessert"}
             loading="lazy"
             className="object-cover w-full h-full"
