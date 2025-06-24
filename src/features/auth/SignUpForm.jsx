@@ -18,7 +18,7 @@ function SignUpForm() {
   const { signup, isPending } = useSignUp();
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl sm:p-8 p-4 border border-green-100 max-w-md mx-auto mt-10">
+    <div className="bg-white rounded-2xl shadow-xl sm:p-6 p-4 border border-green-100 max-w-md mx-auto">
       <div className="flex bg-gray-100 rounded-lg p-1 mb-6">
         <button
           type="button"

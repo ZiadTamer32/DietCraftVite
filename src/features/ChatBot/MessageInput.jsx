@@ -24,7 +24,7 @@ function MessageInput() {
     if (textareaRef.current && isTyping) {
       window.scrollTo({
         top: document.body.scrollHeight,
-        behavior: "smooth"
+        behavior: "smooth",
       });
     }
   }, [isTyping]);
@@ -34,7 +34,6 @@ function MessageInput() {
     if (message.trim() && !isTyping) {
       sendMessage(message);
       setMessage("");
-
       if (textareaRef.current) {
         textareaRef.current.style.height = "auto";
       }

@@ -2,11 +2,14 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useRecipes } from "../../context/RecipesContext";
 import { CiSearch, CiCircleRemove } from "react-icons/ci";
+import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io";
 import Result from "./Results";
 import Spinner from "../../ui/Spinner";
 import Pagination from "../../ui/Pagination";
 
 function Recipes() {
+  const [isOpen, setOpen] = useState(false);
+  const items = ["recipe", "ingredient"];
   const { data = [], isLoading } = useRecipes();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -24,14 +27,18 @@ function Recipes() {
   );
 
   let filterData = data;
+
   if (searchBy === "recipe") {
     filterData = data?.filter((recipe) =>
       recipe.Name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
   } else if (searchBy === "ingredient") {
+    const searchWords = searchTerm.toLowerCase().split(/\s+/); // split by space(s)
     filterData = data?.filter((recipe) =>
-      recipe.RecipeIngredientParts?.some((part) =>
-        part.toLowerCase().includes(searchTerm.toLowerCase())
+      searchWords.every((word) =>
+        recipe.RecipeIngredientParts?.some((part) =>
+          part.toLowerCase().includes(word)
+        )
       )
     );
   }
@@ -57,13 +64,6 @@ function Recipes() {
     setSearchParams({ page: 1, searchBy });
   };
 
-  const toggleSearchBy = () => {
-    const newSearchBy = searchBy === "recipe" ? "ingredient" : "recipe";
-    setSearchBy(newSearchBy);
-    setSearchParams({ searchBy: newSearchBy, value: searchTerm, page: 1 });
-    setCurrentPage(1);
-  };
-
   if (isLoading) return <Spinner />;
 
   return (
@@ -77,8 +77,8 @@ function Recipes() {
         </p>
       </div>
       {/* Search Bar & Button */}
-      <div className="flex flex-col items-center w-full gap-3 md:flex-row md:gap-4">
-        <div className="relative w-full md:w-3/4">
+      <div className="flex flex-col-reverse items-center w-full gap-3 md:flex-row md:gap-4">
+        <div className="relative w-full md:w-3/4 h-11">
           <input
             type="text"
             placeholder="Search for recipes..."
@@ -88,7 +88,7 @@ function Recipes() {
               setCurrentPage(1);
               setSearchParams({ value: e.target.value, page: 1, searchBy });
             }}
-            className={`w-full px-5 py-3 transition-all border border-gray-300 shadow-sm outline-none rounded-xl focus:ring-2 ${searchBy === "ingredient" ? "ring-green-500" : "ring-blue-500"}`}
+            className={`w-full h-full py-2.5 px-5 transition-all border border-gray-300 shadow-sm outline-none rounded-xl focus:ring-2 ${searchBy === "ingredient" ? "ring-blue-500" : "ring-green-500"}`}
           />
           {searchTerm ? (
             <CiCircleRemove
@@ -103,19 +103,49 @@ function Recipes() {
             />
           )}
         </div>
-        <button
-          type="button"
-          onClick={toggleSearchBy}
-          className={`px-5 py-3 font-semibold w-full md:w-1/4 rounded-lg transition-colors shadow-sm ${
-            searchBy === "ingredient"
-              ? "bg-green-600 hover:bg-green-700 text-white"
-              : "bg-blue-600 hover:bg-blue-700 text-white"
-          }`}
-        >
-          {searchBy === "ingredient"
-            ? "Search by Recipe"
-            : "Search by Ingredient"}
-        </button>
+        <div className="relative w-full md:w-1/4 h-11">
+          <button
+            onClick={() => setOpen((e) => !e)}
+            className={`h-full ${searchBy === "ingredient" ? "bg-blue-600 hover:bg-blue-800 focus:ring-blue-300" : "bg-green-600 hover:bg-green-800 focus:ring-green-300"} gap-2 text-white w-full text-center focus:ring-2 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center flex items-center justify-center`}
+            type="button"
+          >
+            Search by {searchBy.charAt(0).toUpperCase() + searchBy.slice(1)}{" "}
+            {isOpen ? (
+              <IoIosArrowDropup size={20} />
+            ) : (
+              <IoIosArrowDropdown size={20} />
+            )}
+          </button>
+
+          {isOpen && (
+            <div className="absolute z-10 w-full mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow-sm">
+              <ul className="py-2 text-sm text-gray-700">
+                {items.length > 0 ? (
+                  items.map((item, index) => (
+                    <li
+                      key={index}
+                      className="block px-4 py-2 hover:bg-gray-100 rounded-md cursor-pointer"
+                      onClick={() => {
+                        setSearchBy(item);
+                        setSearchParams({
+                          searchBy: item,
+                          value: searchTerm,
+                          page: 1,
+                        });
+                        setCurrentPage(1);
+                        setOpen(false);
+                      }}
+                    >
+                      {item.charAt(0).toUpperCase() + item.slice(1)}
+                    </li>
+                  ))
+                ) : (
+                  <li className="px-4 py-2 text-gray-500">No results</li>
+                )}
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Recipes List */}

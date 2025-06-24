@@ -17,12 +17,13 @@ import useUser from "../features/auth/useUser";
 import useLogout from "../features/auth/useLogout";
 
 function Navbar() {
-  const { isAuthenticated } = useUser();
+  const { isAuthenticated, user } = useUser();
   const { logout, isPending } = useLogout();
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
-
+  const fullName =
+    `${user?.user_metadata.firstName || ""} ${user?.user_metadata.lastName || ""}`.trim();
   const handleLogout = () => {
     logout({}, { onSuccess: () => navigate("/") });
   };
@@ -81,7 +82,7 @@ function Navbar() {
                     size="sm"
                     icon={<RiAccountCircleFill size={16} />}
                   >
-                    Profile
+                    {fullName || "Profile"}
                   </Button>
                 </Link>
                 <Button
@@ -163,7 +164,7 @@ function Navbar() {
                 <span className="mr-3">
                   <RiAccountCircleFill size={18} />
                 </span>
-                Profile
+                {fullName || "Profile"}
               </Link>
               <button
                 onClick={() => {

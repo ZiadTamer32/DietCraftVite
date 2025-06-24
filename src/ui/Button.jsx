@@ -17,11 +17,11 @@ const Button = ({
 
   const variantStyles = {
     primary:
-      "bg-dietcraft-500 text-white hover:bg-dietcraft-600 border border-transparent max-w-28",
+      "bg-dietcraft-500 text-white hover:bg-dietcraft-600 border border-transparent",
     secondary:
       "bg-dietcraft-50 text-dietcraft-700 hover:bg-dietcraft-100 border border-transparent",
     outline:
-      "bg-transparent text-dietcraft-700 hover:bg-dietcraft-50 border border-dietcraft-300 w-24",
+      "bg-transparent text-dietcraft-700 hover:bg-dietcraft-50 border border-dietcraft-300",
     ghost:
       "bg-transparent text-dietcraft-700 hover:bg-dietcraft-50 border border-transparent",
     link: "bg-transparent text-dietcraft-700 hover:underline p-0 h-auto border-none shadow-none",

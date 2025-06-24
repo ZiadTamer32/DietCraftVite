@@ -103,7 +103,7 @@ function FoodLogForm({ setOverlay, email }) {
         <div className="flex flex-wrap justify-between gap-4 max-sm:w-full">
           <button
             type="submit"
-            className="flex items-center justify-center w-full gap-2 p-3 text-white transition-transform transform bg-green-600 rounded-lg sm:w-48 hover:bg-green-700"
+            className="flex items-center justify-center w-full h-11 gap-2 p-3 text-white transition-transform transform bg-green-600 rounded-lg sm:w-48 hover:bg-green-700"
           >
             {isPending ? (
               <SpinnerMini />
@@ -116,7 +116,7 @@ function FoodLogForm({ setOverlay, email }) {
           <button
             type="button"
             onClick={() => setOverlay(true)}
-            className="flex items-center justify-center w-full gap-2 p-3 text-white transition-transform transform bg-blue-600 rounded-lg sm:w-48 hover:bg-blue-700"
+            className="flex items-center justify-center w-full h-11 gap-2 p-3 text-white transition-transform transform bg-blue-600 rounded-lg sm:w-48 hover:bg-blue-700"
           >
             <FiPlusCircle size={18} /> Add Ingredients
           </button>

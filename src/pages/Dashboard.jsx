@@ -1,6 +1,7 @@
 import { FaUtensils, FaCalculator } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
+import { BsChatRightDotsFill } from "react-icons/bs";
 import useUser from "../features/auth/useUser";
 import Card from "../ui/Card";
 import useGetTarget from "../features/DietRecommendation/useGetTarget";
@@ -72,7 +73,12 @@ function Dashboard() {
           <p className="text-sm text-green-700">💡 Daily Tip: {randomTip}</p>
         </div>
       </div>
-
+      {/* Nutrition Summary */}
+      <div className="mb-4">
+        <h2 className="text-xl font-bold text-gray-800 sm:text-2xl">
+          Nutrition Summary
+        </h2>
+      </div>
       <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2">
         {/* Today Calories */}
         <Card className="col-span-1">
@@ -128,15 +134,12 @@ function Dashboard() {
 
       {/* BMI And BMR Summary */}
       <div className="mb-8">
-        <h2 className="mb-4 text-2xl font-bold text-gray-800">
-          BMI and BMR Summary
-        </h2>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="p-5 border border-gray-200 rounded-lg shadow-sm">
             <h3 className="text-lg font-semibold text-gray-700">BMI</h3>
             <div className="flex items-center justify-between">
               <p className="text-2xl font-bold text-green-600">
-                {getTarget[0]?.Bmi.bmi ?? 0} {getTarget[0].Bmi.unit ?? "kg/m²"}
+                {getTarget[0]?.Bmi.bmi ?? 0} {getTarget[0]?.Bmi.unit ?? "kg/m²"}
               </p>
               <p className="text-gray-500 mt-1">
                 {getTarget[0]?.Bmi.bmiStatus ?? ""}
@@ -146,7 +149,7 @@ function Dashboard() {
           <div className="p-5 border border-gray-200 rounded-lg shadow-sm">
             <h3 className="text-lg font-semibold text-gray-700">BMR</h3>
             <p className="text-2xl font-bold text-green-600">
-              {getTarget[0].Bmr.BMR.value} {getTarget[0].Bmr.BMR.unit}
+              {getTarget[0]?.Bmr.BMR.value} {getTarget[0]?.Bmr.BMR.unit}
             </p>
           </div>
         </div>
@@ -155,7 +158,7 @@ function Dashboard() {
       {/* Quick Actions */}
       <div className={`${recentMeals.length > 0 ? "mb-8" : ""}`}>
         <h2 className="mb-4 text-2xl font-bold text-gray-800">Quick Actions</h2>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Link
             to="/food-log"
             className="flex items-center justify-center gap-2 p-6 transition-all bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-green-50"
@@ -181,6 +184,15 @@ function Dashboard() {
             <FiSearch className="text-orange-600" size={24} />
             <span className="text-lg font-semibold text-gray-700">
               Explore Recipes
+            </span>
+          </Link>
+          <Link
+            to="/assistant"
+            className="flex items-center justify-center gap-2 p-6 transition-all bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-teal-50"
+          >
+            <BsChatRightDotsFill className="text-teal-600" size={24} />
+            <span className="text-lg font-semibold text-gray-700">
+              Ai Assistant
             </span>
           </Link>
         </div>

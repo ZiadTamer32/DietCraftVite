@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
+import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io";
 
 const Dropdown = ({ filterData, filterList, setSearchParams }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,21 +17,11 @@ const Dropdown = ({ filterData, filterList, setSearchParams }) => {
         type="button"
       >
         {filterData.charAt(0).toUpperCase() + filterData.slice(1)}
-        <svg
-          className="w-2.5 h-2.5 ms-3"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 10 6"
-        >
-          <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="m1 1 4 4 4-4"
-          />
-        </svg>
+        {isOpen ? (
+          <IoIosArrowDropup size={20} className="ms-1" />
+        ) : (
+          <IoIosArrowDropdown size={20} className="ms-1" />
+        )}
       </button>
 
       {isOpen && (

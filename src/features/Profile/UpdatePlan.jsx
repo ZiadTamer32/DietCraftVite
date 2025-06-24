@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useTarget } from "../../context/TargetContext";
 import usePlan from "../DietRecommendation/usePlan";
 import useUser from "../auth/useUser";
 import useEditPlan from "../DietRecommendation/useEditPlan";
 import useCreateTarget from "../DietRecommendation/useCreateTarget";
-import { useTarget } from "../../context/TargetContext";
+import SpinnerMini from "../../ui/SpinnerMini";
 
 function UpdatePlan() {
   const { user } = useUser();
@@ -28,23 +29,22 @@ function UpdatePlan() {
         activity: plan[0].activity || "",
         age: plan[0].age || 0,
         gender: plan[0].gender || "",
-        plan: plan[0].plan || "",
+        plan: plan[0].plan + " " + plan[0].rate || "",
       });
     }
   }, [plan, reset]);
 
   const onSubmit = async (data) => {
-    editPlan(data);
     const rate = data?.plan?.split(" ");
     const nutrationsGuest = {
       ...data,
       height: Number(data.height),
       weight: Number(data.weight),
-      bodyFat: Number(data.bodyFat),
       age: Number(data.age),
       rate: rate[1],
       plan: rate[0],
     };
+    editPlan(nutrationsGuest);
     const nutrations = await getNutritions(nutrationsGuest);
     if (nutrations) {
       targetFn({ email, targetData: nutrations });
@@ -96,7 +96,9 @@ function UpdatePlan() {
             })}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg"
           >
-            <option value="">Select Activity Level</option>
+            <option value="" disabled>
+              Select Activity Level
+            </option>
             <option value="sedentary">Sedentary</option>
             <option value="lightlyActive">Lightly Active</option>
             <option value="moderateActivity">Moderately Active</option>
@@ -130,7 +132,9 @@ function UpdatePlan() {
             {...register("gender", { required: "Gender is required" })}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg"
           >
-            <option value="">Select Gender</option>
+            <option value="" disabled>
+              Select Gender
+            </option>
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>
@@ -146,12 +150,14 @@ function UpdatePlan() {
             {...register("plan", { required: "Plan is required" })}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg"
           >
-            <option value="">Choose a Plan</option>
+            <option value="" disabled>
+              Choose a Plan
+            </option>
             <option value="gain 0.5">Gain Weight</option>
             <option value="gain 1">Extreme Gain Weight</option>
             <option value="maintain 0">Maintain</option>
-            <option value="lose 0.5">Weight Loss</option>
-            <option value="lose 1">Extreme Weight Loss</option>
+            <option value="loss 0.5">Weight Loss</option>
+            <option value="loss 1">Extreme Weight Loss</option>
           </select>
           {errors.plan && (
             <p className="text-red-600 text-sm mt-1">{errors.plan.message}</p>
@@ -160,9 +166,10 @@ function UpdatePlan() {
 
         <button
           type="submit"
-          className="sm:w-40 w-full px-4 py-2 text-white bg-dietcraft-500 hover:bg-dietcraft-700 rounded-lg"
+          disabled={isEditing}
+          className="sm:w-40 h-10 w-full px-4 py-2 text-white bg-dietcraft-500 hover:bg-dietcraft-700 rounded-lg flex items-center justify-center transition-colors disabled:cursor-not-allowed"
         >
-          {isEditing ? "Updating..." : "Update Plan"}
+          {isEditing ? <SpinnerMini /> : "Update Plan"}
         </button>
       </form>
     </div>

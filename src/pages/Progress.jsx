@@ -11,119 +11,109 @@ import {
   PieChart,
   Pie,
   Cell,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  Radar,
   ResponsiveContainer,
 } from "recharts";
-import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MdOutlineLocalFireDepartment } from "react-icons/md";
 import { IoBarbellOutline } from "react-icons/io5";
 import { LiaCookieSolid } from "react-icons/lia";
 
 import AverageCard from "../features/Progress/AverageCard";
-import useGetFakeData from "../features/Progress/useGetFakeData";
 import FilterCharts from "../ui/FilterCharts";
 import DropdownMenu from "../ui/DropdownMenu";
+import Spinner from "../ui/Spinner";
+import useGetProgress from "../features/foodLog/useGetProgress";
+import useGetFood from "../features/foodLog/useGetFood";
+import useUser from "../features/auth/useUser";
+import formatDateToYYYYMMDD from "../ui/DateFormat";
 
 const COLORS = ["#4CAF50", "#F59E0B", "#3B82F6", "#EF4444"];
 
 function Progress() {
-  function AverageValues(value) {
-    const totalValues = fakeData?.map((log) => log[value]);
-    const averageValues =
-      totalValues?.reduce((acc, current) => acc + current, 0) /
-      totalValues?.length;
-    return parseFloat(averageValues.toFixed(2));
-  }
-
   const filterList = ["overview", "calories", "macronutrients", "meals"];
   const [searchParams, setSearchParams] = useSearchParams();
-  const { fakeData, isPending } = useGetFakeData();
   const filterData = searchParams.get("filterBy") || "overview";
 
-  useEffect(() => {
-    setSearchParams({ filterBy: filterData });
-  }, [filterData, setSearchParams]);
+  const { user } = useUser();
+  const { foodData, isPending: isFoodPending } = useGetFood(user?.email);
+  const { progressData, isPending: isProgressPending } = useGetProgress(
+    user?.email
+  );
+  const mergedData = foodData?.concat(progressData);
+  const isLoading = isFoodPending || isProgressPending;
 
-  const dateAndCalories = fakeData?.map((item) => ({
-    date: item.date,
-    calories: item.calories,
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  function AverageValues(value) {
+    const totalValues = mergedData?.map((log) => log?.[value]);
+    const averageValues =
+      totalValues?.reduce((acc, current) => acc + current, 0) /
+        totalValues?.length || 0;
+    return parseFloat(averageValues?.toFixed(2));
+  }
+
+  const dateAndCalories = mergedData?.map((item) => ({
+    date: formatDateToYYYYMMDD(item?.created_at),
+    calories: item?.calories,
   }));
 
-  const caloriesByMeal = fakeData?.reduce((acc, log) => {
-    const meal = log.meal;
+  const caloriesByMeal = mergedData?.reduce((acc, log) => {
+    const meal = log?.mealType;
     const existing = acc.find((m) => m.meal === meal);
-    if (existing) existing.calories += log.calories;
-    else acc.push({ meal, calories: log.calories });
-    const resultCaloriesByMeal = acc.map((item) => ({
+    if (existing) existing.calories += log?.calories;
+    else acc.push({ meal, calories: log?.calories });
+    return acc.map((item) => ({
       ...item,
-      calories: +item.calories.toFixed(2),
+      calories: +item?.calories?.toFixed(2),
     }));
-    return resultCaloriesByMeal;
   }, []);
 
-  const macronutrientsRadar = fakeData?.reduce((acc, log) => {
-    const meal = log.meal;
-    const existing = acc.find((m) => m.meal === meal);
-    if (existing) {
-      existing.fat += log.fat;
-      existing.carbohydrates += log.carbohydrates;
-      existing.protein += log.protein;
-    } else {
-      acc.push({
-        meal,
-        fat: log.fat,
-        carbohydrates: log.carbohydrates,
-        protein: log.protein,
-      });
-    }
-    return acc;
-  }, []);
-
-  const dailyMacros = fakeData?.map((log) => ({
-    date: log?.date,
+  const dailyMacros = mergedData?.map((log) => ({
+    date: formatDateToYYYYMMDD(log?.created_at),
     fat: log?.fat,
-    carbohydrates: log?.carbohydrates,
+    carb: log?.carb,
     protein: log?.protein,
   }));
 
-  const macrosTotal = fakeData?.reduce(
+  const macrosTotal = mergedData?.reduce(
     (acc, log) => {
       acc.fat += log?.fat;
-      acc.carbohydrates += log?.carbohydrates;
+      acc.carb += log?.carb;
       acc.protein += log?.protein;
       return acc;
     },
-    { fat: 0, carbohydrates: 0, protein: 0 }
+    { fat: 0, carb: 0, protein: 0 }
   );
 
   const macrosPieData = [
-    { name: "Fat", value: +macrosTotal?.fat.toFixed(2) },
-    { name: "Carbs", value: +macrosTotal?.carbohydrates.toFixed(2) },
-    { name: "Protein", value: +macrosTotal?.protein.toFixed(2) },
+    { name: "Fat", value: +macrosTotal?.fat?.toFixed(2) },
+    { name: "Carbs", value: +macrosTotal?.carb?.toFixed(2) },
+    { name: "Protein", value: +macrosTotal?.protein?.toFixed(2) },
   ];
 
-  const macrosByMeal = fakeData?.reduce((acc, log) => {
-    const meal = log.meal;
+  const macrosByMeal = mergedData?.reduce((acc, log) => {
+    const meal = log?.mealType;
     const existing = acc.find((m) => m.meal === meal);
     if (existing) {
-      existing.fat += +log.fat.toFixed(2);
-      existing.carbohydrates += +log.carbohydrates.toFixed(2);
-      existing.protein += +log.protein.toFixed(2);
+      existing.fat += +log?.fat?.toFixed(2);
+      existing.carb += +log?.carb?.toFixed(2);
+      existing.protein += +log?.protein?.toFixed(2);
     } else {
       acc.push({
         meal,
-        fat: +log.fat.toFixed(2),
-        carbohydrates: +log.carbohydrates.toFixed(2),
-        protein: +log.protein.toFixed(2),
+        fat: +log?.fat?.toFixed(2),
+        carb: +log?.carb?.toFixed(2),
+        protein: +log?.protein?.toFixed(2),
       });
     }
-
-    return acc;
+    return acc.map((item) => ({
+      ...item,
+      fat: +item?.fat?.toFixed(2),
+      carb: +item?.carb?.toFixed(2),
+      protein: +item?.protein?.toFixed(2),
+    }));
   }, []);
 
   const chartsConfig = [
@@ -169,41 +159,6 @@ function Progress() {
     {
       id: "3",
       category: "macronutrients",
-      title: "Radar: Avg Macronutrients per Meal",
-      component: (
-        <ResponsiveContainer width="100%" height={300}>
-          <RadarChart data={macronutrientsRadar}>
-            <PolarGrid />
-            <PolarAngleAxis dataKey="meal" />
-            <PolarRadiusAxis />
-            <Radar
-              name="Fat"
-              dataKey="fat"
-              stroke="#EF4444"
-              fill="#EF4444"
-              fillOpacity={0.6}
-            />
-            <Radar
-              name="Carbs"
-              dataKey="carbohydrates"
-              stroke="#3B82F6"
-              fill="#3B82F6"
-              fillOpacity={0.6}
-            />
-            <Radar
-              name="Protein"
-              dataKey="protein"
-              stroke="#10B981"
-              fill="#10B981"
-              fillOpacity={0.6}
-            />
-          </RadarChart>
-        </ResponsiveContainer>
-      ),
-    },
-    {
-      id: "4",
-      category: "macronutrients",
       title: "Stacked Bar: Daily Macronutrients",
       component: (
         <ResponsiveContainer width="100%" height={300}>
@@ -220,7 +175,7 @@ function Progress() {
       ),
     },
     {
-      id: "5",
+      id: "4",
       category: "macronutrients",
       title: "Macronutrients % Distribution (Week)",
       component: (
@@ -246,7 +201,7 @@ function Progress() {
       ),
     },
     {
-      id: "6",
+      id: "5",
       category: "meals",
       title: "Meal-wise Macronutrients",
       component: (
@@ -277,25 +232,25 @@ function Progress() {
         <AverageCard
           AverageName="Average Calories"
           AverageNumber={`${AverageValues("calories")} kcal`}
-          isPending={isPending}
+          isPending={isLoading}
           icon={<MdOutlineLocalFireDepartment size={20} />}
         />
         <AverageCard
           AverageName="Average Protein"
           AverageNumber={`${AverageValues("protein")} g`}
-          isPending={isPending}
+          isPending={isLoading}
           icon={<IoBarbellOutline size={20} />}
         />
         <AverageCard
           AverageName="Average Carbs"
-          AverageNumber={`${AverageValues("carbohydrates")} g`}
-          isPending={isPending}
+          AverageNumber={`${AverageValues("carb")} g`}
+          isPending={isLoading}
           icon={<LiaCookieSolid size={20} />}
         />
         <AverageCard
           AverageName="Average Fat"
           AverageNumber={`${AverageValues("fat")} g`}
-          isPending={isPending}
+          isPending={isLoading}
           icon={<MdOutlineLocalFireDepartment size={20} />}
         />
       </div>
