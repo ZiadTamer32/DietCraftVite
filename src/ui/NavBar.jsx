@@ -51,9 +51,9 @@ function Navbar() {
                 Diet<span className="text-dietcraft-500">Craft</span>
               </span> */}
               <img
-                src="/logo_text.svg"
+                src="/DIET CRAFT - LOGO3.svg"
                 alt="DietCraft Logo"
-                className="h-8 w-auto"
+                className="h-32 w-32 md:h-36 md:w-36"
                 loading="lazy"
               />
             </Link>

@@ -66,7 +66,11 @@ function UpdatePlan() {
           <label className="block text-gray-700 mb-1">Weight (kg)</label>
           <input
             type="number"
-            {...register("weight", { required: "Weight is required" })}
+            {...register("weight", {
+              required: "Weight is required",
+              min: { value: 40, message: "Weight must be greater than 40" },
+              max: { value: 300, message: "Weight must be less than 300" },
+            })}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg"
           />
           {errors.weight && (
@@ -79,7 +83,14 @@ function UpdatePlan() {
           <label className="block text-gray-700 mb-1">Height (cm)</label>
           <input
             type="number"
-            {...register("height", { required: "Height is required" })}
+            {...register("height", {
+              required: "Height is required",
+              min: {
+                value: 100,
+                message: "Height must be greater than 100 cm",
+              },
+              max: { value: 250, message: "Height must be less than 250 cm" },
+            })}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg"
           />
           {errors.height && (
@@ -117,7 +128,11 @@ function UpdatePlan() {
           <label className="block text-gray-700 mb-1">Age</label>
           <input
             type="number"
-            {...register("age", { required: "Age is required" })}
+            {...register("age", {
+              required: "Age is required",
+              min: { value: 18, message: "Age must be greater than 18" },
+              max: { value: 100, message: "Age must be less than 100" },
+            })}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg"
           />
           {errors.age && (

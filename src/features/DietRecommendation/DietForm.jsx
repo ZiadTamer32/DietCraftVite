@@ -52,8 +52,8 @@ function DietForm() {
             register={register}
             validation={{
               required: "Age is required",
-              min: { value: 13, message: "Age must be at least 13" },
-              max: { value: 110, message: "Age must not exceed 110" },
+              min: { value: 18, message: "Age must be greater than 18" },
+              max: { value: 100, message: "Age must be less than 100" },
             }}
             defaultValue={0}
             error={errors.age}
@@ -67,8 +67,11 @@ function DietForm() {
             register={register}
             validation={{
               required: "Height is required",
-              min: { value: 100, message: "Height must be at least 100 cm" },
-              max: { value: 250, message: "Height must not exceed 250 cm" },
+              min: {
+                value: 100,
+                message: "Height must be greater than 100 cm",
+              },
+              max: { value: 250, message: "Height must be less than 250 cm" },
             }}
             defaultValue={0}
             error={errors.height}
@@ -83,12 +86,12 @@ function DietForm() {
             validation={{
               required: "Weight is required",
               min: {
-                value: 60,
-                message: "Weight should be greater than 60",
+                value: 40,
+                message: "Weight must be greater than 40",
               },
               max: {
                 value: 300,
-                message: "Weight should be less than 300",
+                message: "Weight must be less than 300",
               },
             }}
             defaultValue={0}
