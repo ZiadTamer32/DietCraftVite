@@ -87,12 +87,12 @@ export default function DietDataForm() {
                     validation={{
                       required: "Weight is required",
                       min: {
-                        value: 60,
-                        message: "Weight should be greater than 60",
+                        value: 40,
+                        message: "Weight must be greater than 40",
                       },
                       max: {
                         value: 300,
-                        message: "Weight should be less than 300",
+                        message: "Weight must be less than 300",
                       },
                     }}
                     error={errors.weight}
@@ -106,11 +106,11 @@ export default function DietDataForm() {
                       required: "Height is required",
                       min: {
                         value: 100,
-                        message: "Height should be greater than 100",
+                        message: "Height must be greater than 100 cm",
                       },
                       max: {
                         value: 250,
-                        message: "Height should be less than 250",
+                        message: "Height must be less than 250 cm",
                       },
                     }}
                     error={errors.height}
@@ -128,12 +128,12 @@ export default function DietDataForm() {
                     validation={{
                       required: "Age is required",
                       min: {
-                        value: 13,
-                        message: "Age should be greater than 13",
+                        value: 18,
+                        message: "Age must be greater than 18",
                       },
                       max: {
-                        value: 110,
-                        message: "Age should be less than 110",
+                        value: 100,
+                        message: "Age must be less than 100",
                       },
                     }}
                     error={errors.age}

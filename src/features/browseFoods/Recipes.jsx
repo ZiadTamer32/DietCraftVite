@@ -75,10 +75,10 @@ function Recipes() {
   return (
     <div className="flex flex-col gap-4 mx-auto md:p-5 p-3">
       <div>
-        <h1 className="mb-3 font-bold text-gray-800 text-3xl text-center md:text-left">
+        <h1 className="mb-3 font-bold text-gray-800 text-2xl md:text-3xl">
           Featured Recipes
         </h1>
-        <p className="text-sm text-center text-gray-600 md:text-left">
+        <p className="text-sm text-gray-600">
           Discover delicious and healthy recipes tailored to your needs.
         </p>
       </div>

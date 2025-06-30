@@ -62,8 +62,8 @@ function Dashboard() {
   return (
     <main className="p-5">
       {/* Welcome Section */}
-      <div className="mb-8 text-center md:text-left">
-        <h1 className="mb-3 text-xl font-bold text-gray-800 sm:text-3xl">
+      <div className="mb-8 ">
+        <h1 className="mb-3 text-2xl font-bold text-gray-800 sm:text-3xl">
           Welcome back, {isAuthenticated ? Name : "User"}!
         </h1>
         <p className="text-sm text-gray-600 md:text-base">
@@ -139,7 +139,7 @@ function Dashboard() {
             <h3 className="text-lg font-semibold text-gray-700">BMI</h3>
             <div className="flex items-center justify-between">
               <p className="text-2xl font-bold text-green-600">
-                {getTarget[0]?.Bmi.bmi ?? 0} {getTarget[0]?.Bmi.unit ?? "kg/m²"}
+                {getTarget[0]?.Bmi.bmi ?? 0} {getTarget[0]?.Bmi.unit ?? "kg/cm"}
               </p>
               <p className="text-gray-500 mt-1">
                 {getTarget[0]?.Bmi.bmiStatus ?? ""}
@@ -149,7 +149,8 @@ function Dashboard() {
           <div className="p-5 border border-gray-200 rounded-lg shadow-sm">
             <h3 className="text-lg font-semibold text-gray-700">BMR</h3>
             <p className="text-2xl font-bold text-green-600">
-              {getTarget[0]?.Bmr.BMR.value} {getTarget[0]?.Bmr.BMR.unit}
+              {getTarget[0]?.Bmr.BMR.value ?? 0}{" "}
+              {getTarget[0]?.Bmr.BMR.unit ?? "kcal"}
             </p>
           </div>
         </div>
