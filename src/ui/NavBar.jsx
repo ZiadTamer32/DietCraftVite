@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   FaBars,
   FaTimes,
-  FaHome,
   FaChartBar,
   FaCalendarAlt,
   FaBook,
@@ -29,7 +28,6 @@ function Navbar() {
   };
 
   const navItems = [
-    { name: "Dashboard", path: "/dashboard", icon: <FaHome size={18} /> },
     {
       name: "Calculator",
       path: "/diet-recommendation",
@@ -43,23 +41,22 @@ function Navbar() {
 
   return (
     <nav className="absolute top-0 z-50 w-full bg-white border-b border-gray-100 shadow-sm">
-      <div className="px-4 sm:px-6">
+      <div className="px-3 md:px-5">
         <div className="flex justify-between h-16">
-          <div className="flex items-center">
+          <div className="flex items-center gap-5">
             <Link to="/" className="flex items-center flex-shrink-0">
-              {/* <span className="text-xl font-bold text-dietcraft-600">
+              <span className="text-xl font-bold text-dietcraft-600">
                 Diet<span className="text-dietcraft-500">Craft</span>
-              </span> */}
-              <img
+              </span>
+              {/* <img
                 src="/DIET CRAFT - LOGO3.svg"
                 alt="DietCraft Logo"
-                className="h-32 w-32 md:h-36 md:w-36"
+                className="h-32 w-32 "
                 loading="lazy"
-              />
+              /> */}
             </Link>
           </div>
-
-          {/* Desktop Navigation */}
+          {/* Nav Items */}
           <div
             className={`${isAuthenticated ? "lg:flex hidden" : "hidden"}  lg:items-center lg:space-x-4`}
           >
@@ -69,7 +66,7 @@ function Navbar() {
                 <Link
                   key={item.name}
                   to={item.path}
-                  className={`${isActive ? "bg-dietcraft-50" : ""} text-gray-600 hover:text-dietcraft-500 hover:bg-dietcraft-50 px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors`}
+                  className={`${isActive ? "bg-dietcraft-50" : ""}  text-gray-600 hover:text-dietcraft-500 hover:bg-dietcraft-50 px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors`}
                 >
                   <span className="mr-2">{item.icon}</span>
                   {item.name}

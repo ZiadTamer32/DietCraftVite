@@ -8,7 +8,7 @@ const createEmptyChat = () => ({
   id: generateId(),
   title: "New Chat",
   messages: [],
-  timestamp: new Date()
+  timestamp: new Date(),
 });
 
 function ChatProvider({ children }) {
@@ -58,13 +58,13 @@ function ChatProvider({ children }) {
       id: generateId(),
       content,
       role: "user",
-      timestamp: new Date()
+      timestamp: new Date(),
     };
 
     const updatedChat = {
       ...currentChat,
       messages: [...currentChat.messages, userMessage],
-      timestamp: new Date()
+      timestamp: new Date(),
     };
 
     if (currentChat.messages.length === 0) {
@@ -83,13 +83,13 @@ function ChatProvider({ children }) {
         id: generateId(),
         content: `This is a simulated response to: "${content}"`,
         role: "assistant",
-        timestamp: new Date()
+        timestamp: new Date(),
       };
 
       const updatedChatWithResponse = {
         ...updatedChat,
         messages: [...updatedChat.messages, botResponse],
-        timestamp: new Date()
+        timestamp: new Date(),
       };
 
       setChats((prevChats) =>
@@ -111,7 +111,7 @@ function ChatProvider({ children }) {
         selectChat,
         removeChat,
         sendMessage,
-        isTyping
+        isTyping,
       }}
     >
       {children}

@@ -18,12 +18,12 @@ function useDiet() {
           : null;
       }
       navigate(`${location.pathname === "/getData" ? "/" : ""}`, {
-        replace: true
+        replace: true,
       });
     },
     onError: (error) => {
       toast.error(error.message);
-    }
+    },
   });
 
   return { dietFn, isPending };
