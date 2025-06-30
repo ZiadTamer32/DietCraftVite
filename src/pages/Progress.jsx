@@ -14,9 +14,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useSearchParams } from "react-router-dom";
-import { MdOutlineLocalFireDepartment } from "react-icons/md";
-import { IoBarbellOutline } from "react-icons/io5";
-import { LiaCookieSolid } from "react-icons/lia";
 import { subDays, subMonths, subQuarters, isWithinInterval } from "date-fns";
 import AverageCard from "../features/Progress/AverageCard";
 import FilterCharts from "../ui/FilterCharts";
@@ -264,25 +261,25 @@ function Progress() {
           AverageName="Average Calories"
           AverageNumber={`${AverageValues("calories")} kcal`}
           isPending={isLoading}
-          icon={<MdOutlineLocalFireDepartment size={20} />}
+          timeFilter={filterTime}
         />
         <AverageCard
           AverageName="Average Protein"
           AverageNumber={`${AverageValues("protein")} g`}
           isPending={isLoading}
-          icon={<IoBarbellOutline size={20} />}
+          timeFilter={filterTime}
         />
         <AverageCard
           AverageName="Average Carbs"
           AverageNumber={`${AverageValues("carb")} g`}
           isPending={isLoading}
-          icon={<LiaCookieSolid size={20} />}
+          timeFilter={filterTime}
         />
         <AverageCard
           AverageName="Average Fat"
           AverageNumber={`${AverageValues("fat")} g`}
           isPending={isLoading}
-          icon={<MdOutlineLocalFireDepartment size={20} />}
+          timeFilter={filterTime}
         />
       </div>
 
