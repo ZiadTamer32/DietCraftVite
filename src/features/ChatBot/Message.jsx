@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { FiCopy, FiCheck } from "react-icons/fi";
 import { formatDate, copyToClipboard } from "../../utils/helpers";
+import ReactMarkdown from "react-markdown";
 
 function Message({ message }) {
   const [copied, setCopied] = useState(false);
@@ -27,11 +28,11 @@ function Message({ message }) {
           ${isUser ? "bg-dietcraft-500 text-white border border-transparent" : "bg-[#e9ecef] text-gray-900"}
         `}
       >
-        <p
+        <div
           className={`${isUser ? "font-medium" : ""} break-words whitespace-pre-wrap`}
         >
-          {message.content}
-        </p>
+          <ReactMarkdown>{message.content}</ReactMarkdown>
+        </div>
 
         <div className="flex items-center justify-between mt-2 text-xs">
           <span className={`${isUser ? "text-white" : "text-gray-500"}`}>

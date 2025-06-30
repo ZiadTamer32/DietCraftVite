@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { generateId } from "../utils/helpers";
 import axios from "axios";
+import useUser from "../features/auth/useUser";
 
 const ChatContext = createContext();
 
@@ -13,9 +14,40 @@ const createEmptyChat = () => ({
 });
 
 function ChatProvider({ children }) {
+  const { user } = useUser();
+  const email = user?.email || "";
   const [chats, setChats] = useState([]);
   const [activeChat, setActiveChat] = useState(null);
   const [isTyping, setIsTyping] = useState(false);
+
+  // Load chats from localStorage when email changes
+  useEffect(() => {
+    if (email) {
+      const stored = localStorage.getItem(`chats_${email}`);
+      let loadedChats = stored ? JSON.parse(stored) : [];
+      // Convert timestamps to Date objects
+      loadedChats = loadedChats.map((chat) => ({
+        ...chat,
+        timestamp: new Date(chat.timestamp),
+        messages: chat.messages.map((msg) => ({
+          ...msg,
+          timestamp: new Date(msg.timestamp),
+        })),
+      }));
+      setChats(loadedChats);
+      setActiveChat(null);
+    } else {
+      setChats([]);
+      setActiveChat(null);
+    }
+  }, [email]);
+
+  // Save chats to localStorage when chats or email changes
+  useEffect(() => {
+    if (email) {
+      localStorage.setItem(`chats_${email}`, JSON.stringify(chats));
+    }
+  }, [chats, email]);
 
   const createNewChat = () => {
     const newChat = createEmptyChat();
@@ -79,13 +111,17 @@ function ChatProvider({ children }) {
 
     setIsTyping(true);
 
-    // 🟢 REPLACED setTimeout SIMULATION WITH ACTUAL API CALL
+    // Send first two messages if available, otherwise just the current message
+
     axios
-      .post("http://127.0.0.1:344/chat", { message: content })
+      .post("http://127.0.0.1:344/chat", {
+        message: content,
+        messages: updatedChat.messages,
+      })
       .then((response) => {
         const botResponse = {
           id: generateId(),
-          content: response.data.response, // 📥 Use real response from backend
+          content: response.data.response,
           role: "assistant",
           timestamp: new Date(),
         };
@@ -120,6 +156,7 @@ function ChatProvider({ children }) {
         removeChat,
         sendMessage,
         isTyping,
+        updateChatTitle,
       }}
     >
       {children}
